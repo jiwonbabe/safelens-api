@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from pipeline.age import resolve_age
 from pipeline.cache import all_rows, get, open_db
 from pipeline.judge import DEMO_RULES, TRUSTED_CHANNELS, kid_verdict, parse_rules, topic_hits
 from pipeline.rules import parse_rules_llm
@@ -63,18 +64,27 @@ def root():
 
 
 @app.get("/feed")
-def feed(age_band: str = "", child_id: str = "mia"):
-    if age_band not in ("kid", "teen"):
+def feed(age_band: str = "", child_id: str = "mia", dob: str = "", jurisdiction: str = "US-CA"):
+    if dob:
+        try:
+            age_band, source = resolve_age(dob, jurisdiction)
+        except ValueError:
+            return JSONResponse(status_code=400, content={"error": "dob must be YYYY-MM-DD"})
+    elif age_band in ("kid", "teen"):
+        source = "client"
+    else:
         return JSONResponse(status_code=400, content={"error": "age_band must be kid or teen"})
+    if age_band == "adult":
+        return {"age_band": "adult", "age_source": source, "items": [], "blocked_count": 0}
     data = rows()
     if age_band == "kid":
         allow, deny = rules_for(child_id)
         shown = sorted([r for r in data if kid_verdict(r, allow, deny) == "show"], key=lambda r: -r["match"])
         items = [feed_item(r, "show", False) for r in shown]
-        return {"age_band": "kid", "items": items, "blocked_count": len(data) - len(items)}
+        return {"age_band": "kid", "age_source": source, "items": items, "blocked_count": len(data) - len(items)}
     teen = [r for r in data if r["verdict_teen"] in ("show", "flag")]
     teen.sort(key=lambda r: (DEMO_PICKS.index(r["video_id"]) if r["video_id"] in DEMO_PICKS else 99, -r["views"]))
-    return {"age_band": "teen", "items": [feed_item(r, r["verdict_teen"], True) for r in teen],
+    return {"age_band": "teen", "age_source": source, "items": [feed_item(r, r["verdict_teen"], True) for r in teen],
             "blocked_count": len(data) - len(teen)}
 
 

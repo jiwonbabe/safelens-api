@@ -28,7 +28,10 @@ Response: `allow` and `deny` are the parsed rules (show them as chips). `queue` 
 
 ## 2. GET /feed?age_band=kid|teen&child_id=mia
 
-- `age_band` comes from k-ID: age < 13 → `kid`, 13–17 → `teen`. Until k-ID is wired, a dropdown with the three k-ID test personas sets it.
+- Preferred (Oct 21 13:10): send `dob=YYYY-MM-DD` (the k-ID persona's date of birth) and optionally `jurisdiction=US-CA` (default) instead of `age_band`. The server resolves the band with k-ID's server API when it has a key, else a local date check. `dob` wins over `age_band`. Bad date → 400 `{"error": "dob must be YYYY-MM-DD"}`.
+- The response has a new top-level field after `age_band`: `age_source`, one of `"k-id"`, `"fallback"` (local date check), `"client"` (you sent `age_band=`). Show it as a small caption if you like; nothing else changed.
+- `dob` of an adult (18+) returns `{"age_band": "adult", "age_source": ..., "items": [], "blocked_count": 0}`: route that user to the parent screen.
+- `age_band=kid|teen` still works as the persona-dropdown fallback: age < 13 → `kid`, 13–17 → `teen`.
 - `kid` returns only `verdict: "show"` items. No lens, no search, no autoplay, no comments.
 - `teen` returns `show` and `flag` items, which is the whole pool: nothing is hidden from a teen. `flag` items get a small "flagged to parent" mark on the card. Every teen item has `lens_available: true`.
 - Every item has `url`, the original YouTube watch link. Use it for the "open on YouTube" action on a card.

@@ -72,10 +72,12 @@ Response:
 ```
 
 ### GET /feed?age_band=kid|teen&child_id=mia
+Also accepts `dob=YYYY-MM-DD` and `jurisdiction=US-CA` (default). When `dob` is given the server resolves the band itself (k-ID server API if `KID_API_KEY` is set, else a local date check) and `dob` wins over `age_band`. Bad or future `dob` → 400 `{"error": "dob must be YYYY-MM-DD"}`. `age_source` is `"k-id"`, `"fallback"` (local dob check), or `"client"` (band came from `age_band=`). Band `adult` returns `{"age_band": "adult", "age_source": ..., "items": [], "blocked_count": 0}`: an adult is the parent; parent screens use `/parent/rules`.
 Response:
 ```json
 {
   "age_band": "teen",
+  "age_source": "k-id",
   "items": [
     { "video_id": "_OxuxhHF1WI", "url": "https://www.youtube.com/watch?v=_OxuxhHF1WI", "title": "Last Chance to Win This $30,000 Tesla Model X - Giveaway Ends Tonight at Midnight", "channel": "Auto Auction Rebuilds", "thumbnail": "https://i.ytimg.com/vi/_OxuxhHF1WI/hqdefault.jpg", "views": 1200000, "verdict": "show", "lens_available": true },
     { "video_id": "3kdnLb-fdrY", "url": "https://www.youtube.com/watch?v=3kdnLb-fdrY", "title": "How I lost 20 pounds in 2 weeks on a low budget", "channel": "Nkemamaka Ike", "thumbnail": "https://i.ytimg.com/vi/3kdnLb-fdrY/hqdefault.jpg", "views": 54000, "verdict": "flag", "lens_available": true }
@@ -108,7 +110,7 @@ Every object that carries a `video_id` (feed item, parent queue item, lens) also
 `quiz_options` always has 4 labels: every correct one plus random distractors from the six. Scoring is done in the frontend: correct = chosen ∩ tactics.labels, false alarms = chosen − tactics.labels.
 
 ### Age signal
-k-ID is SDK-only, so the frontend runs the k-ID verification and passes `age_band` derived from it (`< 13` → kid, `13–17` → teen). An adult (18+) persona is the parent: it gets the parent setup and dashboard screens and never calls `/feed` for itself, so the API accepts only `kid` and `teen`. If k-ID is not wired, a dropdown with the three k-ID test personas sets it. The API never trusts a raw age from the client; it only trusts the band.
+The server does the age check. `GET /feed?dob=...&jurisdiction=...` calls k-ID's server API (`POST {KID_BASE_URL}/age-gate/check-age-category`, `Authorization: Bearer $KID_API_KEY`) when `KID_API_KEY` is set and maps `digital-minor` → kid, `digital-youth` → teen, `adult` → adult; any failure falls back to a local date-of-birth check (`< 13` → kid, `13–17` → teen, `18+` → adult). The frontend sends `dob` (the user's, or a k-ID test persona's) and never a band. `age_band=kid|teen` remains as the persona-dropdown fallback and is reported as `age_source: "client"`. The API never trusts a raw age from the client.
 
 ## Partner APIs (verified from docs, Oct 21)
 

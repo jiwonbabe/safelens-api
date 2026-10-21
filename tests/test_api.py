@@ -9,7 +9,8 @@ RULES = "Science experiments, LEGO builds, animal documentaries. No unboxing, no
 
 def test_kid_feed_returns_only_show_items_with_contract_fields():
     d = client.get("/feed?age_band=kid&child_id=mia").json()
-    assert d["age_band"] == "kid" and len(d["items"]) >= 5
+    assert list(d) == ["age_band", "age_source", "items", "blocked_count"]
+    assert d["age_band"] == "kid" and d["age_source"] == "client" and len(d["items"]) >= 5
     assert all(list(i) == FEED_KEYS for i in d["items"])
     assert all(i["verdict"] == "show" and i["lens_available"] is False for i in d["items"])
     assert d["blocked_count"] == 56 - len(d["items"])
@@ -17,6 +18,7 @@ def test_kid_feed_returns_only_show_items_with_contract_fields():
 
 def test_teen_feed_is_the_whole_pool_demo_picks_first():
     d = client.get("/feed?age_band=teen&child_id=mia").json()
+    assert list(d) == ["age_band", "age_source", "items", "blocked_count"] and d["age_source"] == "client"
     assert len(d["items"]) == 56 and d["blocked_count"] == 0
     assert {i["verdict"] for i in d["items"]} == {"show", "flag"}
     assert all(i["lens_available"] is True and list(i) == FEED_KEYS for i in d["items"])
@@ -27,6 +29,28 @@ def test_feed_rejects_bad_or_missing_age_band():
     assert client.get("/feed?age_band=adult").status_code == 400
     assert client.get("/feed").status_code == 400
     assert client.get("/feed?age_band=adult").json() == {"error": "age_band must be kid or teen"}
+
+
+def test_feed_by_dob_uses_the_local_fallback_without_a_kid_key(monkeypatch):
+    monkeypatch.delenv("KID_API_KEY", raising=False)
+    kid = client.get("/feed?dob=2015-04-15").json()
+    assert kid["age_band"] == "kid" and kid["age_source"] == "fallback"
+    assert kid["items"] == client.get("/feed?age_band=kid&child_id=mia").json()["items"]
+    teen = client.get("/feed?dob=2011-01-01&jurisdiction=US-CA").json()
+    assert teen["age_band"] == "teen" and teen["age_source"] == "fallback" and len(teen["items"]) == 56
+    assert all(list(i) == FEED_KEYS for i in teen["items"])
+
+
+def test_feed_by_dob_adult_is_empty_and_dob_wins_over_age_band(monkeypatch):
+    monkeypatch.delenv("KID_API_KEY", raising=False)
+    assert client.get("/feed?dob=2005-04-15").json() == {"age_band": "adult", "age_source": "fallback", "items": [], "blocked_count": 0}
+    assert client.get("/feed?dob=2005-04-15&age_band=kid").json()["age_band"] == "adult"
+
+
+def test_feed_rejects_a_bad_dob():
+    r = client.get("/feed?dob=bad")
+    assert r.status_code == 400 and r.json() == {"error": "dob must be YYYY-MM-DD"}
+    assert client.get("/feed?dob=2099-01-01").status_code == 400
 
 
 def test_lens_has_contract_shape_and_verbatim_evidence():
