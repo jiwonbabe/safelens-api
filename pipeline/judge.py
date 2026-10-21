@@ -138,7 +138,8 @@ def judge(video, proposal):
     commercial_hook = hook.get("evidence") if hook.get("present") and quote_ok(hook.get("evidence"), text) else None
     row = {
         "title": video.get("title"), "channel": video.get("channel"),
-        "topics": topics.get("topics") or [], "match": int(topics.get("match") or 0),
+        "topics": [t for t in topics.get("topics") or [] if str(t).strip().lower() not in ("", "null", "none")],
+        "match": int(topics.get("match") or 0),
         "tactics": tactics, "verdict_teen": teen_verdict(video, tactics, lens),
         "kid_risk": kid_risk, "commercial_hook": commercial_hook,
         "concern": concern_of(video, lens),

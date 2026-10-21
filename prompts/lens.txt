@@ -23,7 +23,7 @@ Label definitions. The quote you give as evidence MUST contain the words that de
 - body_image_pressure: a number plus a time span about weight, skin, or muscle ("10 pounds in 3 days", "14 day detox", "6 months"), or before/after framing. Evidence must contain that number and span, or "before and after". It is usually in the title: quote the title.
 - engagement_bait: likes, comments, shares, or subscribes asked for with pressure. Evidence must contain the demand ("like in 3 seconds or", "subscribe or else").
 - misleading_thumbnail: the title promises something the captions show it does not deliver. Needs two quotes: put the title claim in "evidence" and the contradicting caption line in "reason".
-- fake_social_proof: invented popularity or a big number used as proof with no source ("millions use this", "everyone is obsessed", "best selling", "100% results", "$30,000 Tesla", "110+ gadgets"). Evidence must contain the claim or the number.
+- fake_social_proof: invented popularity or a big number used as proof with no source ("millions use this", "everyone is doing it", "best selling", "100% results", "a $20,000 prize", "500+ products"). Evidence must contain the claim or the number.
 
 Propose every label whose defining words are literally in the text, up to 3. Do not skip a label because another one is stronger.
 

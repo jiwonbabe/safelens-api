@@ -188,3 +188,8 @@ def test_quote_check_ignores_surrounding_quotation_marks():
     v = video(title="Pregnancy Battle: Spiderman Gives Shots")
     assert quote_ok('"Pregnancy Battle: Spiderman Gives Shots"', video_text(v)) is True
     assert quote_ok("“Spiderman Gives Shots”", video_text(v)) is True
+
+
+def test_judge_drops_null_or_none_strings_the_llm_puts_in_topics():
+    out = judge(video(title="x"), {"lens": {}, "topics": {"topics": ["null", "None", "", "science"], "match": 50}})
+    assert out["topics"] == ["science"]
