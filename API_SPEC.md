@@ -24,13 +24,14 @@ Response: `allow` and `deny` are the parsed rules (show them as chips). `queue` 
 - `approve` → show in the parent's list with the orange "needs your call" badge and the `note`; parent can remove or keep
 - `hide` → do not show in the queue at all (or show a count: "N hidden")
 
-`match` is 0–100. Sort the queue by match, descending.
+`match` is 0–100. Sort the queue by match, descending. Every queue item has `url` (original YouTube link) for a "watch" button.
 
 ## 2. GET /feed?age_band=kid|teen&child_id=mia
 
 - `age_band` comes from k-ID: age < 13 → `kid`, 13–17 → `teen`. Until k-ID is wired, a dropdown with the three k-ID test personas sets it.
 - `kid` returns only `verdict: "show"` items. No lens, no search, no autoplay, no comments.
 - `teen` returns `show` and `flag` items, which is the whole pool: nothing is hidden from a teen. `flag` items get a small "flagged to parent" mark on the card. Every teen item has `lens_available: true`.
+- Every item has `url`, the original YouTube watch link. Use it for the "open on YouTube" action on a card.
 - `blocked_count` is for the parent dashboard. For teen it is 0 unless a video is YouTube 18+.
 
 ## 3. GET /video/{video_id}/lens  (teen only)
@@ -55,6 +56,8 @@ Label display names:
 | engagement_bait | Engagement bait |
 | misleading_thumbnail | Misleading thumbnail |
 | fake_social_proof | Fake social proof |
+
+The lens response also has `url` (original YouTube link).
 
 `signals` is optional context (age_limit, upload_days_ago, voice_emotion). Safe to ignore in the UI.
 

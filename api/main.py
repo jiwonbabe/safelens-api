@@ -22,8 +22,12 @@ def rules_for(child_id):
     return RULES.get(child_id) or RULES["mia"]
 
 
+def video_url(video_id):
+    return "https://www.youtube.com/watch?v=" + video_id
+
+
 def feed_item(row, verdict, lens_available):
-    return {"video_id": row["video_id"], "title": row["title"], "channel": row["channel"], "thumbnail": row["thumbnail"],
+    return {"video_id": row["video_id"], "url": video_url(row["video_id"]), "title": row["title"], "channel": row["channel"], "thumbnail": row["thumbnail"],
             "views": row["views"], "verdict": verdict, "lens_available": lens_available}
 
 
@@ -79,7 +83,7 @@ def lens(video_id: str):
     row = get(open_db(), video_id)
     if row is None:
         return JSONResponse(status_code=404, content={"error": "unknown video_id"})
-    return {"video_id": row["video_id"], "verdict": row["verdict_teen"], "tactics": row["tactics"],
+    return {"video_id": row["video_id"], "url": video_url(row["video_id"]), "verdict": row["verdict_teen"], "tactics": row["tactics"],
             "quiz_options": row["quiz_options"], "reality_check": row["reality_check"], "concern": row["concern"],
             "signals": row["signals"]}
 
@@ -92,7 +96,7 @@ def parent_rules(body: dict):
     queue = []
     for r in rows():
         verdict = kid_verdict(r, allow, deny)
-        queue.append({"video_id": r["video_id"], "title": r["title"], "channel": r["channel"], "thumbnail": r["thumbnail"],
+        queue.append({"video_id": r["video_id"], "url": video_url(r["video_id"]), "title": r["title"], "channel": r["channel"], "thumbnail": r["thumbnail"],
                       "topics": r["topics"], "match": r["match"], "verdict": verdict, "note": kid_note(r, verdict, deny)})
     queue.sort(key=lambda q: -q["match"])
     return {"child_id": child_id, "allow": allow, "deny": deny, "queue": queue}

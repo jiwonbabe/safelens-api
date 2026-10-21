@@ -65,8 +65,8 @@ Response:
   "allow": ["science", "lego", "animals"],
   "deny": ["unboxing", "challenges", "buy now"],
   "queue": [
-    { "video_id": "wfnsRi8Jgdw", "title": "The Great Elephant Toothpaste Experiment!", "channel": "SciShow Kids", "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg", "topics": ["science"], "match": 96, "verdict": "show", "note": null },
-    { "video_id": "_p-10Dnytgw", "title": "School/Science Project - Water Wheel || Tinker Crate by KiwiCo", "channel": "Matt Creationz", "thumbnail": "https://i.ytimg.com/vi/_p-10Dnytgw/hqdefault.jpg", "topics": ["science"], "match": 88, "verdict": "approve", "note": "Names a product (KiwiCo) with no disclosure" }
+    { "video_id": "wfnsRi8Jgdw", "url": "https://www.youtube.com/watch?v=wfnsRi8Jgdw", "title": "The Great Elephant Toothpaste Experiment!", "channel": "SciShow Kids", "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg", "topics": ["science"], "match": 96, "verdict": "show", "note": null },
+    { "video_id": "_p-10Dnytgw", "url": "https://www.youtube.com/watch?v=_p-10Dnytgw", "title": "School/Science Project - Water Wheel || Tinker Crate by KiwiCo", "channel": "Matt Creationz", "thumbnail": "https://i.ytimg.com/vi/_p-10Dnytgw/hqdefault.jpg", "topics": ["science"], "match": 88, "verdict": "approve", "note": "Names a product (KiwiCo) with no disclosure" }
   ]
 }
 ```
@@ -77,8 +77,8 @@ Response:
 {
   "age_band": "teen",
   "items": [
-    { "video_id": "_OxuxhHF1WI", "title": "Last Chance to Win This $30,000 Tesla Model X - Giveaway Ends Tonight at Midnight", "channel": "Auto Auction Rebuilds", "thumbnail": "https://i.ytimg.com/vi/_OxuxhHF1WI/hqdefault.jpg", "views": 1200000, "verdict": "show", "lens_available": true },
-    { "video_id": "3kdnLb-fdrY", "title": "How I lost 20 pounds in 2 weeks on a low budget", "channel": "Nkemamaka Ike", "thumbnail": "https://i.ytimg.com/vi/3kdnLb-fdrY/hqdefault.jpg", "views": 54000, "verdict": "flag", "lens_available": true }
+    { "video_id": "_OxuxhHF1WI", "url": "https://www.youtube.com/watch?v=_OxuxhHF1WI", "title": "Last Chance to Win This $30,000 Tesla Model X - Giveaway Ends Tonight at Midnight", "channel": "Auto Auction Rebuilds", "thumbnail": "https://i.ytimg.com/vi/_OxuxhHF1WI/hqdefault.jpg", "views": 1200000, "verdict": "show", "lens_available": true },
+    { "video_id": "3kdnLb-fdrY", "url": "https://www.youtube.com/watch?v=3kdnLb-fdrY", "title": "How I lost 20 pounds in 2 weeks on a low budget", "channel": "Nkemamaka Ike", "thumbnail": "https://i.ytimg.com/vi/3kdnLb-fdrY/hqdefault.jpg", "views": 54000, "verdict": "flag", "lens_available": true }
   ],
   "blocked_count": 0
 }
@@ -89,7 +89,7 @@ For `age_band=kid` only `verdict: "show"` items are returned. For `age_band=teen
 Response:
 ```json
 {
-  "video_id": "_OxuxhHF1WI",
+  "video_id": "_OxuxhHF1WI", "url": "https://www.youtube.com/watch?v=_OxuxhHF1WI",
   "verdict": "show",
   "tactics": [
     { "label": "fake_urgency", "evidence": "Giveaway Ends Tonight at Midnight", "reason": "\"Ends tonight\" has been on this video for 3 weeks. It is there so you do not stop to think." },
@@ -102,6 +102,8 @@ Response:
 }
 ```
 `concern` is `null` for a plain `show`. For a `flag` with a concern category it is `{ "category": "violence_glorification", "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS", "reason": "Real people get hurt in these clips. The channel earns from every view, so it needs you to feel the fight is entertainment." }`. The frontend shows it above the tactics as "What is wrong with this video".
+
+Every object that carries a `video_id` (feed item, parent queue item, lens) also carries `url`, the original YouTube watch link, so the frontend can open the real video.
 
 `quiz_options` always has 4 labels: every correct one plus random distractors from the six. Scoring is done in the frontend: correct = chosen ∩ tactics.labels, false alarms = chosen − tactics.labels.
 
