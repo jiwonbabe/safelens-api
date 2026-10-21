@@ -11,7 +11,7 @@ Return ONLY this JSON, no prose:
       "reason": "<one sentence, under 25 words, that names the exact move in THIS video and what it is built to make the viewer do. Use a fact from the input (days since upload, a number in the title, a code in the description) when one fits.>"
     }
   ],
-  "concern_category": "<one of: none, gambling_like, violence_glorification, substance_glorification, weapons_with_links, private_contact_recruiting, manosphere, reckless_driving, adult>",
+  "concern_category": "<one of: none, gambling_like, violence_glorification, substance_glorification, weapons_with_links, private_contact_recruiting, manosphere, reckless_driving, adult, cosmetic_procedure, dangerous_challenge, money_scheme>",
   "concern_evidence": "<a verbatim quote from the title, description, or captions that shows the concern category, or null>",
   "concern_reason": "<if concern_category is not none: two sentences, under 40 words. First: what is actually happening in THIS video, said plainly (who gets hurt, who gets paid, what is being sold). Second: one concrete thing to notice while watching it. Otherwise null.>",
   "reality_check": "<two or three sentences, under 60 words. Sentence 1: the one plain fact this video hides, as specific as the input allows. Sentence 2: what the video is built to make the viewer feel. Sentence 3: if it got to them, that is the video working, not something wrong with them. Never shame the viewer, never give health or diet advice, never mention self-harm or eating disorders. Do not repeat concern_reason.>"

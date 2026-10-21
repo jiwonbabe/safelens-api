@@ -19,4 +19,4 @@ def test_videos_json_has_every_video_with_the_contract_keys():
     videos = json.load(open(OUT))
     assert len(videos) == 56
     assert all(sorted(v) == sorted(KEYS) for v in videos)
-    assert sum(1 for v in videos if v["captions"]) == 45
+    assert sum(1 for v in videos if v["captions"]) == 53

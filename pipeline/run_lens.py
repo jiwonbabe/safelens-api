@@ -46,6 +46,9 @@ CONCERN_FALLBACK = {
     "body_image_pressure": "A number and a deadline turn your body into a problem to fix fast. Notice that the video never shows what happens after the deadline.",
     "undisclosed_health_product": "A health product is being sold here and the video never says it earns from your purchase. Notice who profits if you buy.",
     "fake_urgency": "The deadline is the hook and the voice is pushing it. Notice whether anything actually changes when the clock runs out.",
+    "cosmetic_procedure": "A paid procedure is shown as a quick fix for how you look, often with a clinic code. Notice that healing, cost, and the people it went wrong for are left out.",
+    "dangerous_challenge": "This challenge has put people in the hospital, and the video is cut to look like a joke. Notice that you never see the part after the camera stops.",
+    "money_scheme": "Someone promises easy money and needs you to send money or join first. Notice who gets paid before you do.",
 }
 
 

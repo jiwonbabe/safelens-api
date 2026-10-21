@@ -365,5 +365,64 @@
   "age_band": "both",
   "verdict": "show",
   "labels": []
+ },
+ {
+  "video_id": "CuYDIX7G0AY",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "sZ2C6DPw5ro",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "_Ktq4ums8yo",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": [
+   "body_image_pressure",
+   "hidden_ad"
+  ]
+ },
+ {
+  "video_id": "xCkPJUpwxbE",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "otd2snZ9TeU",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "sYDxFojFZ_Y",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": [
+   "hidden_ad"
+  ]
+ },
+ {
+  "video_id": "wZCuzBfCHIo",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "TVRsn9um4LQ",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "a1dZK6Zh86Y",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
  }
 ]

@@ -15,14 +15,19 @@ BODY = r"\d+[ -]?(lb|lbs|pounds|kg|days?|weeks?|months?)\b|before (and|&) after|
 BAIT = r"like in \d|comment or|share this or|subscribe or|or else"
 PROOF = r"millions use|everyone is|everyone's|best selling|100%|#1|\bno\.? ?1\b|\d"
 CONCERN_WORDS = {
-    "private_contact_recruiting": r"t\.me|dm me",
+    "private_contact_recruiting": r"t\.me|dm me|discord\.gg|join my discord|sugar daddy|sugar baby|onlyfans",
     "gambling_like": r"gambling|case opening|loot box",
     "substance_glorification": r"vape|sarms|getting drunk",
     "violence_glorification": r"street fights?|hood fights?|fight compilation",
-    "manosphere": r"andrew tate",
+    "manosphere": r"andrew tate|red pill|redpill|alpha male|high value man",
     "reckless_driving": r"street takeover|sideshow",
     "weapons_with_links": r"switchblade|karambit",
+    "cosmetic_procedure": r"lip filler|fillers?\b|botox|nose job|rhinoplasty|eyelid surgery|liposuction|\blipo\b|buccal fat|jaw (shaving|surgery)|skin whitening|skin lightening|glutathione",
+    "dangerous_challenge": r"blackout challenge|benadryl challenge|dry scoop|chroming|one chip challenge|skull ?breaker|milk crate challenge",
+    "money_scheme": r"cash app flip|flip \$?\d+ to|join my team|make money from your phone|passive income secret|guaranteed profit",
 }
+EDUCATIONAL = (r"\b(reacts?( to)?|the truth about|exposed|explained|explains|debunk(ed|ing)?|warning|news|lawsuit|parents sue"
+               r"|doctor|surgeon|dentist|dermatologist|nutritionist|fact[ -]?check)\b")
 FLAG_TITLE = r"\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b"
 HEALTH_TITLE = r"weight loss|fat loss|fat burn"
 
@@ -70,6 +75,9 @@ def concern_of(video, lens):
     category = lens.get("concern_category") or "none"
     if category != "none" and quote_ok(lens.get("concern_evidence"), text):
         return {"category": category, "evidence": lens["concern_evidence"], "reason": lens.get("concern_reason") or ""}
+    title = collapse(video.get("title") or "").lower()
+    if re.search(EDUCATIONAL, title):  # a reaction, debunk, news, or clinician TITLE is not a promo; only an LLM-verified quote can flag it
+        return None
     for category, pattern in CONCERN_WORDS.items():
         hit = re.search(pattern, head)
         if hit:

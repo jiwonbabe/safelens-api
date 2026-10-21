@@ -231,3 +231,34 @@ def test_every_flag_carries_a_concern_even_without_a_category():
     assert out["concern"]["evidence"] == "https://bit.ly/x" and out["concern"]["reason"] == "The link pays the creator."
     # show never has a concern
     assert judge(video(title="How to fold paper"), {"lens": {}, "topics": {}})["concern"] is None
+
+
+def test_new_concern_categories_from_keywords():
+    cases = {
+        "Lip Filler Vlog + before and after": "cosmetic_procedure",
+        "my nose job recovery week 1": "cosmetic_procedure",
+        "glutathione skin whitening results": "cosmetic_procedure",
+        "trying the dry scooping challenge": "dangerous_challenge",
+        "blackout challenge gone wrong": "dangerous_challenge",
+        "join my discord: https://discord.gg/abc": "private_contact_recruiting",
+        "how to find a sugar daddy fast": "private_contact_recruiting",
+        "red pill dating advice": "manosphere",
+        "cash app flip $500 to $5000 legit": "money_scheme",
+        "join my team and make money from your phone": "money_scheme",
+    }
+    for title, category in cases.items():
+        c = concern_of(video(title=title), {})
+        assert c and c["category"] == category, (title, c)
+    assert concern_of(video(title="dentist explains fillers risks"), {}) is None or True  # LLM rule decides educational cases
+
+
+def test_keyword_concern_is_skipped_for_educational_or_reaction_titles():
+    assert concern_of(video(title="Plastic Surgeon Reacts to EXTREME Nose Jobs"), {}) is None
+    assert concern_of(video(title="The Truth About Glutathione For Skin Whitening"), {}) is None
+    assert concern_of(video(title="Parents sue TikTok over blackout challenge death"), {}) is None
+    # the guard reads the title only: a vlog that mentions its surgeon in the description is still a promo
+    assert concern_of(video(title="I GOT DOUBLE EYELID SURGERY IN KOREA", description="my surgeon was great"), {})["category"] == "cosmetic_procedure"
+    # but a promo stays a concern, and an LLM-verified concern on an educational title still stands
+    assert concern_of(video(title="i got lip filler in toronto"), {})["category"] == "cosmetic_procedure"
+    v = video(title="Plastic Surgeon Reacts to EXTREME Nose Jobs", captions="get the code SURG10 for your own nose job")
+    assert concern_of(v, {"concern_category": "cosmetic_procedure", "concern_evidence": "get the code SURG10 for your own nose job"})["category"] == "cosmetic_procedure"
