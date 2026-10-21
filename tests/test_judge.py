@@ -193,3 +193,7 @@ def test_quote_check_ignores_surrounding_quotation_marks():
 def test_judge_drops_null_or_none_strings_the_llm_puts_in_topics():
     out = judge(video(title="x"), {"lens": {}, "topics": {"topics": ["null", "None", "", "science"], "match": 50}})
     assert out["topics"] == ["science"]
+
+
+def test_body_pattern_accepts_hyphenated_spans():
+    assert keep_tactic(tactic("body_image_pressure", "14-Day Detox Results"), video(title="My 14-Day Detox Results")) is True

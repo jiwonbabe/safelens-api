@@ -72,3 +72,12 @@ def test_parent_rules_change_the_kid_feed_for_that_child():
 
 def test_root_is_a_health_check():
     assert client.get("/").json() == {"ok": True, "service": "safelens-api", "videos": 56}
+
+
+def test_queue_note_names_the_deny_rule_even_through_a_synonym():
+    d = client.post("/parent/rules", json={"child_id": "syn", "rules_text": "Science only. Nothing scary."}).json()
+    assert d["deny"] == ["horror"]
+    notes = {q["video_id"]: q["note"] for q in d["queue"]}
+    assert notes["y7TJQTqGNqA"]  # scariest-moments video: hidden by its risk category or named by the deny rule
+    flagged = [q for q in d["queue"] if q["verdict"] == "approve" and q["note"] and q["note"].startswith("deny rule: horror")]
+    assert flagged or all(q["verdict"] == "hide" for q in d["queue"] if "horror" in (q["topics"] or []))

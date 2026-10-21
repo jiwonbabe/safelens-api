@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from pipeline.cache import all_rows, get, open_db
-from pipeline.judge import DEMO_RULES, TRUSTED_CHANNELS, kid_verdict, parse_rules
+from pipeline.judge import DEMO_RULES, TRUSTED_CHANNELS, kid_verdict, parse_rules, topic_hits
 from pipeline.rules import parse_rules_llm
 
 app = FastAPI(title="SafeLens API")
@@ -36,8 +36,9 @@ def kid_note(row, verdict, deny):
         return f"teen {row['verdict_teen']}"
     if row["commercial_hook"]:
         return f"Names a product with no disclosure: \"{row['commercial_hook']}\""
-    title, topics = row["title"].lower(), [t.lower() for t in row["topics"]]
-    hit = [d for d in deny if d in title or d in topics]
+    title = row["title"].lower()
+    found = set(topic_hits(title + " " + " ".join(row["topics"])))
+    hit = [d for d in deny if d in found or d in title]
     if hit:
         return f"deny rule: {hit[0]}"
     if row["tactics"]:
