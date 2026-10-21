@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from api.main import app, DEMO_PICKS
 
 client = TestClient(app)
-FEED_KEYS = ["video_id", "title", "channel", "thumbnail", "views", "verdict", "lens_available"]
+FEED_KEYS = ["video_id", "url", "title", "channel", "thumbnail", "views", "verdict", "lens_available"]
 RULES = "Science experiments, LEGO builds, animal documentaries. No unboxing, no challenges, nothing with buy now."
 
 
@@ -31,7 +31,8 @@ def test_feed_rejects_bad_or_missing_age_band():
 
 def test_lens_has_contract_shape_and_verbatim_evidence():
     d = client.get("/video/_OxuxhHF1WI/lens").json()
-    assert list(d) == ["video_id", "verdict", "tactics", "quiz_options", "reality_check", "concern", "signals"]
+    assert list(d) == ["video_id", "url", "verdict", "tactics", "quiz_options", "reality_check", "concern", "signals"]
+    assert d["url"] == "https://www.youtube.com/watch?v=_OxuxhHF1WI"
     assert d["verdict"] == "show" and d["concern"] is None
     assert "fake_urgency" in [t["label"] for t in d["tactics"]]
     assert all(list(t) == ["label", "evidence", "reason"] for t in d["tactics"])
@@ -55,7 +56,7 @@ def test_parent_rules_returns_chips_and_sorted_queue_with_notes():
     assert d["child_id"] == "mia"
     assert d["allow"] == ["science", "lego", "animals"] and d["deny"] == ["unboxing", "challenges", "buy now"]
     q = d["queue"]
-    assert len(q) == 56 and all(list(i) == ["video_id", "title", "channel", "thumbnail", "topics", "match", "verdict", "note"] for i in q)
+    assert len(q) == 56 and all(list(i) == ["video_id", "url", "title", "channel", "thumbnail", "topics", "match", "verdict", "note"] for i in q)
     assert [i["match"] for i in q] == sorted((i["match"] for i in q), reverse=True)
     assert all(i["note"] is None for i in q if i["verdict"] == "show")
     assert all(i["note"] for i in q if i["verdict"] != "show")
