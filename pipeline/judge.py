@@ -91,15 +91,16 @@ def teen_verdict(video, tactics, lens):
 
 
 def kid_verdict(row, allow, deny):
-    """Pure. Used at precompute time with DEMO_RULES and by the API with the parent's own rules."""
+    """Pure. hide = safety only; approve = anything the parent should decide; show = trusted, on-topic, clean.
+    Used at precompute time with DEMO_RULES and by the API with the parent's own rules."""
     title = (row.get("title") or "").lower()
     topics = [t.lower() for t in row.get("topics") or []]
     if row.get("verdict_teen") in ("flag", "block") or (row.get("kid_risk") or "none") != "none":
         return "hide"
     if any(word in title or word in topics for word in deny):
-        return "hide"
+        return "approve"
     if not set(allow) & set(topics):
-        return "hide"
+        return "approve"
     if row.get("tactics") or row.get("channel") not in TRUSTED_CHANNELS:  # a trusted channel's own product is not a hook
         return "approve"
     return "show"

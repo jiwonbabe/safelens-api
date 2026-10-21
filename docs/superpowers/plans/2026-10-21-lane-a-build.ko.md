@@ -108,9 +108,11 @@
 - 아니면 `show`.
 
 키즈 판정 `kid_verdict(row, allow, deny)`:
-- `hide`: `row["verdict_teen"] in ("flag","block")`, 또는 `row["kid_risk"] != "none"`, 또는 deny 단어가 `title`이나 `row["topics"]`에 등장, 또는 `allow`와 `row["topics"]`의 교집합이 없음.
-- 아니면 `approve`: `row["commercial_hook"]`이 non-null(훅 evidence가 인용 검사 통과), 또는 `row["tactics"]`가 비어 있지 않음, 또는 `row["channel"] not in TRUSTED_CHANNELS`.
+- `hide`(안전 문제만): `row["verdict_teen"] in ("flag","block")` 또는 `row["kid_risk"] != "none"`.
+- 아니면 `approve`(부모가 판단): deny 단어가 `title`이나 `row["topics"]`에 등장, 또는 `allow`와 `row["topics"]`의 교집합이 없음, 또는 `row["tactics"]`가 비어 있지 않음, 또는 `row["channel"] not in TRUSTED_CHANNELS`(신뢰 채널의 자사 제품은 훅이 아님. `commercial_hook`은 큐의 note에만 쓴다). 11:50 결정.
 - 아니면 `show`.
+
+연령 신호: k-ID는 SDK뿐이라 프론트가 kid/teen/adult를 검증해 `age_band`를 보낸다. adult = 부모 화면, `/feed`는 호출하지 않음. API는 `kid`, `teen`만 받는다. API 변경 없음.
 
 `judge()`는 `kid_risk` = topics 제안의 `kid_risk.category`(evidence가 인용 검사 통과 시) 아니면 `"none"`, `commercial_hook` = `present`이고 인용 통과 시 훅 evidence 문자열 아니면 `None`, `verdict_kid = kid_verdict(row, *parse_rules(DEMO_RULES))`로 계산한다. `DEMO_RULES`는 CLAUDE.md 데모 문장.
 

@@ -23,7 +23,7 @@ def test_build_row_has_contract_keys_and_four_quiz_options():
     topics = {"topics": ["cars"], "match": 10, "commercial_hook": {"present": False}, "kid_risk": {"category": "none"}}
     row = rl.build_row(video(), {"lens": lens, "topics": topics}, None)
     assert sorted(row) == sorted(rl.ROW_KEYS)
-    assert row["verdict_teen"] == "show" and row["verdict_kid"] == "hide"
+    assert row["verdict_teen"] == "show" and row["verdict_kid"] == "approve"
     assert len(row["quiz_options"]) == 4 and "fake_urgency" in row["quiz_options"]
     assert set(row["quiz_options"]) <= set(LABELS)
     assert row["tactics"][0]["reason"] == rl.LABEL_FALLBACK["fake_urgency"]  # empty LLM reason is filled

@@ -119,9 +119,11 @@ Verdict teen (`age_limit` from video). A teen is never walled off; a concern bec
 - else `show`.
 
 Verdict kid via `kid_verdict(row, allow, deny)`:
-- `hide` if `row["verdict_teen"] in ("flag","block")`, or `row["kid_risk"] != "none"`, or any deny word appears in `title` or in `row["topics"]`, or no topic in `allow` overlaps `row["topics"]`.
-- else `approve` if `row["commercial_hook"]` is non-null (hook evidence passed the quote check), or `row["tactics"]` non-empty, or `row["channel"] not in TRUSTED_CHANNELS`.
+- `hide` (safety only) if `row["verdict_teen"] in ("flag","block")` or `row["kid_risk"] != "none"`.
+- else `approve` (the parent decides) if any deny word appears in `title` or in `row["topics"]`, or no topic in `allow` overlaps `row["topics"]`, or `row["tactics"]` non-empty, or `row["channel"] not in TRUSTED_CHANNELS` (a trusted channel's own product is not a hook; `commercial_hook` only feeds the queue note). Decided 11:50 Oct 21.
 - else `show`.
+
+Age signal: k-ID is SDK-only, the frontend verifies kid/teen/adult and sends `age_band`. Adult = parent screens, never `/feed`; the API accepts only `kid` and `teen`. No API change.
 
 `judge()` computes `kid_risk` = topics proposal `kid_risk.category` if its evidence passes the quote check else `"none"`, `commercial_hook` = the hook evidence string if `present` and quote passes else `None`, and sets `verdict_kid = kid_verdict(row, *parse_rules(DEMO_RULES))` with `DEMO_RULES` = the CLAUDE.md demo sentence.
 

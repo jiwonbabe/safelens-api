@@ -44,8 +44,8 @@ Teen (15):
 
 Kid (8):
 - `show`: matches parent rules AND channel on the trusted list AND no labels
-- `approve`: matches parent rules but has a commercial hook (unboxing, product name without disclosure, clickbait title) or an untrusted channel; hidden from the kid, sent to the parent queue as "needs your call"
-- `hide`: does not match parent rules, or any teen `flag`/`block` category, or horror, jump scares, scary stories, Elsagate-style costumed-character content, pranks that make a child cry, strong language
+- `approve`: anything the parent should decide: a deny rule hit ("no unboxing"), no allowed topic, a commercial hook (unboxing, product name without disclosure, clickbait title), a lens tactic, or an untrusted channel; hidden from the kid, sent to the parent queue as "needs your call" (decided 11:50 Oct 21: widening approve makes the parent queue the place where rules get applied, and keeps hide for safety only)
+- `hide`: safety only: any teen `flag`/`block` category, or horror, jump scares, scary stories, Elsagate-style costumed-character content, pranks that make a child cry, strong language, weapons, violence. Never shown in the parent queue as a choice; counted in `blocked_count`
 
 Block/hide decisions come from `judge.py` rules over text signals plus the LLM's category proposal. Frame analysis is out of scope; say so if asked.
 
@@ -106,7 +106,7 @@ Response:
 `quiz_options` always has 4 labels: every correct one plus random distractors from the six. Scoring is done in the frontend: correct = chosen ∩ tactics.labels, false alarms = chosen − tactics.labels.
 
 ### Age signal
-k-ID gives age and jurisdiction. The frontend passes `age_band` derived from it (`< 13` → kid, `13–17` → teen). If k-ID is not wired, a dropdown with the three k-ID test personas sets it. The API never trusts a raw age from the client.
+k-ID is SDK-only, so the frontend runs the k-ID verification and passes `age_band` derived from it (`< 13` → kid, `13–17` → teen). An adult (18+) persona is the parent: it gets the parent setup and dashboard screens and never calls `/feed` for itself, so the API accepts only `kid` and `teen`. If k-ID is not wired, a dropdown with the three k-ID test personas sets it. The API never trusts a raw age from the client; it only trusts the band.
 
 ## Partner APIs (verified from docs, Oct 21)
 

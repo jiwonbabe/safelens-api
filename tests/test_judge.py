@@ -123,11 +123,15 @@ def test_kid_approve_for_untrusted_channel_or_hook():
     assert kid_verdict(row(channel="Matt Creationz", commercial_hook="Tinker Crate by KiwiCo"), ALLOW, DENY) == "approve"
 
 
-def test_kid_hide_for_risk_deny_topic_or_teen_flag():
-    assert kid_verdict(row(topics=["horror"]), ALLOW, DENY) == "hide"
+def test_kid_hide_only_for_safety_risk_or_teen_flag():
     assert kid_verdict(row(kid_risk="jumpscare"), ALLOW, DENY) == "hide"
-    assert kid_verdict(row(title="Giant Unboxing!"), ALLOW, DENY) == "hide"
     assert kid_verdict(row(verdict_teen="block"), ALLOW, DENY) == "hide"
+    assert kid_verdict(row(verdict_teen="flag"), ALLOW, DENY) == "hide"
+
+
+def test_kid_approve_for_deny_rule_or_topic_mismatch_so_the_parent_decides():
+    assert kid_verdict(row(title="Giant Unboxing!"), ALLOW, DENY) == "approve"  # deny word, parent decides
+    assert kid_verdict(row(topics=["toys"]), ALLOW, DENY) == "approve"  # no allowed topic, parent decides
 
 
 # --- judge end to end --------------------------------------------------------
@@ -144,7 +148,7 @@ def test_judge_keeps_verified_tactics_and_sets_both_verdicts():
     out = judge(v, proposal)
     assert [t["evidence"] for t in out["tactics"]] == ["Ends Tonight"]
     assert out["verdict_teen"] == "show"
-    assert out["verdict_kid"] == "hide"  # no allowed topic
+    assert out["verdict_kid"] == "approve"  # no allowed topic: the parent decides
     assert out["commercial_hook"] == "GET IN NOW"
     assert out["concern"] is None
     assert out["topics"] == ["cars"] and out["match"] == 10
