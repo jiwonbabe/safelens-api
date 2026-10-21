@@ -47,7 +47,7 @@ This drives the quiz:
    - false alarms = chosen − {t.label for t in tactics}
    - text: "You caught {correct} of {len(tactics)}" plus " (1 false alarm)" when false alarms > 0
 4. `evidence` is a verbatim quote from the video's title, description, or captions. Show it in quotes. Never paraphrase it.
-5. `concern` (new, Oct 21 10:55): `null`, or `{ "category", "evidence", "reason" }`. When present, show it above the quiz as a "What is wrong with this video" box: the `reason` text plus the `evidence` quote. It is not part of the quiz. Categories: gambling_like, violence_glorification, substance_glorification, weapons_with_links, private_contact_recruiting, manosphere, reckless_driving, adult.
+5. `concern`: `null` when `verdict` is "show", and ALWAYS an object `{ "category", "evidence", "reason" }` when `verdict` is "flag" (one per video, never a list). Show it above the quiz as a "What is wrong with this video" box: the `reason` text plus the `evidence` quote (verbatim from the video text). It is not part of the quiz. Categories: gambling_like, violence_glorification, substance_glorification, weapons_with_links, private_contact_recruiting, manosphere, reckless_driving, adult, body_image_pressure, undisclosed_health_product, fake_urgency (the last three mirror the tactic that caused the flag).
 
 Label display names:
 

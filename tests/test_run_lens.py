@@ -83,3 +83,9 @@ def test_voice_flows_into_facts_signals_and_verdict(tmp_path, monkeypatch):
     assert rl.load_voice() == {}
     (tmp_path / "voice.json").write_text('{"vid1": "excited"}')
     assert rl.load_voice() == {"vid1": "excited"}
+
+
+def test_concern_fallback_covers_the_two_tactic_categories():
+    assert "body_image_pressure" in rl.CONCERN_FALLBACK and "undisclosed_health_product" in rl.CONCERN_FALLBACK
+    row = rl.build_row(video(title="LOSE 10 POUNDS IN 3 DAYS"), {"lens": {}, "topics": {}}, None)
+    assert row["verdict_teen"] == "flag" and row["concern"]["reason"] == rl.CONCERN_FALLBACK["body_image_pressure"]

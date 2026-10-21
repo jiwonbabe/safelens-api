@@ -212,3 +212,22 @@ def test_pressured_voice_confirms_urgency_or_body_into_a_flag_but_never_adds_a_l
 def test_hidden_ad_code_in_quotes_still_counts_as_a_code():
     v = video(description='Code "PEREZ" saves you 10% at Transparent Labs')
     assert keep_tactic(tactic("hidden_ad", 'Code "PEREZ" saves you 10%'), v) is True
+
+
+def test_every_flag_carries_a_concern_even_without_a_category():
+    # body-image flag: concern mirrors the body tactic
+    v = video(title="LOSE 10 POUNDS IN 3 DAYS")
+    out = judge(v, {"lens": {"tactics": [tactic("body_image_pressure", "10 POUNDS IN 3 DAYS", "Big number, short time.")]}, "topics": {}})
+    assert out["verdict_teen"] == "flag"
+    assert out["concern"] == {"category": "body_image_pressure", "evidence": "10 POUNDS IN 3 DAYS", "reason": "Big number, short time."}
+    # body-image flag from the title alone (LLM kept nothing): concern names the title match, reason left for the fallback
+    out = judge(v, {"lens": {}, "topics": {}})
+    assert out["verdict_teen"] == "flag" and out["concern"]["category"] == "body_image_pressure"
+    assert out["concern"]["evidence"].lower() in v["title"].lower() and out["concern"]["reason"] == ""
+    # undisclosed health product: concern mirrors the hidden_ad tactic
+    v2 = video(title="APPLE CIDER VINEGAR FOR WEIGHT LOSS", description="my plans: https://bit.ly/x")
+    out = judge(v2, {"lens": {"tactics": [tactic("hidden_ad", "https://bit.ly/x", "The link pays the creator.")]}, "topics": {}})
+    assert out["verdict_teen"] == "flag" and out["concern"]["category"] == "undisclosed_health_product"
+    assert out["concern"]["evidence"] == "https://bit.ly/x" and out["concern"]["reason"] == "The link pays the creator."
+    # show never has a concern
+    assert judge(video(title="How to fold paper"), {"lens": {}, "topics": {}})["concern"] is None

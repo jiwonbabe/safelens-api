@@ -94,6 +94,25 @@ def teen_verdict(video, tactics, lens, voice=None):
     return "show"
 
 
+def flag_concern(video, tactics):
+    """A flag that has no category concern still gets one, mirrored from the tactic that caused the flag, so the
+    frontend can rely on: verdict flag => concern present."""
+    title = collapse(video.get("title") or "").lower()
+    for t in tactics:
+        if t["label"] == "body_image_pressure":
+            return {"category": "body_image_pressure", "evidence": t["evidence"], "reason": t["reason"] or ""}
+    for t in tactics:
+        if t["label"] == "hidden_ad" and re.search(HEALTH_TITLE, title):
+            return {"category": "undisclosed_health_product", "evidence": t["evidence"], "reason": t["reason"] or ""}
+    hit = re.search(FLAG_TITLE, title)
+    if hit:
+        return {"category": "body_image_pressure", "evidence": hit.group(0), "reason": ""}
+    for t in tactics:  # voice-confirmed urgency
+        if t["label"] in VOICE_CONFIRMS:
+            return {"category": t["label"], "evidence": t["evidence"], "reason": t["reason"] or ""}
+    return None
+
+
 def kid_verdict(row, allow, deny):
     """Pure. hide = safety only; approve = anything the parent should decide; show = trusted, on-topic, clean.
     Used at precompute time with DEMO_RULES and by the API with the parent's own rules."""
@@ -131,5 +150,7 @@ def judge(video, proposal, voice=None):
         "kid_risk": kid_risk, "commercial_hook": commercial_hook,
         "concern": concern_of(video, lens),
     }
+    if row["verdict_teen"] == "flag" and row["concern"] is None:
+        row["concern"] = flag_concern(video, tactics)
     row["verdict_kid"] = kid_verdict(row, *parse_rules(DEMO_RULES))
     return {k: row[k] for k in ["tactics", "verdict_teen", "verdict_kid", "concern", "kid_risk", "commercial_hook", "topics", "match"]}

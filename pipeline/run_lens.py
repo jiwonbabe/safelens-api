@@ -43,6 +43,9 @@ CONCERN_FALLBACK = {
     "manosphere": "This clip sells one man's rules about how people should treat each other, cut for outrage. Notice what it wants you to feel about the other side.",
     "reckless_driving": "Street takeovers and stunts are filmed to look free, with the crashes and arrests left out. Notice who is holding the camera.",
     "adult": "This video is made for adults. Notice that the age gate is there because the content is not built for you.",
+    "body_image_pressure": "A number and a deadline turn your body into a problem to fix fast. Notice that the video never shows what happens after the deadline.",
+    "undisclosed_health_product": "A health product is being sold here and the video never says it earns from your purchase. Notice who profits if you buy.",
+    "fake_urgency": "The deadline is the hook and the voice is pushing it. Notice whether anything actually changes when the clock runs out.",
 }
 
 

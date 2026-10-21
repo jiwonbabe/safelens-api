@@ -103,7 +103,7 @@ Response:
   "signals": { "age_limit": 0, "upload_days_ago": 21, "voice_emotion": "excited" }
 }
 ```
-`concern` is `null` for a plain `show`. For a `flag` with a concern category it is `{ "category": "violence_glorification", "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS", "reason": "Real people get hurt in these clips. The channel earns from every view, so it needs you to feel the fight is entertainment." }`. The frontend shows it above the tactics as "What is wrong with this video".
+`concern` is `null` for a plain `show` and always present for a `flag` (when no category concern exists it mirrors the flagging tactic: `body_image_pressure`, `undisclosed_health_product`, `fake_urgency`). For a `flag` with a concern category it is `{ "category": "violence_glorification", "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS", "reason": "Real people get hurt in these clips. The channel earns from every view, so it needs you to feel the fight is entertainment." }`. The frontend shows it above the tactics as "What is wrong with this video".
 
 Every object that carries a `video_id` (feed item, parent queue item, lens) also carries `url`, the original YouTube watch link, so the frontend can open the real video.
 
