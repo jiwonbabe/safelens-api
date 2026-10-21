@@ -207,3 +207,8 @@ def test_pressured_voice_confirms_urgency_or_body_into_a_flag_but_never_adds_a_l
     assert teen_verdict(v, kept, {}, voice="pressured") == "flag"
     assert teen_verdict(v, [], {}, voice="pressured") == "show"  # no label to confirm
     assert teen_verdict(v, [tactic("hidden_ad", "x")], {}, voice="pressured") == "show"  # only urgency/body are voice-confirmed
+
+
+def test_hidden_ad_code_in_quotes_still_counts_as_a_code():
+    v = video(description='Code "PEREZ" saves you 10% at Transparent Labs')
+    assert keep_tactic(tactic("hidden_ad", 'Code "PEREZ" saves you 10%'), v) is True

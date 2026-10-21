@@ -9,7 +9,7 @@ TRUSTED_CHANNELS = ["SciShow Kids", "Nat Geo Kids", "LEGO"]
 DEMO_RULES = "Science experiments, LEGO builds, animal documentaries. No unboxing, no challenges, nothing with buy now."
 
 DISCLOSURE = r"\b(ad|ads|sponsored|paid partnership|affiliate|commission|i earn)\b"
-MONETIZED = r"amzn\.to|bit\.ly|link in bio|t\.me|discount code|promo code|use (the )?code|code [a-z0-9]{3,}|\d+% off"
+MONETIZED = r"amzn\.to|bit\.ly|link in bio|t\.me|discount code|promo code|use (the )?code|code:? ?[\"'“”‘’]?[a-z0-9]{3,}|\d+% off|saves? (you )?\d+%"
 URGENCY = r"\d+ ?(hours?|minutes?|days?) left|last chance|ends tonight|only today|ends at midnight|hurry"
 BODY = r"\d+[ -]?(lb|lbs|pounds|kg|days?|weeks?|months?)\b|before (and|&) after|glass skin"
 BAIT = r"like in \d|comment or|share this or|subscribe or|or else"

@@ -46,6 +46,7 @@ Rules:
 - A news report, fact-check, or debunk that uses the same words as bait is NOT bait. Return an empty tactics list for those.
 - An honest review that discloses its affiliate links is NOT hidden_ad.
 - Do not judge whether the video's claims are true. Only how it tries to make the viewer feel or act.
+- A doctor, dentist, journalist, or teacher reviewing the risks of a product, substance, or game is NOT a concern category: set concern_category to "none" for educational or critical content, even when it names vaping, nicotine, gambling, or fights.
 - If concern_category is not "none", still fill tactics and reality_check. The teen will see the video either way; your concern_reason is what helps them watch it with open eyes.
 
 Video:
