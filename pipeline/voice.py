@@ -1,4 +1,5 @@
 """Modulate voice emotion -> cache signals.voice_emotion. Helper signal only; never adds a label."""
+import json
 import os
 import subprocess
 import sys
@@ -12,6 +13,7 @@ from pipeline.cache import all_rows, get, open_db, put  # noqa: E402
 
 load_dotenv()
 EMOTION_URL = "https://platform.modulate.ai/api/velma-2-emotion-batch"
+VOICE_PATH = "data/voice.json"  # read by run_lens so the judge and the lens prompt see the voice
 EXCITED, PRESSURED = ("Happy", "Surprised"), ("Afraid", "Angry")
 
 
@@ -58,6 +60,9 @@ def update_cache(db, videos):
             done[v["id"]] = None
         row["signals"]["voice_emotion"] = done[v["id"]]
         put(db, v["id"], row)
+    saved = json.load(open(VOICE_PATH)) if os.path.exists(VOICE_PATH) else {}
+    saved.update({k: v for k, v in done.items() if v})
+    json.dump(saved, open(VOICE_PATH, "w"), indent=1)
     return done
 
 

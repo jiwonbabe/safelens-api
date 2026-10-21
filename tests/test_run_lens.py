@@ -70,3 +70,16 @@ def test_build_row_fills_concern_reason_from_fallback_when_llm_gave_none():
     assert row["concern"]["reason"] == rl.CONCERN_FALLBACK["weapons_with_links"]
     assert set(rl.CONCERN_FALLBACK) == {"gambling_like", "violence_glorification", "substance_glorification", "weapons_with_links",
                                         "private_contact_recruiting", "manosphere", "reckless_driving", "adult"}
+
+
+def test_voice_flows_into_facts_signals_and_verdict(tmp_path, monkeypatch):
+    assert rl.facts(video(), voice="excited")["voice_emotion"] == "excited"
+    assert rl.facts(video())["voice_emotion"] == "unknown"
+    row = rl.build_row(video(), {"lens": {}, "topics": {}}, None, voice="excited")
+    assert row["signals"]["voice_emotion"] == "excited"
+    lens = {"tactics": [{"label": "fake_urgency", "evidence": "Ends Tonight", "reason": "r"}]}
+    assert rl.build_row(video(), {"lens": lens, "topics": {}}, None, voice="pressured")["verdict_teen"] == "flag"
+    monkeypatch.setattr(rl, "VOICE_PATH", str(tmp_path / "voice.json"))
+    assert rl.load_voice() == {}
+    (tmp_path / "voice.json").write_text('{"vid1": "excited"}')
+    assert rl.load_voice() == {"vid1": "excited"}

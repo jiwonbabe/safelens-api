@@ -1,5 +1,12 @@
+import pytest
+
 import pipeline.voice as voice
 from pipeline.cache import open_db, put, get
+
+
+@pytest.fixture(autouse=True)
+def isolated_voice_json(tmp_path, monkeypatch):
+    monkeypatch.setattr(voice, "VOICE_PATH", str(tmp_path / "voice.json"))  # never touch data/voice.json from tests
 
 
 def test_map_emotion_follows_claude_md():
@@ -32,3 +39,12 @@ def test_update_cache_keeps_null_when_modulate_fails(tmp_path, monkeypatch):
     monkeypatch.setattr(voice, "emotion_of", boom)
     assert voice.update_cache(db, [{"id": "a", "audio_file": "x.mp3"}]) == {"a": None}
     assert get(db, "a")["signals"]["voice_emotion"] is None
+
+
+def test_update_cache_also_writes_voice_json(tmp_path, monkeypatch):
+    db = open_db(str(tmp_path / "t.sqlite"))
+    put(db, "a", {"video_id": "a", "signals": {"age_limit": 0, "upload_days_ago": 1, "voice_emotion": None}})
+    monkeypatch.setattr(voice, "emotion_of", lambda p: "Afraid")
+    voice.update_cache(db, [{"id": "a", "audio_file": "a.mp3"}])
+    import json
+    assert json.load(open(voice.VOICE_PATH)) == {"a": "pressured"}

@@ -77,13 +77,19 @@ def concern_of(video, lens):
     return None
 
 
-def teen_verdict(video, tactics, lens):
-    """show or flag. Nothing is hidden from a teen except YouTube 18+; a flag carries an explanation instead of a wall."""
+VOICE_CONFIRMS = ("fake_urgency", "body_image_pressure")  # Modulate may confirm these two, never add a label
+
+
+def teen_verdict(video, tactics, lens, voice=None):
+    """show or flag. Nothing is hidden from a teen except YouTube 18+; a flag carries an explanation instead of a wall.
+    voice: Modulate emotion (excited | pressured | calm | None). A pressured voice confirms urgency/body pressure into a flag."""
     title = collapse(video.get("title") or "").lower()
     if (video.get("age_limit") or 0) >= 18:
         return "block"
-    has_hidden_ad = any(t["label"] == "hidden_ad" for t in tactics)
-    if concern_of(video, lens) or re.search(FLAG_TITLE, title) or (has_hidden_ad and re.search(HEALTH_TITLE, title)):
+    labels = [t["label"] for t in tactics]
+    has_hidden_ad = "hidden_ad" in labels
+    voice_confirmed = voice == "pressured" and any(l in VOICE_CONFIRMS for l in labels)
+    if concern_of(video, lens) or re.search(FLAG_TITLE, title) or (has_hidden_ad and re.search(HEALTH_TITLE, title)) or voice_confirmed:
         return "flag"
     return "show"
 
@@ -105,7 +111,7 @@ def kid_verdict(row, allow, deny):
     return "show"
 
 
-def judge(video, proposal):
+def judge(video, proposal, voice=None):
     lens = proposal.get("lens") or {}
     topics = proposal.get("topics") or {}
     text = video_text(video)
@@ -121,7 +127,7 @@ def judge(video, proposal):
         "title": video.get("title"), "channel": video.get("channel"),
         "topics": [t for t in topics.get("topics") or [] if str(t).strip().lower() not in ("", "null", "none")],
         "match": int(topics.get("match") or 0),
-        "tactics": tactics, "verdict_teen": teen_verdict(video, tactics, lens),
+        "tactics": tactics, "verdict_teen": teen_verdict(video, tactics, lens, voice),
         "kid_risk": kid_risk, "commercial_hook": commercial_hook,
         "concern": concern_of(video, lens),
     }

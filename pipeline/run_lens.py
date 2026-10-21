@@ -2,6 +2,7 @@
 import argparse
 import collections
 import datetime
+import json
 import os
 import random
 import re
@@ -14,6 +15,8 @@ from pipeline.build_pool import load_videos
 from pipeline.cache import all_rows, get, open_db, put
 from pipeline.judge import DEMO_RULES, DISCLOSURE, LABELS, MONETIZED, head_of, judge
 from pipeline.llm import ask, load_prompt
+
+VOICE_PATH = "data/voice.json"  # written by pipeline/voice.py: {video_id: excited|pressured|calm}
 
 ROW_KEYS = ["video_id", "title", "channel", "thumbnail", "views", "upload_date", "age_limit", "topics", "match",
             "commercial_hook", "kid_risk", "tactics", "verdict_teen", "verdict_kid", "concern", "reality_check",
@@ -50,9 +53,14 @@ def days_ago(upload_date):
     return (datetime.date.today() - then).days
 
 
-def facts(video):
+def load_voice():
+    return json.load(open(VOICE_PATH)) if os.path.exists(VOICE_PATH) else {}
+
+
+def facts(video, voice=None):
     head = head_of(video)
     return {
+        "voice_emotion": voice or "unknown",
         "upload_days_ago": days_ago(video.get("upload_date")),
         "has_money_link": "yes" if re.search(MONETIZED, head) else "no",
         "has_disclosure": "yes" if re.search(DISCLOSURE, head) else "no",
@@ -67,8 +75,8 @@ def quiz_options(video_id, labels):
     return options
 
 
-def build_row(video, proposal, error):
-    verdict = judge(video, proposal)
+def build_row(video, proposal, error, voice=None):
+    verdict = judge(video, proposal, voice)
     for t in verdict["tactics"]:
         t["reason"] = t["reason"] or LABEL_FALLBACK[t["label"]]
     if verdict["concern"] and not verdict["concern"]["reason"]:
@@ -83,33 +91,38 @@ def build_row(video, proposal, error):
         "verdict_teen": verdict["verdict_teen"], "verdict_kid": verdict["verdict_kid"], "concern": verdict["concern"],
         "reality_check": lens.get("reality_check") or "",
         "quiz_options": quiz_options(video["id"], [t["label"] for t in verdict["tactics"]]),
-        "signals": {"age_limit": video.get("age_limit") or 0, "upload_days_ago": days_ago(video.get("upload_date")), "voice_emotion": None},
+        "signals": {"age_limit": video.get("age_limit") or 0, "upload_days_ago": days_ago(video.get("upload_date")), "voice_emotion": voice},
         "llm_error": error,
         "proposal": proposal,  # raw LLM output, so eval can tell "LLM missed it" from "judge dropped it"
     }
 
 
 def run_one(video):
+    voice = VOICE.get(video["id"])
     proposal, errors = {"lens": {}, "topics": {}}, []
-    fields = {**video, **facts(video), "rules_text": DEMO_RULES}
+    fields = {**video, **facts(video, voice), "rules_text": DEMO_RULES}
     for name in ("topics", "lens"):
         try:
             proposal[name] = ask(load_prompt(name), fields)
         except Exception as e:  # no retries: record and judge on rules alone
             errors.append(f"{name}: {type(e).__name__}: {e}"[:300])
-    return build_row(video, proposal, "; ".join(errors) or None)
+    return build_row(video, proposal, "; ".join(errors) or None, voice)
 
 
 def rejudge(video, cached):
     """Re-run the judge on the stored LLM proposal. No LLM call: rule changes are free to apply."""
-    return build_row(video, cached.get("proposal") or {"lens": {}, "topics": {}}, cached.get("llm_error"))
+    return build_row(video, cached.get("proposal") or {"lens": {}, "topics": {}}, cached.get("llm_error"), VOICE.get(video["id"]))
 
 
 def needs_run(cached, force):
     return force or cached is None or cached.get("llm_error") is not None
 
 
+VOICE = {}
+
+
 def main():
+    VOICE.update(load_voice())
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", help="comma-separated video ids")
     parser.add_argument("--force", action="store_true")

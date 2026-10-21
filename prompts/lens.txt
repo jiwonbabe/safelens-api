@@ -23,12 +23,13 @@ Label definitions. The quote you give as evidence MUST contain the words that de
 - body_image_pressure: a number plus a time span about weight, skin, or muscle ("10 pounds in 3 days", "14 day detox", "6 months"), or before/after framing. Evidence must contain that number and span, or "before and after". It is usually in the title: quote the title.
 - engagement_bait: likes, comments, shares, or subscribes asked for with pressure. Evidence must contain the demand ("like in 3 seconds or", "subscribe or else").
 - misleading_thumbnail: the title promises something the captions show it does not deliver. Needs two quotes: put the title claim in "evidence" and the contradicting caption line in "reason".
-- fake_social_proof: invented popularity or a big number used as proof with no source ("millions use this", "everyone is doing it", "best selling", "100% results", "a $20,000 prize", "500+ products"). Evidence must contain the claim or the number.
+- fake_social_proof: invented popularity or a big number used as proof with no source ("millions use this", "everyone is doing it", "best selling", "100% results", "a $20,000 prize", "500+ products"). Evidence must contain the claim or the number. A prize or payout amount in the title ("win a $20,000 car", "$500 free") counts when the video never shows a winner or proof: quote the amount.
 
 Propose every label whose defining words are literally in the text, up to 3. Do not skip a label because another one is stronger.
 
 How to write for a 15-year-old:
 - Talk like a sharp friend who has seen this trick before, not like a teacher. Second person. Short words.
+- If the voice is "excited" or "pressured", you may say so when it serves the point (an excited voice on a deadline is part of the push). Never mention the voice when it is "calm" or "unknown".
 - Name the specific move, not the category. "Ends tonight" has been on this video for 128 days" beats "this creates urgency".
 - Banned words and moves: remember, be careful, you should, consequences, glorify, harmful, inappropriate, "it is important to". No warnings, no advice, no moral.
 - One idea per sentence. Numbers when you have them.
@@ -54,5 +55,6 @@ Upload date: {upload_date} ({upload_days_ago} days ago)
 Views: {view_count}
 Money link or discount code in description: {has_money_link}
 Ad disclosure words in description: {has_disclosure}
+Voice in the first 30 seconds (measured from the audio): {voice_emotion}
 Description: {description}
 Captions: {captions}

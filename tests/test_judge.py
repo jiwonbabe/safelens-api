@@ -197,3 +197,13 @@ def test_judge_drops_null_or_none_strings_the_llm_puts_in_topics():
 
 def test_body_pattern_accepts_hyphenated_spans():
     assert keep_tactic(tactic("body_image_pressure", "14-Day Detox Results"), video(title="My 14-Day Detox Results")) is True
+
+
+def test_pressured_voice_confirms_urgency_or_body_into_a_flag_but_never_adds_a_label():
+    v = video(title="Giveaway Ends Tonight")
+    kept = [tactic("fake_urgency", "Ends Tonight")]
+    assert teen_verdict(v, kept, {}) == "show"
+    assert teen_verdict(v, kept, {}, voice="excited") == "show"
+    assert teen_verdict(v, kept, {}, voice="pressured") == "flag"
+    assert teen_verdict(v, [], {}, voice="pressured") == "show"  # no label to confirm
+    assert teen_verdict(v, [tactic("hidden_ad", "x")], {}, voice="pressured") == "show"  # only urgency/body are voice-confirmed
