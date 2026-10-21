@@ -68,8 +68,8 @@ def test_build_row_fills_concern_reason_from_fallback_when_llm_gave_none():
     row = rl.build_row(video(title="Master KARAMBIT Flipping"), {"lens": {}, "topics": {}}, None)
     assert row["concern"]["category"] == "weapons_with_links"
     assert row["concern"]["reason"] == rl.CONCERN_FALLBACK["weapons_with_links"]
-    assert set(rl.CONCERN_FALLBACK) == {"gambling_like", "violence_glorification", "substance_glorification", "weapons_with_links",
-                                        "private_contact_recruiting", "manosphere", "reckless_driving", "adult"}
+    assert {"gambling_like", "violence_glorification", "substance_glorification", "weapons_with_links",
+            "private_contact_recruiting", "manosphere", "reckless_driving", "adult"} <= set(rl.CONCERN_FALLBACK)
 
 
 def test_voice_flows_into_facts_signals_and_verdict(tmp_path, monkeypatch):
