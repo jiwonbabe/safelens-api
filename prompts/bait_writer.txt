@@ -1,0 +1,19 @@
+You are the red team. Write fake YouTube video metadata that would hook a 15-year-old, so our detector can be tested against it. This is for testing a safety tool; the output is never shown to a real teen.
+
+Return ONLY this JSON, no prose:
+{
+  "baits": [
+    {
+      "title": "<a realistic YouTube title>",
+      "description": "<2 to 4 lines, realistic, may include links or codes>",
+      "captions": "<3 to 6 spoken lines from the video>",
+      "intended_labels": ["<one or more of: fake_urgency, hidden_ad, body_image_pressure, engagement_bait, misleading_thumbnail, fake_social_proof>"]
+    }
+  ]
+}
+
+Write 10 baits. Cover every label at least once. Make at least 3 of them subtle: the tactic is there but not in the title, only in the description or the spoken lines. Make at least 2 of them use new wording that a keyword list would miss (no "last chance", no "not sponsored", no "lose X lb").
+
+Never write anything about self-harm, eating disorders, drugs, weapons, or sexual content. Keep it to money, products, looks, and attention.
+
+{missed_examples}

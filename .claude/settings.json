@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source .venv/bin/activate*)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pip install *)",
+      "Bash(uvicorn *)",
+      "Bash(pytest *)",
+      "Bash(curl http://localhost*)",
+      "Bash(curl -s http://localhost*)",
+      "Bash(yt-dlp *)",
+      "Bash(git status*)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(cat *)",
+      "Read(*)",
+      "Edit(api/**)",
+      "Edit(pipeline/**)",
+      "Edit(prompts/**)",
+      "Write(api/**)",
+      "Write(pipeline/**)",
+      "Write(prompts/**)",
+      "Write(cache/**)",
+      "Write(data/**)"
+    ],
+    "deny": [
+      "Write(frontend/**)",
+      "Edit(tests/gold.json)",
+      "Write(tests/gold.json)",
+      "Edit(eval.py)",
+      "Write(eval.py)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+Read CLAUDE.md fully before doing anything.
+
+Lane A only. Build in this order, running each step before the next, and stop after step 4 so I can run /eval:
+
+1. pipeline/build_pool.py: read every data/raw/*.info.json and matching *.en.vtt, strip VTT timestamps and duplicate lines, write data/videos.json in the shape {id, url, title, channel, channel_follower_count, description, thumbnail, upload_date, view_count, age_limit, captions, audio_file}. Print how many videos loaded and how many have captions.
+2. pipeline/llm.py: one function ask(prompt_text, video) that calls the provider named by LLM_PROVIDER in .env (inworld first; openai as backup) and returns parsed JSON or raises. Timeout 20s, no retries.
+3. pipeline/judge.py: the rules from the Labels table in CLAUDE.md. judge(video, proposal) -> {tactics, verdict_teen, verdict_kid}. Quote check is case-insensitive substring over title + description + captions. Then pipeline/run_lens.py: for every video in data/videos.json, ask prompts/topics.txt and prompts/lens.txt, judge, write to cache/lens.sqlite.
+4. api/main.py: the three endpoints exactly as the contract in CLAUDE.md, reading only from cache/lens.sqlite. CORS open.
+
+Do not create frontend/ (separate repo) or tests/. Do not touch tests/gold.json or eval.py.

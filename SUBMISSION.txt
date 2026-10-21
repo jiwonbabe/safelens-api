@@ -1,0 +1,8 @@
+Team name: SafeLens
+Members: Jiwon Bae, Cole [LAST NAME]
+Track: Consumer AI
+One line: Parents of 8-year-olds get a feed they chose. 15-year-olds get a coach instead of a wall: the same video pool, with a lens that shows how each video tries to hook them.
+Demo link: [frontend URL]
+Repo: [github URL]
+Tools used: k-ID (age + parental consent), Inworld (LLM inference, TTS), Modulate (audio transcription + voice emotion)
+Rules followed: yes
