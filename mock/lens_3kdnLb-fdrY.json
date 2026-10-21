@@ -1,0 +1,23 @@
+{
+  "video_id": "3kdnLb-fdrY",
+  "verdict": "flag",
+  "tactics": [
+    {
+      "label": "body_image_pressure",
+      "evidence": "20 pounds in just 2 weeks",
+      "reason": "Losing 20 pounds in 2 weeks is not safe for a teenager. The number is the whole pitch."
+    }
+  ],
+  "quiz_options": [
+    "body_image_pressure",
+    "hidden_ad",
+    "fake_urgency",
+    "engagement_bait"
+  ],
+  "reality_check": "A teen body is still growing. Fast loss like this mostly costs water and muscle, and it comes back.",
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 261,
+    "voice_emotion": "calm"
+  }
+}

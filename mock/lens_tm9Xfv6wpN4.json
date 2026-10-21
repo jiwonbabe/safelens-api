@@ -1,0 +1,28 @@
+{
+  "video_id": "tm9Xfv6wpN4",
+  "verdict": "show",
+  "tactics": [
+    {
+      "label": "body_image_pressure",
+      "evidence": "10 pounds in 1 week",
+      "reason": "A big number in a short time is the hook. Real, safe weight change is slower and less exciting."
+    },
+    {
+      "label": "hidden_ad",
+      "evidence": "My Weight loss plans:",
+      "reason": "The description sells the creator's own plans. The video does not say so."
+    }
+  ],
+  "quiz_options": [
+    "body_image_pressure",
+    "hidden_ad",
+    "fake_social_proof",
+    "misleading_thumbnail"
+  ],
+  "reality_check": "No drink burns fat. Apple cider vinegar for a week changes nothing but your stomach lining.",
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 2351,
+    "voice_emotion": "excited"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "video_id": "_OxuxhHF1WI",
+  "verdict": "show",
+  "tactics": [
+    {
+      "label": "fake_urgency",
+      "evidence": "Giveaway Ends Tonight at Midnight",
+      "reason": "\"Ends tonight\" has been on this video since June. It is there so you do not stop to think."
+    },
+    {
+      "label": "fake_social_proof",
+      "evidence": "100% the last video you see on this car",
+      "reason": "\"100%\" and \"last\" sound certain, but nothing in the video shows a winner or a draw."
+    }
+  ],
+  "quiz_options": [
+    "fake_urgency",
+    "fake_social_proof",
+    "hidden_ad",
+    "body_image_pressure"
+  ],
+  "reality_check": "Nobody gives away a $30,000 car for a click. The link collects your email and phone so they can sell to you later.",
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 128,
+    "voice_emotion": "excited"
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "child_id": "mia",
+  "allow": [
+    "science",
+    "lego",
+    "animals"
+  ],
+  "deny": [
+    "unboxing",
+    "challenges",
+    "buy now"
+  ],
+  "queue": [
+    {
+      "video_id": "wfnsRi8Jgdw",
+      "title": "The Great Elephant Toothpaste Experiment! | Summer Experiments | SciShow Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg",
+      "topics": [
+        "science"
+      ],
+      "match": 96,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "GkBWcJBxSMs",
+      "title": "Let's Make Slime! | Experiment | SciShow Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/GkBWcJBxSMs/hqdefault.jpg",
+      "topics": [
+        "science"
+      ],
+      "match": 95,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "a-SPYPAedCA",
+      "title": "Unpoppable Bubbles! | Summer Experiments | SciShow Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/a-SPYPAedCA/hqdefault.jpg",
+      "topics": [
+        "science"
+      ],
+      "match": 94,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "0Qmgdz9E47s",
+      "title": "The Power of Sunlight! | Science Project for Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/0Qmgdz9E47s/hqdefault.jpg",
+      "topics": [
+        "science"
+      ],
+      "match": 93,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "nmh5ot2F6gM",
+      "title": "Super Strange Animals 😲 | Super Animals Full Episode | Nat Geo Kids",
+      "channel": "Nat Geo Kids",
+      "thumbnail": "https://i.ytimg.com/vi/nmh5ot2F6gM/hqdefault.jpg",
+      "topics": [
+        "animals"
+      ],
+      "match": 92,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "GULXtdoLgpQ",
+      "title": "LEGO Ideas Medieval Blacksmith 21325 | LEGO Designer Video",
+      "channel": "LEGO",
+      "thumbnail": "https://i.ytimg.com/vi/GULXtdoLgpQ/hqdefault.jpg",
+      "topics": [
+        "lego"
+      ],
+      "match": 90,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "HcItfU1zwqE",
+      "title": "LEGO Creator Expert Fiat 500 | LEGO Designer Video 10271",
+      "channel": "LEGO",
+      "thumbnail": "https://i.ytimg.com/vi/HcItfU1zwqE/hqdefault.jpg",
+      "topics": [
+        "lego"
+      ],
+      "match": 89,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "mBey7fGYeQ0",
+      "title": "You Won't Believe This Lego Pokemon Build!",
+      "channel": "BKHBRICKS",
+      "thumbnail": "https://i.ytimg.com/vi/mBey7fGYeQ0/hqdefault.jpg",
+      "topics": [
+        "lego"
+      ],
+      "match": 80,
+      "verdict": "approve",
+      "note": "Clickbait title (\"You Won't Believe\")"
+    },
+    {
+      "video_id": "DBwGvKFqBSo",
+      "title": "COMBO PANDA TOYS ARE HERE ! Ryan's World Toy Shopping at Walmart and Unboxing Surprise Toys",
+      "channel": "Combo Panda",
+      "thumbnail": "https://i.ytimg.com/vi/DBwGvKFqBSo/hqdefault.jpg",
+      "topics": [
+        "toys"
+      ],
+      "match": 35,
+      "verdict": "approve",
+      "note": "Unboxing plus toy shopping; channel sells its own toy line"
+    },
+    {
+      "video_id": "HHugwVWVN-U",
+      "title": "Vlad and Niki Crazy Rocketship Playset Unboxing & Review! | TTPM Toy Reviews",
+      "channel": "TTPM Toy Reviews",
+      "thumbnail": "https://i.ytimg.com/vi/HHugwVWVN-U/hqdefault.jpg",
+      "topics": [
+        "toys"
+      ],
+      "match": 30,
+      "verdict": "approve",
+      "note": "Commercial toy review channel, product link with no disclosure"
+    },
+    {
+      "video_id": "bk5BqNRGZoQ",
+      "title": "HUGGY WUGGY IS BACK & SCARIER! - Poppy Playtime Chapter 5",
+      "channel": "SpyCakes",
+      "thumbnail": "https://i.ytimg.com/vi/bk5BqNRGZoQ/hqdefault.jpg",
+      "topics": [
+        "games"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "Horror game on a kids-audience channel"
+    },
+    {
+      "video_id": "eKlJfCBnMyU",
+      "title": "Creepy Toy Prank - Scaring my 3 year old.",
+      "channel": "Outdoor Boys",
+      "thumbnail": "https://i.ytimg.com/vi/eKlJfCBnMyU/hqdefault.jpg",
+      "topics": [
+        "pranks"
+      ],
+      "match": 5,
+      "verdict": "hide",
+      "note": "Prank that scares a 3-year-old"
+    },
+    {
+      "video_id": "2QRDjiLBUVE",
+      "title": "🆘Pregnancy Battle: Spiderman Gives Shots and Gets Disney Princesses Pregnant Elsa Prank🆘",
+      "channel": "ABC Animals - Nursery Rhymes",
+      "thumbnail": "https://i.ytimg.com/vi/2QRDjiLBUVE/hqdefault.jpg",
+      "topics": [
+        "other"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "Costumed-character content (Elsagate pattern)"
+    }
+  ]
+}

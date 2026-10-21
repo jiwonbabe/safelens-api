@@ -1,0 +1,28 @@
+{
+  "video_id": "YjIA7HJXFg0",
+  "verdict": "show",
+  "tactics": [
+    {
+      "label": "hidden_ad",
+      "evidence": "use the code \"thebrilliantbeauty\" to get 12% off",
+      "reason": "A discount code means the creator earns when you buy. The video never says it is an ad."
+    },
+    {
+      "label": "body_image_pressure",
+      "evidence": "14 day detox",
+      "reason": "A number and a deadline make your body sound like a problem with a quick fix."
+    }
+  ],
+  "quiz_options": [
+    "hidden_ad",
+    "body_image_pressure",
+    "fake_urgency",
+    "engagement_bait"
+  ],
+  "reality_check": "\"Detox\" tea is mostly a laxative. Doctors say your liver and kidneys already do the job; the weight that drops is water.",
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 4181,
+    "voice_emotion": "calm"
+  }
+}
