@@ -2,7 +2,12 @@ Team name: SafeLens
 Members: Jiwon Bae, Cole [LAST NAME]
 Track: Consumer AI
 One line: Parents of 8-year-olds get a feed they chose. 15-year-olds get a coach instead of a wall: the same video pool, with a lens that shows how each video tries to hook them.
-Demo link: [frontend URL]
-Repo: [github URL]
-Tools used: k-ID (age + parental consent), Inworld (LLM inference, TTS), Modulate (audio transcription + voice emotion)
+Demo link: [frontend URL from Cole]
+API: https://safelens-api.onrender.com
+Repo: https://github.com/jiwonbabe/safelens-api (API, pipeline, prompts, eval) + safelens-web (frontend)
+Tools used:
+- k-ID: server API age-gate/check-age-category decides kid / teen / adult from date of birth inside GET /feed (age_source shows it); parental-consent challenge flow verified in test mode.
+- Inworld: openai/gpt-4o-mini for every LLM step (video topics + kid risk, teen tactics + reality check, free-text parent rules, red-team baits). The LLM only proposes; judge.py keeps a label only when its quote is verbatim in the video text.
+- Modulate: velma-2 voice emotion on the demo videos' first 30 s (signals.voice_emotion); transcription endpoint verified, YouTube captions used for the pool.
+Numbers: 56 hand-labelled videos; harmful teen content caught 15/15; 0 of 7 control videos over-flagged; overall 52/56 = 93%; every evidence quote verbatim (judge dropped 31 of 51 LLM proposals).
 Rules followed: yes

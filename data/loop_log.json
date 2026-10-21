@@ -1,0 +1,548 @@
+[
+ {
+  "round": 1,
+  "baits": [
+   {
+    "title": "You Won't Believe What This New App Can Do!",
+    "description": "Download the app now and unlock exclusive features! Use code MAGIC123 for a surprise gift! 🌟",
+    "captions": "This app changed my life! You have to try it. Trust me, you won't regret it!",
+    "intended": [
+     "fake_urgency",
+     "hidden_ad"
+    ],
+    "kept": [
+     "hidden_ad"
+    ],
+    "caught": [
+     "hidden_ad"
+    ],
+    "missed": [
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "I Tried the Most Expensive Skincare Routine!",
+    "description": "Watch me transform my skin with these luxury products! Are they worth the hype? Find out now!",
+    "captions": "I can't believe how much my skin has changed! You guys need to see this. It's insane!",
+    "intended": [
+     "body_image_pressure",
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "This Secret Trick Will Boost Your Followers Overnight!",
+    "description": "Learn the hidden method that influencers use! Comment 'I want this!' for a chance to win a shoutout!",
+    "captions": "I never thought it would work, but my followers skyrocketed! You have to try this!",
+    "intended": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Truth About Viral Challenges!",
+    "description": "Are these challenges really worth it? Watch to find out! Spoiler: Some are just for clout!",
+    "captions": "I did the challenge, and here's what happened. You won't believe the results!",
+    "intended": [
+     "misleading_thumbnail"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "misleading_thumbnail"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "How I Made $1000 in One Week!",
+    "description": "Follow my steps and you could do it too! Click the link for my secret guide!",
+    "captions": "I was shocked at how easy it was! You can start today and change your life!",
+    "intended": [
+     "fake_urgency"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "This Makeup Hack Will Change Your Look Forever!",
+    "description": "Try this simple trick for a flawless finish! Don't forget to like and subscribe for more tips!",
+    "captions": "I never knew makeup could be this easy! You have to see the before and after!",
+    "intended": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "kept": [
+     "body_image_pressure"
+    ],
+    "caught": [
+     "body_image_pressure"
+    ],
+    "missed": [
+     "hidden_ad"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Ultimate Guide to Getting Noticed Online!",
+    "description": "Unlock the secrets to going viral! Join my community for exclusive tips and tricks!",
+    "captions": "I went from zero to hero in just a month! You can do it too, just follow my lead!",
+    "intended": [
+     "fake_social_proof",
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_social_proof",
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "Why Everyone is Obsessed with This New Trend!",
+    "description": "Find out what makes this trend so addictive! Join the fun and share your experience!",
+    "captions": "I jumped on the bandwagon, and now I can't stop! You have to see why it's so popular!",
+    "intended": [
+     "misleading_thumbnail"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "misleading_thumbnail"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Secret to Perfect Hair Every Day!",
+    "description": "Discover the products that will change your hair game! Use code HAIRGOALS for a discount!",
+    "captions": "I can't believe how much my hair has improved! You need to try these products!",
+    "intended": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "kept": [
+     "hidden_ad"
+    ],
+    "caught": [
+     "hidden_ad"
+    ],
+    "missed": [
+     "body_image_pressure"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "This One Simple Change Will Make You Rich!",
+    "description": "Don't miss out on this opportunity! Click the link to learn how to start today!",
+    "captions": "I made this change, and my life is totally different now! You won't want to miss this!",
+    "intended": [
+     "fake_urgency"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   }
+  ],
+  "intended_total": 16,
+  "caught_total": 3
+ },
+ {
+  "round": 2,
+  "baits": [
+   {
+    "title": "Unlock the Secret to Instant Fame!",
+    "description": "Discover the hidden strategies that influencers don’t want you to know! Click here for the ultimate guide: [link].",
+    "captions": "Have you ever wondered how some people go viral overnight? It's all about the right moves! Stay tuned for my top tips!",
+    "intended": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "I Tried the Craziest Beauty Products!",
+    "description": "Watch me test these wild beauty hacks that promise to transform your look! Spoiler: some are insane! #BeautyChallenge",
+    "captions": "These products claim to change everything! Can they really deliver? Let's find out together!",
+    "intended": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Ultimate Money-Making Secret!",
+    "description": "You won't believe how easy it is to start earning cash from home! Check out my exclusive tips inside.",
+    "captions": "Imagine making money while you sleep! It's possible, and I'm here to show you how. Don't miss this!",
+    "intended": [
+     "fake_urgency"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "Why Everyone is Talking About This App!",
+    "description": "This app is taking the internet by storm! Find out why you need it now! Link in bio.",
+    "captions": "I can't believe how much this app has changed my life! You have to see it to believe it. Trust me!",
+    "intended": [
+     "misleading_thumbnail",
+     "fake_social_proof"
+    ],
+    "kept": [
+     "hidden_ad"
+    ],
+    "caught": [],
+    "missed": [
+     "misleading_thumbnail",
+     "fake_social_proof"
+    ],
+    "extra": [
+     "hidden_ad"
+    ],
+    "error": null
+   },
+   {
+    "title": "This Simple Trick Will Get You More Likes!",
+    "description": "Learn the secret method that influencers use to boost their engagement! You won't want to miss this!",
+    "captions": "It's all about the little things that make a big difference! Ready to level up your social media game?",
+    "intended": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Truth About Viral Trends!",
+    "description": "Are these trends worth your time? I break down the most popular ones and reveal the truth! #TrendAlert",
+    "captions": "Some trends are just hype, but others can really change your life! Let's dive into the details!",
+    "intended": [
+     "misleading_thumbnail"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "misleading_thumbnail"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "Transform Your Look with This One Product!",
+    "description": "This beauty product is a game-changer! Find out how it can elevate your style instantly! #BeautyHack",
+    "captions": "I was shocked by the results! You won't believe how much this changed my appearance. Check it out!",
+    "intended": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "How I Gained 10k Followers in a Week!",
+    "description": "Follow my journey and discover the secrets behind my rapid growth! You can do it too!",
+    "captions": "It's not just luck; there's a strategy behind it! Want to know how? Stick around for my tips!",
+    "intended": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "kept": [
+     "fake_social_proof"
+    ],
+    "caught": [
+     "fake_social_proof"
+    ],
+    "missed": [
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "This One Change Will Make You Look Amazing!",
+    "description": "You won't believe how simple it is to enhance your appearance! Watch till the end for my secret!",
+    "captions": "Sometimes, all it takes is one small adjustment to look your best! Are you ready to transform?",
+    "intended": [
+     "body_image_pressure",
+     "fake_urgency"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Secret to Getting Noticed Online!",
+    "description": "Unlock the strategies that will make you stand out in a crowded space! Don't miss out on this!",
+    "captions": "It's all about visibility! Want to shine online? I've got the tips you need to succeed!",
+    "intended": [
+     "fake_social_proof",
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_social_proof",
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   }
+  ],
+  "intended_total": 18,
+  "caught_total": 1
+ },
+ {
+  "round": 3,
+  "baits": [
+   {
+    "title": "You Won't Believe What Happened When I Tried This!",
+    "description": "I tested this viral product that everyone is raving about! Check the link in the comments for a special discount code! You don't want to miss this!",
+    "captions": "I was shocked by the results! This product is everywhere right now. You have to see it to believe it!",
+    "intended": [
+     "fake_urgency",
+     "hidden_ad"
+    ],
+    "kept": [
+     "hidden_ad",
+     "fake_social_proof"
+    ],
+    "caught": [
+     "hidden_ad"
+    ],
+    "missed": [
+     "fake_urgency"
+    ],
+    "extra": [
+     "fake_social_proof"
+    ],
+    "error": null
+   },
+   {
+    "title": "The Secret to Instant Popularity Revealed!",
+    "description": "Ever wondered how some people blow up overnight? I found out their secret! Watch till the end for a surprise!",
+    "captions": "This is what they don't want you to know! It's easier than you think. Just follow these steps!",
+    "intended": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "I Tried the Most Hyped Beauty Hack!",
+    "description": "This beauty hack is trending, and I had to see if it really works! Spoiler: the results are insane! Link to the product below!",
+    "captions": "You won't believe the transformation! Everyone's talking about this. Is it worth the hype?",
+    "intended": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "kept": [
+     "fake_social_proof"
+    ],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "hidden_ad"
+    ],
+    "extra": [
+     "fake_social_proof"
+    ],
+    "error": null
+   },
+   {
+    "title": "Why This App is Blowing Up Right Now!",
+    "description": "I downloaded this app that everyone is obsessed with! You won't believe what it can do! Check it out and let me know your thoughts!",
+    "captions": "This app is changing the game! I can't stop using it. Have you tried it yet?",
+    "intended": [
+     "misleading_thumbnail",
+     "fake_social_proof"
+    ],
+    "kept": [
+     "fake_social_proof"
+    ],
+    "caught": [
+     "fake_social_proof"
+    ],
+    "missed": [
+     "misleading_thumbnail"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Ultimate Trick for More Followers!",
+    "description": "I discovered a method that skyrocketed my followers! You need to try this! Watch the video for the full breakdown!",
+    "captions": "This is a game-changer! I can't believe how fast it worked. You have to give it a shot!",
+    "intended": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "engagement_bait",
+     "fake_social_proof"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "This One Change Will Transform Your Style!",
+    "description": "I made a simple change to my wardrobe, and the compliments haven't stopped! Find out what it is!",
+    "captions": "You won't believe how easy this is! Everyone is noticing my new look. Try it out!",
+    "intended": [
+     "body_image_pressure",
+     "fake_urgency"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure",
+     "fake_urgency"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Hidden Truth About Viral Challenges!",
+    "description": "I dug deep into the latest viral challenges and found something shocking! You need to see this!",
+    "captions": "What they don't tell you is mind-blowing! This could change how you view these trends. Watch closely!",
+    "intended": [
+     "misleading_thumbnail"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "misleading_thumbnail"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "Unlock the Secret to Going Viral!",
+    "description": "I found a formula that could make your videos explode in views! Don't miss out on this opportunity!",
+    "captions": "This is what everyone is missing! Follow these steps, and you'll see results fast. Trust me!",
+    "intended": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "kept": [
+     "fake_social_proof"
+    ],
+    "caught": [],
+    "missed": [
+     "fake_urgency",
+     "engagement_bait"
+    ],
+    "extra": [
+     "fake_social_proof"
+    ],
+    "error": null
+   },
+   {
+    "title": "How I Boosted My Likes Overnight!",
+    "description": "I tried a new strategy for getting more likes, and it worked wonders! Check the video for tips!",
+    "captions": "This is so simple yet effective! You can do it too! Just follow my lead!",
+    "intended": [
+     "engagement_bait"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "engagement_bait"
+    ],
+    "extra": [],
+    "error": null
+   },
+   {
+    "title": "The Secret to Looking Amazing Every Day!",
+    "description": "I discovered a daily routine that makes me feel great! You won't believe how easy it is!",
+    "captions": "This is my go-to routine! It's changed my life. You should definitely try it!",
+    "intended": [
+     "body_image_pressure"
+    ],
+    "kept": [],
+    "caught": [],
+    "missed": [
+     "body_image_pressure"
+    ],
+    "extra": [],
+    "error": null
+   }
+  ],
+  "intended_total": 17,
+  "caught_total": 2
+ }
+]
