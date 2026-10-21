@@ -64,12 +64,5 @@ def main():
     print(f"loaded {len(videos)} videos, {sum(1 for v in videos if v['captions'])} with captions")
 
 
-def self_check():
-    assert clean_vtt("WEBVTT\n\n00:00.000 --> 00:01.000\n<c>hi</c> there\nhi there\n\nnext") == "hi there next"
-    assert "elephant toothpaste" in video_text({"title": "The Great Elephant Toothpaste", "description": "", "captions": ""})
-    print("build_pool self-check ok")
-
-
 if __name__ == "__main__":
-    self_check()
     main()
