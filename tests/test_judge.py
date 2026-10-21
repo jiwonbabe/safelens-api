@@ -1,4 +1,5 @@
-from pipeline.judge import (DEMO_RULES, LABELS, TRUSTED_CHANNELS, concern_of, judge, keep_tactic, kid_verdict,
+from pipeline.build_pool import video_text
+from pipeline.judge import (DEMO_RULES, LABELS, TRUSTED_CHANNELS, concern_of, judge, keep_tactic, kid_verdict, quote_ok,
                             parse_rules, teen_verdict)
 
 
@@ -119,7 +120,7 @@ def test_kid_show_for_trusted_channel_without_hook():
 
 def test_kid_approve_for_untrusted_channel_or_hook():
     assert kid_verdict(row(channel="Matt Creationz"), ALLOW, DENY) == "approve"
-    assert kid_verdict(row(commercial_hook="Tinker Crate by KiwiCo"), ALLOW, DENY) == "approve"
+    assert kid_verdict(row(channel="Matt Creationz", commercial_hook="Tinker Crate by KiwiCo"), ALLOW, DENY) == "approve"
 
 
 def test_kid_hide_for_risk_deny_topic_or_teen_flag():
@@ -159,3 +160,27 @@ def test_judge_survives_empty_proposals():
 def test_label_set_is_exactly_six():
     assert LABELS == ["fake_urgency", "hidden_ad", "body_image_pressure", "engagement_bait", "misleading_thumbnail", "fake_social_proof"]
     assert "SciShow Kids" in TRUSTED_CHANNELS
+
+
+# --- 11:30 fixes after the first full run -----------------------------------
+
+def test_trusted_channel_with_product_hook_but_no_tactics_is_show():
+    assert kid_verdict(row(channel="LEGO", topics=["lego"], commercial_hook="LEGO Ideas Medieval Blacksmith 21325"), ALLOW, DENY) == "show"
+
+
+def test_hidden_ad_quote_itself_must_show_the_link_or_code():
+    v = video(description="Watch the full report. Subscribe: https://bit.ly/cbc  kits range from twenty-five dollars")
+    assert keep_tactic(tactic("hidden_ad", "kits range from twenty-five dollars"), v) is False
+
+
+def test_hidden_ad_ignores_subscribe_links():
+    v = video(description="SUBSCRIBE TO Annoying Orange! ▸ http://bit.ly/AOSub")
+    assert keep_tactic(tactic("hidden_ad", "SUBSCRIBE TO Annoying Orange! ▸ http://bit.ly/AOSub"), v) is False
+    v = video(description='Be sure to use the code "thebrilliantbeauty" to get 12% off your order!')
+    assert keep_tactic(tactic("hidden_ad", 'use the code "thebrilliantbeauty" to get 12% off'), v) is True
+
+
+def test_quote_check_ignores_surrounding_quotation_marks():
+    v = video(title="Pregnancy Battle: Spiderman Gives Shots")
+    assert quote_ok('"Pregnancy Battle: Spiderman Gives Shots"', video_text(v)) is True
+    assert quote_ok("“Spiderman Gives Shots”", video_text(v)) is True

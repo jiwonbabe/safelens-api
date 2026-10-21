@@ -8,7 +8,7 @@ from openai import OpenAI
 
 load_dotenv()
 
-MAX_FIELD_CHARS = 12000  # ponytail: hard cap, chunking if a label hides past 12k chars
+MAX_FIELD_CHARS = 8000  # ponytail: Inworld plan caps a request at 20k chars; prompt + description + captions must fit
 PROMPTS = "prompts"
 
 

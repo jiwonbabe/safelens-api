@@ -29,8 +29,13 @@ FLAG_TITLE = r"\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b"
 HEALTH_TITLE = r"weight loss|fat loss|fat burn"
 
 
+QUOTE_MARKS = "\"'“”‘’«»「」"
+
+
 def quote_ok(evidence, text):
-    return bool(evidence) and collapse(str(evidence)).lower() in text
+    """Case-insensitive substring, whitespace collapsed, surrounding quotation marks ignored."""
+    quote = collapse(str(evidence or "")).strip(QUOTE_MARKS).lower()
+    return bool(quote) and quote in text
 
 
 def head_of(video):
@@ -42,12 +47,12 @@ def keep_tactic(tactic, video):
     text = video_text(video)
     if label not in LABELS or not quote_ok(evidence, text):
         return False
-    quote = collapse(str(evidence)).lower()
+    quote = collapse(str(evidence)).strip(QUOTE_MARKS).lower()
     head = head_of(video)
     if label == "fake_urgency":
         return bool(re.search(URGENCY, quote))
-    if label == "hidden_ad":
-        return bool(re.search(MONETIZED, head)) and not re.search(DISCLOSURE, head)
+    if label == "hidden_ad":  # the quote itself must show the money link or code; subscribe links are not money
+        return bool(re.search(MONETIZED, quote)) and "subscribe" not in quote and not re.search(DISCLOSURE, head)
     if label == "body_image_pressure":
         return bool(re.search(BODY, quote))
     if label == "engagement_bait":
@@ -95,7 +100,7 @@ def kid_verdict(row, allow, deny):
         return "hide"
     if not set(allow) & set(topics):
         return "hide"
-    if row.get("commercial_hook") or row.get("tactics") or row.get("channel") not in TRUSTED_CHANNELS:
+    if row.get("tactics") or row.get("channel") not in TRUSTED_CHANNELS:  # a trusted channel's own product is not a hook
         return "approve"
     return "show"
 

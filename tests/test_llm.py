@@ -11,6 +11,7 @@ def test_fill_replaces_keys_and_leaves_literal_json_braces():
 
 
 def test_fill_caps_long_values():
+    assert MAX_FIELD_CHARS <= 8000  # Inworld plan limit is 20k chars per request
     out = fill("{captions}", {"captions": "x" * (MAX_FIELD_CHARS + 500)})
     assert len(out) == MAX_FIELD_CHARS
 
