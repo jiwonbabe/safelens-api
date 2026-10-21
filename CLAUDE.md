@@ -127,7 +127,10 @@ Modulate (voice):
 - Send a 5 to 30 second clip: cut the first 30 s with `ffmpeg -i in.mp3 -t 30 -c copy out.mp3`. Max 100 MB.
 - Map emotion to the lens `signals.voice_emotion`: Surprised or Happy with high energy → "excited", Afraid or Angry → "pressured", else "calm". Judge may use "excited"/"pressured" only to confirm fake_urgency or body_image_pressure, never to add a label.
 
-k-ID:
+k-ID (verified 13:30 Oct 21):
+- Two key types from Compliance Studio. `kgs_test_…` is the server API key: `Authorization: Bearer $KID_API_KEY` against `https://game-api.test.k-id.com/api/v1` (the `kai-api…` host answers 404 for these paths). `kgp_test_…` is a publishable browser key bound to Target origins; the server cannot use it.
+- `POST /age-gate/check-age-category {"jurisdiction":"US-CA","dateOfBirth":"2015-04-15"}` → `{"ageCategory":"digital-minor"}` (also `digital-youth`, `adult`), ~120 ms, no session or challenge. `POST /age-gate/check` returns a full session (`ageStatus` LEGAL_ADULT etc.). `GET /age-gate/get-requirements?jurisdiction=US-CA` → digitalConsentAge 13, civilAge 18.
+- `pipeline/age.py` maps digital-minor → kid, digital-youth → teen, adult → adult; `/feed?dob=` uses it with a 3 s timeout and a local date fallback (`age_source` says which).
 - Sign-up link and two setup steps are posted the morning of the event in the participant Discord #general and on the event page. Three starter kits and three test personas. On-site support is web and Android. Read the starter kit at 9:30; wire the age signal into `/feed` after 12:00.
 
 ## Code style

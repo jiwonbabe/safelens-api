@@ -18,3 +18,7 @@ services:
         sync: false
       - key: MODULATE_API_KEY
         sync: false
+      - key: KID_API_KEY
+        sync: false
+      - key: KID_BASE_URL
+        value: https://game-api.test.k-id.com/api/v1
