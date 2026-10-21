@@ -152,8 +152,8 @@
 **파일:** 생성 `api/__init__.py`(빈 파일), `api/main.py`
 
 **인터페이스:**
-- 소비: `open_db, all_rows, get`(Task 4); `kid_verdict, parse_rules, DEMO_RULES`(Task 3).
-- 생산: CLAUDE.md "API contract"의 세 엔드포인트 그대로. 모듈 전역 `RULES = {"mia": parse_rules(DEMO_RULES)}`, `POST /parent/rules`가 `RULES[child_id]`를 교체. `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
+- 소비: `open_db, all_rows, get`(Task 4); `kid_verdict, parse_rules, DEMO_RULES`(Task 3); `parse_rules_llm`(Task 7; 그 전까지는 `parse_rules`).
+- 생산: CLAUDE.md "API contract"의 세 엔드포인트 그대로. 모듈 전역 `RULES = {"mia": parse_rules(DEMO_RULES)}`, `POST /parent/rules`는 `RULES[child_id] = parse_rules_llm(rules_text)`로 설정(Task 7: LLM이 5초 안에 제안, 실패 시 `parse_rules`가 폴백. 모듈 전역 데모 규칙과 `judge()`는 계속 `parse_rules`). `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
 - `GET /feed`: `age_band`가 `{"kid","teen"}` 밖이면 400 `{"error": "age_band must be kid or teen"}`. `child_id` 기본 `"mia"`, 모르는 child는 데모 규칙. kid: `kid_verdict(row, allow, deny) == "show"`인 행, `lens_available: false`, `blocked_count` = 보여주지 않은 행 수. teen: `verdict_teen in ("show","flag")`(풀 전체), `lens_available: true`, `blocked_count` = `block` 행 수(18+만, 보통 0). 아이템 키는 정확히 `video_id, title, channel, thumbnail, views, verdict, lens_available`. teen은 데모 3개(`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`) 먼저, 그다음 views 내림차순. kid는 `match` 내림차순.
 - `GET /video/{video_id}/lens`: 모르는 id → 404 `{"error": "unknown video_id"}`. `video_id, verdict(verdict_teen), tactics, quiz_options, reality_check, concern, signals` 순서로 반환. `concern`은 캐시된 객체 또는 `null`.
 - `POST /parent/rules`: 본문 `{child_id, rules_text}`. `child_id, allow, deny, queue` 반환. queue는 모든 행을 `{video_id, title, channel, thumbnail, topics, match, verdict, note}`로, `verdict = kid_verdict(...)`, `match` 내림차순. `note`: show는 `null`; approve는 훅이 있으면 `"Names a product with no disclosure: \"<commercial_hook>\""`, 아니면 `"Untrusted channel"`, 아니면 `"Has a lens tactic: <label>"`; hide는 `kid_risk` 또는 `"teen <verdict_teen>"` 또는 `"deny rule: <word>"` 또는 `"no allowed topic"`.
@@ -171,7 +171,7 @@ curl -s -X POST localhost:8000/parent/rules -H 'content-type: application/json' 
 ```
 기대: kid 아이템 전부 `show`에 필드 7개. teen은 `56 0 [...]`(풀 전체, show와 flag 섞임). `400`. `404`. Tesla lens에 `fake_urgency`와 `quiz_options` 4개. allow/deny가 계약 예시와 같고 note 있는 approve 1개 이상.
 - [ ] **3단계: 속도** `for i in 1 2 3; do curl -s -o /dev/null -w "%{time_total}\n" localhost:8000/video/YjIA7HJXFg0/lens; done` → 각각 0.3 미만.
-- [ ] **4단계: 키 제거 확인**(verifier 항목): `mv .env .env.bak` 후 uvicorn 재기동, kid 피드 curl 반복, `mv .env.bak .env`. 기대: 같은 응답.
+- [ ] **4단계: 키 제거 확인**(verifier 항목): `mv .env .env.bak` 후 uvicorn 재기동, kid 피드 curl과 2단계의 `POST /parent/rules` curl 반복, `mv .env.bak .env`. 기대: kid 피드 동일, POST는 폴백 경로로 1초 안에 `allow=["science","lego","animals"]`, `deny=["unboxing","challenges","buy now"]`.
 - [ ] **5단계: 커밋** `git add api && git commit -m "api: feed, lens, parent rules from cache"`
 
 여기서 멈춘다. 지원 님이 `/eval`(Task 6 필요)을 돌리고 "deploy"라고 말한다.
@@ -188,3 +188,26 @@ curl -s -X POST localhost:8000/parent/rules -H 'content-type: application/json' 
 
 - [ ] **1단계: `eval.py` 작성**, `python eval.py` 실행, 표 붙여넣기.
 - [ ] **2단계: 커밋** `git add eval.py && git commit -m "eval: accuracy vs gold"`
+
+---
+
+### Task 7: 자유 문장 부모 규칙 (`pipeline/rules.py`, `prompts/rules.txt`)
+
+부모는 규칙을 자유 문장으로 쓴다("I'm ok with science and space stuff and lego. Please no toy unboxing videos, nothing scary, and no pranks", "과학 실험, 레고. 언박싱 금지", 한 단어 나열, 오타, "except", "don't want"). LLM이 태그를 제안하고 코드는 어휘표에 있는 단어만 남긴다. LLM이 느리거나, 죽었거나, 키가 없거나, 엉뚱한 출력을 내면 규칙 기반 파서가 답한다. 데모 문장은 키를 뺀 상태에서도 계약의 리스트를 내야 한다.
+
+**파일:**
+- 생성: `pipeline/rules.py`, `prompts/rules.txt`, `tests/test_rules.py`
+- 수정: `pipeline/judge.py`(`parse_rules`, `TOPIC_WORDS`, `TOPIC_ALIAS`를 옮기고 `from pipeline.rules import parse_rules, topic_hits`로 재수출해 `test_judge.py`는 그대로; `kid_verdict`의 deny/allow 줄), `api/main.py`(`POST /parent/rules`만)
+
+**인터페이스:** 어휘표(`TOPIC_SYNONYMS`, allow 13개 + deny 7개), `NEGATION`/`FILLER` 정규식, `topic_hits`, `parse_rules`(순수 폴백), `ask_rules`, `parse_rules_llm`(5초 상한, 실패 시 폴백), `kid_verdict` 변경(제목+캐시 topics를 `topic_hits`로 정규화한 뒤 deny/allow 매칭), `prompts/rules.txt` 본문은 **영어판 Task 7과 동일**(프롬프트는 영어로 쓴다). 표와 정규식은 영어판을 기준으로 한다.
+
+- 대표어 → 동의어 예: science(science, experiments, stem, 과학, 실험), lego(lego, bricks, 레고), animals(animals, nature, wildlife, 동물), horror(horror, scary, creepy, jumpscare, 공포, 무서운), unboxing(unboxing, haul, 언박싱), pranks(pranks, 몰카, 장난), violence(fights, 폭력, 싸움), weapons(guns, knives, 무기). 영어는 단어 단위, 한국어는 부분 문자열(조사 때문).
+- 부정어: no, not, never, nothing (with), don't (want), avoid, without, ban, block, skip, 금지, 안 돼, 싫어, 빼고, 제외, 말고. "except"와 "but not/no"는 분리 전에 ". no "로 바꾸고, 그냥 "but"은 절 구분자.
+- allow가 비면 `ALLOW_WORDS` 전체(금지만 적은 부모도 피드를 받는다). deny는 어휘표 단어 또는 1~3단어 자유 구(`buy now`, 제목에만 매칭).
+- LLM 경로와 폴백 모두 부모 문장에서 처음 등장한 순서로 정렬해 칩 순서가 같다.
+
+- [ ] **1단계: `tests/test_rules.py` 먼저 작성.** 폴백 케이스 9개(데모 문장 → `(["science","lego","animals"], ["unboxing","challenges","buy now"])`, 영어 섞인 문장, 한 단어, 한국어 "과학 실험, 레고. 언박싱 금지" → `(["science","lego"], ["unboxing"])`, don't want, except, but, avoid, 빈 문자열/잡문자 → `ALLOW_WORDS` 전체). `parse_rules_llm` 케이스 4개(잡다한 LLM 출력 정리, ValueError 폴백, 타임아웃 0.1초 폴백이 0.5초 안에, 키 없음 폴백) + 라이브 1개(`.env` 없으면 skip). `kid_verdict` 케이스 5개(experiments만 있어도 science allow에 show, scary는 horror deny에 hide, "Creepy Toy Prank" 제목 hide, "Buy now" 제목 hide). 실행 → ImportError.
+- [ ] **2단계: `pipeline/rules.py`, `prompts/rules.txt` 작성.** `kid_verdict` 케이스 빼고 통과.
+- [ ] **3단계: `parse_rules`를 judge.py에서 옮기고 `kid_verdict` 변경.** 전체 테스트 초록, `test_judge.py`는 손대지 않음.
+- [ ] **4단계: API.** `POST /parent/rules`가 `parse_rules_llm`을 부른다. 케이스 2 문장으로 POST → allow에 science, space, lego, deny에 unboxing, horror, pranks, 6초 안. 키 제거 후 데모 문장 POST → 같은 리스트, 1초 안.
+- [ ] **5단계: 커밋** `git add pipeline/rules.py pipeline/judge.py prompts/rules.txt tests/test_rules.py api/main.py && git commit -m "rules: free-text parent rules, LLM proposes with rule-based fallback"`

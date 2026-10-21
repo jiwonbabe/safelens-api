@@ -177,8 +177,8 @@ Expected: 56 lines, final counts; `llm_error` on at most a few. Re-run `python p
 - Create: `api/__init__.py` (empty), `api/main.py`
 
 **Interfaces:**
-- Consumes: `open_db, all_rows, get` (Task 4); `kid_verdict, parse_rules, DEMO_RULES` (Task 3).
-- Produces the three endpoints exactly as CLAUDE.md "API contract". Module-level `RULES = {"mia": parse_rules(DEMO_RULES)}`; `POST /parent/rules` replaces `RULES[child_id]`. `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
+- Consumes: `open_db, all_rows, get` (Task 4); `kid_verdict, parse_rules, DEMO_RULES` (Task 3); `parse_rules_llm` (Task 7; until Task 7 lands, `parse_rules`).
+- Produces the three endpoints exactly as CLAUDE.md "API contract". Module-level `RULES = {"mia": parse_rules(DEMO_RULES)}`; `POST /parent/rules` sets `RULES[child_id] = parse_rules_llm(rules_text)` (Task 7: LLM proposes under a 5 s cap, `parse_rules` is the fallback; the module-level demo rules and `judge()` keep using `parse_rules`). `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
 - `GET /feed`: `age_band` not in `{"kid","teen"}` → 400 `{"error": "age_band must be kid or teen"}`. `child_id` defaults `"mia"`; unknown child uses demo rules. Kid: rows where `kid_verdict(row, allow, deny) == "show"`, `lens_available: false`, `blocked_count` = rows not shown. Teen: rows with `verdict_teen in ("show","flag")` (the whole pool), `lens_available: true`, `blocked_count` = rows with `block` (18+ only, normally 0). Item keys exactly `video_id, title, channel, thumbnail, views, verdict, lens_available`. Teen items sorted demo picks first (`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`), then by views desc; kid by `match` desc.
 - `GET /video/{video_id}/lens`: unknown id → 404 `{"error": "unknown video_id"}`. Returns `video_id, verdict (verdict_teen), tactics, quiz_options, reality_check, concern, signals` in that order; `concern` is the cached object or `null`.
 - `POST /parent/rules`: body `{child_id, rules_text}`; returns `child_id, allow, deny, queue` where queue = every row as `{video_id, title, channel, thumbnail, topics, match, verdict, note}` with `verdict = kid_verdict(...)`, sorted by `match` desc. `note`: `null` for show; for approve `"Names a product with no disclosure: \"<commercial_hook>\""` when hook present, else `"Untrusted channel"`, else `"Has a lens tactic: <label>"`; for hide the `kid_risk` or `"teen <verdict_teen>"` or `"deny rule: <word>"` or `"no allowed topic"`.
@@ -199,7 +199,7 @@ Expected: kid items all `show` with 7 fields; teen prints `56 0 [...]` (whole po
 
 - [ ] **Step 3: Timing** `for i in 1 2 3; do curl -s -o /dev/null -w "%{time_total}\n" localhost:8000/video/YjIA7HJXFg0/lens; done` → each under 0.3.
 
-- [ ] **Step 4: Key-removed check** (verifier item): temporarily `mv .env .env.bak`, restart uvicorn, repeat the kid feed curl, then `mv .env.bak .env`. Expected: same response.
+- [ ] **Step 4: Key-removed check** (verifier item): temporarily `mv .env .env.bak`, restart uvicorn, repeat the kid feed curl and the `POST /parent/rules` curl from Step 2, then `mv .env.bak .env`. Expected: same kid feed; the POST still returns `allow=["science","lego","animals"]`, `deny=["unboxing","challenges","buy now"]` within 1 s (fallback path).
 
 - [ ] **Step 5: Commit** `git add api && git commit -m "api: feed, lens, parent rules from cache"`
 
@@ -218,3 +218,82 @@ Stop here. Jiwon runs `/eval` (needs Task 6) and says "deploy".
 
 - [ ] **Step 1: Write `eval.py`**, run `python eval.py`, paste the table.
 - [ ] **Step 2: Commit** `git add eval.py && git commit -m "eval: accuracy vs gold"`
+
+---
+
+### Task 7: free-text parent rules (`pipeline/rules.py`, `prompts/rules.txt`)
+
+A parent types rules as free text ("I'm ok with science and space stuff and lego. Please no toy unboxing videos, nothing scary, and no pranks", "과학 실험, 레고. 언박싱 금지", one-word lists, typos, "except", "don't want"). The LLM proposes tags, code keeps only vocabulary words, a rule-based parser answers when the LLM is slow, down, keyless, or returns garbage. The demo sentence must give the contract lists with the key removed.
+
+**Files:**
+- Create: `pipeline/rules.py`, `prompts/rules.txt`, `tests/test_rules.py`
+- Modify: `pipeline/judge.py` (move `parse_rules`, `TOPIC_WORDS`, `TOPIC_ALIAS` out; `from pipeline.rules import parse_rules, topic_hits` so `test_judge.py` is unchanged; `kid_verdict` deny/allow lines), `api/main.py` (`POST /parent/rules` only)
+
+**Interfaces:**
+- Produces `TOPIC_SYNONYMS`: canonical word -> synonyms, all lowercase. The first 13 keys are `ALLOW_WORDS`, the last 7 `DENY_WORDS`. English synonyms match as whole words/phrases on the lowercased text (`\b`), Korean ones as substrings (particles attach: 레고는).
+
+| canonical | synonyms |
+| --- | --- |
+| science | science, experiments, experiment, stem, chemistry, physics, 과학, 실험 |
+| space | space, planets, astronomy, rockets, 우주 |
+| lego | lego, legos, bricks, 레고 |
+| animals | animals, animal, nature, wildlife, documentaries, zoo, 동물, 자연 |
+| toys | toys, toy, 장난감 |
+| gaming | gaming, games, game, minecraft, roblox, 게임 |
+| crafts | crafts, craft, diy, 만들기, 공예 |
+| music | music, songs, 음악 |
+| sports | sports, soccer, football, 스포츠, 운동 |
+| cooking | cooking, baking, recipes, 요리 |
+| cars | cars, vehicles, trucks, 자동차 |
+| cartoons | cartoons, animation, 만화 |
+| education | education, educational, learning, 교육 |
+| unboxing | unboxing, unbox, haul, 언박싱 |
+| challenges | challenges, challenge, 챌린지 |
+| pranks | pranks, prank, 몰카, 장난 |
+| horror | horror, scary, creepy, jumpscare, jump scares, jump scare, 공포, 무서운 |
+| violence | violence, fights, fighting, 폭력, 싸움 |
+| weapons | weapons, guns, knives, 무기 |
+| shopping | shopping, 쇼핑 |
+
+- `NEGATION = r"\b(no|not|never|nothing( with)?|don'?t( want)?|do not( want)?|avoid|without|ban|block|skip)\b|금지|안 ?돼|싫어|빼고|제외|말고"`. `FILLER = r"\b(please|absolutely|and|also|videos?|stuff|content|things?)\b"`.
+- `topic_hits(text, words=None) -> list`: canonical words (default: all keys; pass `ALLOW_WORDS` to restrict) with a synonym in `text.lower()`, ordered by first appearance, deduped. No fuzzy matching. `# ponytail: typos are the LLM path's job; difflib.get_close_matches(cutoff=0.8) here if the fallback must fix them`.
+- `parse_rules(rules_text) -> (allow, deny)`: pure, no LLM. Used by `judge()`, `eval.py`, the API default rules, and as the fallback. Steps: lowercase; `re.sub(r" except | but (not|no) ", ". no ", text)`; `" but "` -> `". "`; split on `[.,;!?\n]`; per non-empty clause: if `NEGATION` matches, deny gets `topic_hits(clause)` or, when there is no hit, the clause with `NEGATION` and `FILLER` removed and whitespace collapsed, if it is 1-3 words (`buy now`); else allow gets `topic_hits(clause, ALLOW_WORDS)` (a deny-vocabulary word in an allow clause is ignored). Dedupe keeping order. Empty allow -> `list(ALLOW_WORDS)` (a parent who only lists bans still gets a feed). `# ponytail: a deny clause keeps every topic hit, so "no toy unboxing" also denies toys; the LLM path is finer`.
+- `ask_rules(rules_text) -> dict`: `ask(load_prompt("rules"), {"rules_text": rules_text})`, with the `pipeline.llm` import inside the function so a missing key is a caught `KeyError` at call time. Tests monkeypatch this name.
+- `parse_rules_llm(rules_text) -> (allow, deny)`: `POOL = ThreadPoolExecutor(max_workers=2)`, `RULES_TIMEOUT = 5`. `out = POOL.submit(ask_rules, rules_text).result(timeout=RULES_TIMEOUT)`. Code decides: `allow` = for each string in `out["allow"]`, `topic_hits(item, ALLOW_WORDS)`; `deny` = for each string in `out["deny"]`, `topic_hits(item)` or, when no hit and the item is 1-3 words and at most 25 chars, the lowercased item. Both lists deduped and sorted by the first position in `rules_text.lower()` of any of the word's synonyms (or the phrase itself), unmatched last, so the LLM and fallback paths agree on chip order. Any exception (timeout, HTTP, `ValueError` from `parse_json`, `KeyError`, non-dict output, non-list fields) or an all-empty result -> `return parse_rules(rules_text)`. Empty allow with non-empty deny -> `ALLOW_WORDS`. `# ponytail: a timed-out call keeps running in the pool thread until the 20 s client timeout; nobody waits for it`.
+- `kid_verdict(row, allow, deny)` in `judge.py`, replacing the Task 3 deny/allow lines: `found = set(topic_hits(title + " " + " ".join(topics)))`; `hide` if `any(d in found or d in title for d in deny)`; `hide` if `not set(allow) & found`. So deny `horror` hides topics `["scary"]`, `["jumpscare"]` and a "Creepy Toy Prank" title; allow `science` matches cached topics `["experiments"]`; a free phrase like `buy now` matches the title only. The cache is not rebuilt: `/feed`, `/parent/rules`, and `eval.py` call `kid_verdict` live.
+- `prompts/rules.txt` (`{rules_text}` placeholder, filled by `llm.fill`):
+```
+You turn a parent's free-text rules for an 8-year-old's video feed into topic tags. You only propose. Code decides.
+The parent may write in any language, with typos, with allow and deny mixed in one sentence.
+Return ONLY this JSON, no prose:
+{"allow": ["<topics the parent wants, only from: science, space, lego, animals, toys, gaming, crafts, music, sports, cooking, cars, cartoons, education>"],
+ "deny": ["<topics the parent rejects, from the list above or: unboxing, challenges, pranks, horror, violence, weapons, shopping; when none fits, a 1-3 word English phrase for what they reject, e.g. buy now>"]}
+Rules:
+- Negations (no, not, never, avoid, don't want, except, nothing with, 금지, 안 돼) mean deny. "no toy unboxing" denies unboxing, not toys. "scary" and "jump scares" are horror.
+- Topics the parent says are ok, fine, only, loved, or just lists go to allow. Translate other languages to the English tags.
+- Never invent a topic the parent did not mention. Empty lists are fine.
+Parent rules:
+{rules_text}
+```
+
+- [ ] **Step 1: Write `tests/test_rules.py` first** (`from pipeline.rules import ...`; `pipeline.judge.DEMO_RULES` for the demo sentence). Fallback cases, exact tuples:
+  1. `DEMO_RULES` -> `(["science","lego","animals"], ["unboxing","challenges","buy now"])`
+  2. `"I'm ok with science and space stuff and lego. Please no toy unboxing videos, nothing scary, and no pranks"` -> `(["science","space","lego"], ["toys","unboxing","horror","pranks"])`
+  3. `"only educational content, animals are fine, absolutely no horror or jump scares"` -> `(["education","animals"], ["horror"])`
+  4. `"science"` -> `(["science"], [])`; `"lego, animals, space"` -> `(["lego","animals","space"], [])`
+  5. `"과학 실험, 레고. 언박싱 금지"` -> `(["science","lego"], ["unboxing"])`
+  6. `"I don't want pranks or challenges. Animals and cooking are great"` -> `(["animals","cooking"], ["pranks","challenges"])`
+  7. `"everything except horror"` -> `(list(ALLOW_WORDS), ["horror"])`; `"lego is fine but no unboxing"` -> `(["lego"], ["unboxing"])`
+  8. `"avoid violence and weapons; Minecraft and Roblox are ok"` -> `(["gaming"], ["violence","weapons"])`
+  9. `""` and `"asdf qwerty"` -> `(list(ALLOW_WORDS), [])`
+  `parse_rules_llm` cases (monkeypatch `pipeline.rules.ask_rules`): returns `{"allow":["science","scary","dinosaurs"],"deny":["jump scares","Buy Now","a long sentence that is not a phrase at all"]}` for the demo text -> `(["science"], ["horror","buy now"])`; raises `ValueError` -> equals `parse_rules(text)`; sleeps 1 s with `monkeypatch.setattr(rules, "RULES_TIMEOUT", 0.1)` -> equals `parse_rules(text)` and returns in under 0.5 s; `monkeypatch.delenv("INWORLD_API_KEY", raising=False)` with the real `ask_rules` -> equals `parse_rules(text)`. One live test, `skipif` no `.env` (same guard as `test_llm.py`): `parse_rules_llm(DEMO_RULES)` equals case 1 exactly.
+  `kid_verdict` cases (import from `pipeline.judge`, reuse the `row()` helper shape from `test_judge.py`): topics `["science","experiments"]` with allow `["science"]` -> `"show"`; topics `["experiments"]` only -> `"show"`; topics `["scary"]` with deny `["horror"]` -> `"hide"`; title `"Creepy Toy Prank"` topics `["toys"]` allow `["toys"]` deny `["horror"]` -> `"hide"`; title `"Buy now before it ends"` topics `["science"]` deny `["buy now"]` -> `"hide"`.
+  Run `pytest tests/test_rules.py` -> ImportError, as expected.
+
+- [ ] **Step 2: Write `pipeline/rules.py` and `prompts/rules.txt`** as specified. `pytest tests/test_rules.py` -> all pass except the `kid_verdict` ones.
+
+- [ ] **Step 3: Move `parse_rules` out of `judge.py`, change `kid_verdict`** as above; delete `TOPIC_WORDS`/`TOPIC_ALIAS`. `pytest tests/` -> everything green, `test_judge.py` untouched.
+
+- [ ] **Step 4: API**: `POST /parent/rules` calls `parse_rules_llm`. Restart uvicorn and run the Step 2 POST curl of Task 5 with `rules_text` = case 2 above; expected `allow` contains `science`, `space`, `lego`, `deny` contains `unboxing`, `horror`, `pranks`, answer within 6 s. Then the Task 5 Step 4 key-removed check including the POST: same lists for the demo sentence, under 1 s.
+
+- [ ] **Step 5: Commit** `git add pipeline/rules.py pipeline/judge.py prompts/rules.txt tests/test_rules.py api/main.py && git commit -m "rules: free-text parent rules, LLM proposes with rule-based fallback"`
