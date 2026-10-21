@@ -4,7 +4,7 @@ Track: Consumer AI
 One line: Parents of 8-year-olds get a feed they chose. 15-year-olds get a coach instead of a wall: the same video pool, with a lens that shows how each video tries to hook them.
 Demo link: [frontend URL from Cole]
 API: https://safelens-api.onrender.com
-Repo: https://github.com/jiwonbabe/safelens-api (API, pipeline, prompts, eval) + safelens-web (frontend)
+Repo: https://github.com/jiwonbabe/safelens-api (API, pipeline, prompts, eval) + https://github.com/ShogunAce/SafeLens (frontend)
 Tools used:
 - k-ID: server API age-gate/check-age-category decides kid / teen / adult from date of birth inside GET /feed (age_source shows it); parental-consent challenge flow verified in test mode.
 - Inworld: openai/gpt-4o-mini for every LLM step (video topics + kid risk, teen tactics + reality check, free-text parent rules, red-team baits). The LLM only proposes; judge.py keeps a label only when its quote is verbatim in the video text.

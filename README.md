@@ -2,7 +2,7 @@
 
 **One video pool, three feeds by age.** Parents pick the 8-year-old's feed. 15-year-olds get the same videos with a *lens* that shows how each one tries to hook them, so they learn to spot it instead of being blocked.
 
-Built in one day at the k-ID *Build for Everyone* hackathon (Oct 21, 2026). This repo is the API, the AI pipeline, the prompts, and the evaluation. The frontend lives in [`safelens-web`](https://github.com/COLE/safelens-web).
+Built in one day at the k-ID *Build for Everyone* hackathon (Oct 21, 2026). This repo is the API, the AI pipeline, the prompts, and the evaluation. The frontend lives in [`ShogunAce/SafeLens`](https://github.com/ShogunAce/SafeLens).
 
 Live API: `https://safelens-api.onrender.com` · [API contract](API_SPEC.md) · [Design notes](CLAUDE.md)
 
