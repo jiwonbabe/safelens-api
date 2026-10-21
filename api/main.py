@@ -51,6 +51,11 @@ def on_error(request: Request, e: Exception):
     return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/")
+def root():
+    return {"ok": True, "service": "safelens-api", "videos": len(rows())}
+
+
 @app.get("/feed")
 def feed(age_band: str = "", child_id: str = "mia"):
     if age_band not in ("kid", "teen"):

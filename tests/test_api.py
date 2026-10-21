@@ -68,3 +68,7 @@ def test_parent_rules_change_the_kid_feed_for_that_child():
     after = client.get("/feed?age_band=kid&child_id=zed").json()["items"]
     assert len(after) < len(before) and all(i["channel"] == "LEGO" for i in after)
     assert len(client.get("/feed?age_band=kid&child_id=mia").json()["items"]) == len(before)  # other child untouched
+
+
+def test_root_is_a_health_check():
+    assert client.get("/").json() == {"ok": True, "service": "safelens-api", "videos": 56}
