@@ -1,10 +1,11 @@
-"""Three endpoints, served only from cache/lens.sqlite. No LLM call here."""
+"""Three endpoints, served from cache/lens.sqlite. The only LLM call is POST /parent/rules, 5 s timeout with a rule-based fallback."""
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from pipeline.cache import all_rows, get, open_db
 from pipeline.judge import DEMO_RULES, TRUSTED_CHANNELS, kid_verdict, parse_rules
+from pipeline.rules import parse_rules_llm
 
 app = FastAPI(title="SafeLens API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -85,7 +86,7 @@ def lens(video_id: str):
 @app.post("/parent/rules")
 def parent_rules(body: dict):
     child_id = body.get("child_id") or "mia"
-    allow, deny = parse_rules(body.get("rules_text") or "")  # Task 7 swaps in parse_rules_llm
+    allow, deny = parse_rules_llm(body.get("rules_text") or "")
     RULES[child_id] = (allow, deny)
     queue = []
     for r in rows():

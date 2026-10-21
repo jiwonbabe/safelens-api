@@ -2,13 +2,11 @@
 import re
 
 from pipeline.build_pool import collapse, video_text
+from pipeline.rules import parse_rules, topic_hits  # noqa: F401  re-exported for judge users
 
 LABELS = ["fake_urgency", "hidden_ad", "body_image_pressure", "engagement_bait", "misleading_thumbnail", "fake_social_proof"]
 TRUSTED_CHANNELS = ["SciShow Kids", "Nat Geo Kids", "LEGO"]
 DEMO_RULES = "Science experiments, LEGO builds, animal documentaries. No unboxing, no challenges, nothing with buy now."
-TOPIC_WORDS = ["science", "lego", "animals", "animal", "toys", "gaming", "games", "horror", "pranks",
-               "crafts", "music", "sports", "cooking", "unboxing", "challenges"]
-TOPIC_ALIAS = {"animal": "animals", "games": "gaming"}
 
 DISCLOSURE = r"\b(ad|ads|sponsored|paid partnership|affiliate|commission|i earn)\b"
 MONETIZED = r"amzn\.to|bit\.ly|link in bio|t\.me|discount code|promo code|use (the )?code|code [a-z0-9]{3,}|\d+% off"
@@ -97,31 +95,14 @@ def kid_verdict(row, allow, deny):
     topics = [t.lower() for t in row.get("topics") or []]
     if row.get("verdict_teen") in ("flag", "block") or (row.get("kid_risk") or "none") != "none":
         return "hide"
-    if any(word in title or word in topics for word in deny):
+    found = set(topic_hits(title + " " + " ".join(topics)))
+    if any(d in found or d in title for d in deny):
         return "approve"
-    if not set(allow) & set(topics):
+    if not set(allow) & found:
         return "approve"
     if row.get("tactics") or row.get("channel") not in TRUSTED_CHANNELS:  # a trusted channel's own product is not a hook
         return "approve"
     return "show"
-
-
-def parse_rules(rules_text):
-    """Plain-words parent rules -> (allow, deny). No LLM."""
-    allow, deny = [], []
-    for sentence in rules_text.split("."):
-        for phrase in sentence.split(","):
-            phrase = collapse(phrase).lower()
-            if not phrase:
-                continue
-            if phrase.startswith("no "):
-                deny.append(phrase[3:])
-            elif phrase.startswith("nothing with "):
-                deny.append(phrase[13:])
-            else:
-                words = [w for w in phrase.split() if w in TOPIC_WORDS]
-                allow.append(TOPIC_ALIAS.get(words[0], words[0]) if words else phrase)
-    return allow, deny
 
 
 def judge(video, proposal):
