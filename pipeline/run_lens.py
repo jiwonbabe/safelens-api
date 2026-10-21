@@ -30,6 +30,19 @@ LABEL_FALLBACK = {
 }
 
 
+# Used only when the judge found a concern by keyword and the LLM wrote no concern_reason.
+CONCERN_FALLBACK = {
+    "gambling_like": "Opening cases or betting skins is gambling with real money, and the video is paid to make it look like a game. Notice how losses are cut out.",
+    "violence_glorification": "Real people get hurt in these clips, and the channel earns from every view. Notice how the edit skips what happens after someone falls.",
+    "substance_glorification": "Vaping, drinking, or drugs are shown as fun with the harm left out. Notice who is selling the product behind the clip.",
+    "weapons_with_links": "This is a weapon shown as a toy, with a link to buy one. Notice that the video never shows what it does to a person.",
+    "private_contact_recruiting": "A link that moves you to Telegram or DMs takes you where nobody can see what happens next. Notice what they ask for once you are there.",
+    "manosphere": "This clip sells one man's rules about how people should treat each other, cut for outrage. Notice what it wants you to feel about the other side.",
+    "reckless_driving": "Street takeovers and stunts are filmed to look free, with the crashes and arrests left out. Notice who is holding the camera.",
+    "adult": "This video is made for adults. Notice that the age gate is there because the content is not built for you.",
+}
+
+
 def days_ago(upload_date):
     if not upload_date or len(upload_date) != 8:
         return None
@@ -58,6 +71,8 @@ def build_row(video, proposal, error):
     verdict = judge(video, proposal)
     for t in verdict["tactics"]:
         t["reason"] = t["reason"] or LABEL_FALLBACK[t["label"]]
+    if verdict["concern"] and not verdict["concern"]["reason"]:
+        verdict["concern"]["reason"] = CONCERN_FALLBACK.get(verdict["concern"]["category"], "")
     lens = proposal.get("lens") or {}
     return {
         "video_id": video["id"], "title": video["title"], "channel": video["channel"], "thumbnail": video["thumbnail"],

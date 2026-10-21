@@ -62,3 +62,11 @@ def test_rejudge_rebuilds_a_row_from_its_stored_proposal_without_llm(monkeypatch
     old = rl.build_row(video(), {"lens": {"tactics": [{"label": "fake_urgency", "evidence": "Ends Tonight", "reason": "r"}]}, "topics": {}}, None)
     new = rl.rejudge(video(), old)
     assert [t["label"] for t in new["tactics"]] == ["fake_urgency"] and new["proposal"] == old["proposal"]
+
+
+def test_build_row_fills_concern_reason_from_fallback_when_llm_gave_none():
+    row = rl.build_row(video(title="Master KARAMBIT Flipping"), {"lens": {}, "topics": {}}, None)
+    assert row["concern"]["category"] == "weapons_with_links"
+    assert row["concern"]["reason"] == rl.CONCERN_FALLBACK["weapons_with_links"]
+    assert set(rl.CONCERN_FALLBACK) == {"gambling_like", "violence_glorification", "substance_glorification", "weapons_with_links",
+                                        "private_contact_recruiting", "manosphere", "reckless_driving", "adult"}
