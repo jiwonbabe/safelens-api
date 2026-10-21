@@ -82,7 +82,7 @@
 
 **인터페이스:**
 - 소비: Task 1의 `video_text(video)`.
-- 생산: `judge(video, proposal) -> {"tactics": [...], "verdict_teen": str, "verdict_kid": str, "block_category": str, "kid_risk": str, "commercial_hook": str | None, "topics": list, "match": int}`. `proposal = {"lens": <lens.txt JSON 또는 {}>, "topics": <topics.txt JSON 또는 {}>}`. 남긴 tactic은 제안 그대로 `{"label", "evidence", "reason"}`.
+- 생산: `judge(video, proposal) -> {"tactics": [...], "verdict_teen": str, "verdict_kid": str, "concern": dict | None, "kid_risk": str, "commercial_hook": str | None, "topics": list, "match": int}`. `proposal = {"lens": <lens.txt JSON 또는 {}>, "topics": <topics.txt JSON 또는 {}>}`. 남긴 tactic은 제안 그대로 `{"label", "evidence", "reason"}`.
 - 생산: `kid_verdict(row, allow: list, deny: list) -> str`(순수 함수, API도 사용). `row`는 Task 4의 캐시 행(`title, channel, topics, match, tactics, verdict_teen, kid_risk, commercial_hook` 필요).
 - 생산: `parse_rules(rules_text: str) -> (allow, deny)`(순수, LLM 없음). 문장은 `.`로, 구는 `,`로 나눈다. `no ` / `nothing with `로 시작하는 구는 접두어를 떼고 `deny`로. 나머지는 `TOPIC_WORDS = ["science","lego","animals","animal","toys","gaming","games","horror","pranks","crafts","music","sports","cooking","unboxing","challenges"]`에 있는 첫 단어를 `allow`로(`animal`→`animals`, `games`→`gaming`), 없으면 구 전체를 소문자로. 데모 문장은 `allow=["science","lego","animals"]`, `deny=["unboxing","challenges","buy now"]`가 나와야 한다.
 - 생산: `TRUSTED_CHANNELS = ["SciShow Kids", "Nat Geo Kids", "LEGO"]`, `LABELS`(여섯 개), `DISCLOSURE = r"\b(ad|ads|sponsored|paid partnership|affiliate|commission|i earn)\b"`.
@@ -99,9 +99,12 @@
 | misleading_thumbnail | `collapse(evidence).lower() in title` AND `collapse(reason).lower() in captions` |
 | fake_social_proof | evidence가 `millions use|everyone is|everyone's|best selling|100%|#1|no\.? ?1`에 매칭하거나 숫자를 포함 |
 
-틴 판정(`age_limit`은 영상에서; `lens` 제안의 `block_category`, `block_evidence`):
-- `block`: `age_limit >= 18`이거나, `block_category != "none"`이고 `block_evidence`가 인용 검사를 통과하거나, `head`가 `BLOCK_WORDS = r"t\.me|dm me|gambling|case opening|loot box|vape|sarms|getting drunk|street fights?|hood fights?|fight compilation|andrew tate|street takeover|sideshow|switchblade|karambit"`에 매칭.
-- 아니면 `flag`: `title`이 `\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b`에 매칭하거나, (`hidden_ad`가 남았고 `title`이 `weight loss|fat loss|fat burn`에 매칭).
+우려(concern) (`concern_of(video, lens) -> dict | None`; `lens` 제안의 `concern_category`, `concern_evidence`, `concern_reason`):
+- `concern_category != "none"`이고 `concern_evidence`가 인용 검사를 통과하면 `{category, evidence, reason}`. 아니면 `head`가 `CONCERN_WORDS` 중 하나에 매칭될 때(`private_contact_recruiting: t\.me|dm me`, `gambling_like: gambling|case opening|loot box`, `substance_glorification: vape|sarms|getting drunk`, `violence_glorification: street fights?|hood fights?|fight compilation`, `manosphere: andrew tate`, `reckless_driving: street takeover|sideshow`, `weapons_with_links: switchblade|karambit`) 매칭된 단어를 evidence로. 둘 다 아니면 `None`. `reason`은 LLM의 `concern_reason` 또는 `""`.
+
+틴 판정(`age_limit`은 영상에서). 틴에게 벽은 없다. 우려는 설명이 된다:
+- `block`: `age_limit >= 18`일 때만(YouTube가 어차피 재생을 막음). 현재 풀에는 없음.
+- 아니면 `flag`: `concern_of(...)`가 None이 아니거나, `title`이 `\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b`에 매칭하거나, (`hidden_ad`가 남았고 `title`이 `weight loss|fat loss|fat burn`에 매칭).
 - 아니면 `show`.
 
 키즈 판정 `kid_verdict(row, allow, deny)`:
@@ -111,13 +114,13 @@
 
 `judge()`는 `kid_risk` = topics 제안의 `kid_risk.category`(evidence가 인용 검사 통과 시) 아니면 `"none"`, `commercial_hook` = `present`이고 인용 통과 시 훅 evidence 문자열 아니면 `None`, `verdict_kid = kid_verdict(row, *parse_rules(DEMO_RULES))`로 계산한다. `DEMO_RULES`는 CLAUDE.md 데모 문장.
 
-- [ ] **1단계: `judge.py` 작성**: 상수, `collapse(s)`, `quote_ok(evidence, text)`, `keep_tactic(tactic, video)`, `teen_verdict(video, tactics, lens)`, `kid_verdict`, `parse_rules`, `judge`.
+- [ ] **1단계: `judge.py` 작성**: 상수, `quote_ok(evidence, text)`, `head_of(video)`, `keep_tactic(tactic, video)`, `concern_of(video, lens)`, `teen_verdict(video, tactics, lens)`, `kid_verdict`, `parse_rules`, `judge`. (`collapse`는 `build_pool`에서 import.)
 - [ ] **2단계: `__main__` 자체 점검 추가**(가짜 영상은 `title/description/captions/channel/age_limit`를 가진 dict):
   - 제목 `"Giveaway Ends Tonight at Midnight"`에 대해 evidence `"Giveaway  Ends\nTonight"`가 `fake_urgency`로 남는다(공백 정규화).
   - 설명란 `"use code SAVE10 … commission"`의 `hidden_ad`는 버려지고, 설명란 `"use code SAVE10"` + 자막 `"this is not an ad"`는 남는다(자막은 밝힘으로 안 침).
   - 원문에 없는 evidence는 라벨과 무관하게 버려진다.
   - 라벨 `"spam"`은 버려진다.
-  - 제목 `"LOSE 10 POUNDS IN 3 DAYS"` → `verdict_teen == "flag"`, 제목 `"Best Vape Tricks"` → `"block"`, `age_limit 18` → `"block"`.
+  - 제목 `"LOSE 10 POUNDS IN 3 DAYS"` → `verdict_teen == "flag"`, 제목 `"Best Vape Tricks"` → `"flag"`이고 `concern.category == "substance_glorification"`, LLM 카테고리에 검증 안 된 인용 + 키워드 없음 → `"show"`, `age_limit 18` → `"block"`.
   - `parse_rules(DEMO_RULES) == (["science","lego","animals"], ["unboxing","challenges","buy now"])`.
   - 훅 없는 SciShow Kids 과학 행의 `kid_verdict` → `"show"`, 같은 행에 채널 `"Matt Creationz"` → `"approve"`, topics `["horror"]` → `"hide"`.
 - [ ] **3단계: 실행** `python pipeline/judge.py` → 기대: `judge self-check ok`.
@@ -132,7 +135,7 @@
 **인터페이스:**
 - 소비: `load_videos`, `video_text`(Task 1); `ask`, `load_prompt`(Task 2); `judge`, `LABELS`(Task 3).
 - 생산(`pipeline/cache.py`): `open_db(path="cache/lens.sqlite")`(테이블 없으면 생성), `put(db, video_id, row)`, `get(db, video_id) -> dict | None`, `all_rows(db) -> list[dict]`.
-- 생산: 영상당 캐시 행 한 개. 키: `video_id, title, channel, thumbnail, views, upload_date, age_limit, topics, match, commercial_hook, kid_risk, tactics, verdict_teen, verdict_kid, block_category, reality_check, quiz_options, signals, llm_error`. `signals = {"age_limit", "upload_days_ago"(upload_date와 오늘 차이), "voice_emotion": null}`. `quiz_options` = 남긴 라벨 + `LABELS`에서 뽑은 오답으로 4개, `random.Random(video_id)`로 섞음. `reality_check` = lens 제안 문자열, LLM 실패 시 `""`. `llm_error` = 오류 문자열 또는 `null`.
+- 생산: 영상당 캐시 행 한 개. 키: `video_id, title, channel, thumbnail, views, upload_date, age_limit, topics, match, commercial_hook, kid_risk, tactics, verdict_teen, verdict_kid, concern, reality_check, quiz_options, signals, llm_error`. `signals = {"age_limit", "upload_days_ago"(upload_date와 오늘 차이), "voice_emotion": null}`. `quiz_options` = 남긴 라벨 + `LABELS`에서 뽑은 오답으로 4개, `random.Random(video_id)`로 섞음. `reality_check` = lens 제안 문자열, LLM 실패 시 `""`. `llm_error` = 오류 문자열 또는 `null`.
 - CLI: `python pipeline/run_lens.py [--only id1,id2] [--force]`. 이미 캐시된 영상은 `--force` 없으면 건너뜀. `concurrent.futures.ThreadPoolExecutor(max_workers=6)`. 영상마다 topics 호출(`rules_text = DEMO_RULES`), lens 호출(`upload_date`, `view_count` 포함). 각 호출 실패 시 그 제안은 `{}`, `llm_error` 기록. 영상당 한 줄 `id verdict_teen verdict_kid [labels] (error?)`, 마지막에 판정별 집계.
 
 - [ ] **1단계: `pipeline/cache.py` 작성**(sqlite3, `INSERT OR REPLACE`).
@@ -151,8 +154,8 @@
 **인터페이스:**
 - 소비: `open_db, all_rows, get`(Task 4); `kid_verdict, parse_rules, DEMO_RULES`(Task 3).
 - 생산: CLAUDE.md "API contract"의 세 엔드포인트 그대로. 모듈 전역 `RULES = {"mia": parse_rules(DEMO_RULES)}`, `POST /parent/rules`가 `RULES[child_id]`를 교체. `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
-- `GET /feed`: `age_band`가 `{"kid","teen"}` 밖이면 400 `{"error": "age_band must be kid or teen"}`. `child_id` 기본 `"mia"`, 모르는 child는 데모 규칙. kid: `kid_verdict(row, allow, deny) == "show"`인 행, `lens_available: false`, `blocked_count` = 보여주지 않은 행 수. teen: `verdict_teen in ("show","flag")`, `lens_available: true`, `blocked_count` = `block` 행 수. 아이템 키는 정확히 `video_id, title, channel, thumbnail, views, verdict, lens_available`. teen은 데모 3개(`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`) 먼저, 그다음 views 내림차순. kid는 `match` 내림차순.
-- `GET /video/{video_id}/lens`: 모르는 id → 404 `{"error": "unknown video_id"}`. `video_id, verdict(verdict_teen), tactics, quiz_options, reality_check, signals` 반환.
+- `GET /feed`: `age_band`가 `{"kid","teen"}` 밖이면 400 `{"error": "age_band must be kid or teen"}`. `child_id` 기본 `"mia"`, 모르는 child는 데모 규칙. kid: `kid_verdict(row, allow, deny) == "show"`인 행, `lens_available: false`, `blocked_count` = 보여주지 않은 행 수. teen: `verdict_teen in ("show","flag")`(풀 전체), `lens_available: true`, `blocked_count` = `block` 행 수(18+만, 보통 0). 아이템 키는 정확히 `video_id, title, channel, thumbnail, views, verdict, lens_available`. teen은 데모 3개(`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`) 먼저, 그다음 views 내림차순. kid는 `match` 내림차순.
+- `GET /video/{video_id}/lens`: 모르는 id → 404 `{"error": "unknown video_id"}`. `video_id, verdict(verdict_teen), tactics, quiz_options, reality_check, concern, signals` 순서로 반환. `concern`은 캐시된 객체 또는 `null`.
 - `POST /parent/rules`: 본문 `{child_id, rules_text}`. `child_id, allow, deny, queue` 반환. queue는 모든 행을 `{video_id, title, channel, thumbnail, topics, match, verdict, note}`로, `verdict = kid_verdict(...)`, `match` 내림차순. `note`: show는 `null`; approve는 훅이 있으면 `"Names a product with no disclosure: \"<commercial_hook>\""`, 아니면 `"Untrusted channel"`, 아니면 `"Has a lens tactic: <label>"`; hide는 `kid_risk` 또는 `"teen <verdict_teen>"` 또는 `"deny rule: <word>"` 또는 `"no allowed topic"`.
 - CORS: `allow_origins=["*"]`, 모든 메서드·헤더. 처리 안 된 예외는 예외 핸들러로 500 `{"error": str(e)}`.
 
@@ -166,7 +169,7 @@ curl -s -o /dev/null -w "%{http_code}\n" "localhost:8000/video/nope/lens"
 curl -s localhost:8000/video/_OxuxhHF1WI/lens | python -m json.tool
 curl -s -X POST localhost:8000/parent/rules -H 'content-type: application/json' -d '{"child_id":"mia","rules_text":"Science experiments, LEGO builds, animal documentaries. No unboxing, no challenges, nothing with buy now."}' | python -c "import sys,json;d=json.load(sys.stdin);print(d['allow'],d['deny']);import collections;print(collections.Counter(q['verdict'] for q in d['queue']));print([q for q in d['queue'] if q['verdict']=='approve'][0])"
 ```
-기대: kid 아이템 전부 `show`에 필드 7개. teen은 `13 12 [...]` 근처. `400`. `404`. Tesla lens에 `fake_urgency`와 `quiz_options` 4개. allow/deny가 계약 예시와 같고 note 있는 approve 1개 이상.
+기대: kid 아이템 전부 `show`에 필드 7개. teen은 `56 0 [...]`(풀 전체, show와 flag 섞임). `400`. `404`. Tesla lens에 `fake_urgency`와 `quiz_options` 4개. allow/deny가 계약 예시와 같고 note 있는 approve 1개 이상.
 - [ ] **3단계: 속도** `for i in 1 2 3; do curl -s -o /dev/null -w "%{time_total}\n" localhost:8000/video/YjIA7HJXFg0/lens; done` → 각각 0.3 미만.
 - [ ] **4단계: 키 제거 확인**(verifier 항목): `mv .env .env.bak` 후 uvicorn 재기동, kid 피드 curl 반복, `mv .env.bak .env`. 기대: 같은 응답.
 - [ ] **5단계: 커밋** `git add api && git commit -m "api: feed, lens, parent rules from cache"`
@@ -181,7 +184,7 @@ curl -s -X POST localhost:8000/parent/rules -H 'content-type: application/json' 
 
 **인터페이스:**
 - 소비: `tests/gold.json` 행 `{video_id, age_band, verdict, labels}`, `all_rows`의 캐시 행, `kid_verdict`, `parse_rules`, `DEMO_RULES`.
-- 셀별(`teen show / teen flag / teen block / kid show / kid approve / kid hide / control`) gold 수, 정답 수, 정확도 출력. `both` 행은 `control` 셀이며 `verdict_teen == "show"`이고 `verdict_kid != "hide"`이고 남긴 tactic이 없을 때 정답. teen 행은 `verdict_teen`이 맞고, 라벨이 있는 `show`/`flag` 행은 남긴 라벨 집합이 gold 라벨 집합과 같을 때 정답. 그다음 모든 미스에 대해 `video_id, title, gold 판정 + 라벨, 예측 판정 + 라벨, 남긴 evidence` 출력. 종료 코드는 항상 0.
+- 셀별(`teen show / teen flag / teen block(10:55 이후 비어 있음) / kid show / kid approve / kid hide / control`) gold 수, 정답 수, 정확도 출력. `both` 행은 `control` 셀이며 `verdict_teen == "show"`이고 `verdict_kid != "hide"`이고 남긴 tactic이 없을 때 정답. teen 행은 `verdict_teen`이 맞고, 라벨이 있는 `show`/`flag` 행은 남긴 라벨 집합이 gold 라벨 집합과 같을 때 정답. 그다음 모든 미스에 대해 `video_id, title, gold 판정 + 라벨, 예측 판정 + 라벨, 남긴 evidence` 출력. 종료 코드는 항상 0.
 
 - [ ] **1단계: `eval.py` 작성**, `python eval.py` 실행, 표 붙여넣기.
 - [ ] **2단계: 커밋** `git add eval.py && git commit -m "eval: accuracy vs gold"`

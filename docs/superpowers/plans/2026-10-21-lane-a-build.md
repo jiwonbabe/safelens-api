@@ -93,7 +93,7 @@ Expected: `{'ok': True}` printed, no traceback.
 
 **Interfaces:**
 - Consumes: `video_text(video)` from Task 1.
-- Produces: `judge(video, proposal) -> {"tactics": [...], "verdict_teen": str, "verdict_kid": str, "block_category": str, "kid_risk": str, "commercial_hook": str | None, "topics": list, "match": int}` where `proposal = {"lens": <lens.txt JSON or {}>, "topics": <topics.txt JSON or {}>}`. Each kept tactic is `{"label", "evidence", "reason"}` exactly as proposed.
+- Produces: `judge(video, proposal) -> {"tactics": [...], "verdict_teen": str, "verdict_kid": str, "concern": dict | None, "kid_risk": str, "commercial_hook": str | None, "topics": list, "match": int}` where `proposal = {"lens": <lens.txt JSON or {}>, "topics": <topics.txt JSON or {}>}`. Each kept tactic is `{"label", "evidence", "reason"}` exactly as proposed.
 - Produces: `kid_verdict(row, allow: list, deny: list) -> str` (pure; also used by the API). `row` is the cached row from Task 4 (needs `title, channel, topics, match, tactics, verdict_teen, kid_risk, commercial_hook`).
 - Produces: `parse_rules(rules_text: str) -> (allow: list, deny: list)` (pure, no LLM). Sentences are split on `.`; phrases on `,`; a phrase starting with `no ` / `nothing with ` goes to `deny` with that prefix removed; otherwise it goes to `allow` as the first word of the phrase that is in `TOPIC_WORDS = ["science","lego","animals","animal","toys","gaming","games","horror","pranks","crafts","music","sports","cooking","unboxing","challenges"]` (map `animal`→`animals`, `games`→`gaming`), else the whole lowercased phrase. Demo text must yield `allow=["science","lego","animals"]`, `deny=["unboxing","challenges","buy now"]`.
 - Produces: `TRUSTED_CHANNELS = ["SciShow Kids", "Nat Geo Kids", "LEGO"]`, `LABELS` (the six), `DISCLOSURE = r"\b(ad|ads|sponsored|paid partnership|affiliate|commission|i earn)\b"`.
@@ -110,9 +110,12 @@ Rules (`text` = `video_text(video)`; `head` = lowercased title + description, wh
 | misleading_thumbnail | `collapse(evidence).lower() in title` AND `collapse(reason).lower() in captions` |
 | fake_social_proof | evidence matches `millions use|everyone is|everyone's|best selling|100%|#1|no\.? ?1` or contains a digit |
 
-Verdict teen (`age_limit` from video; `lens` proposal fields `block_category`, `block_evidence`):
-- `block` if `age_limit >= 18`, or `block_category != "none"` and its `block_evidence` passes the quote check, or `head` matches `BLOCK_WORDS = r"t\.me|dm me|gambling|case opening|loot box|vape|sarms|getting drunk|street fights?|hood fights?|fight compilation|andrew tate|street takeover|sideshow|switchblade|karambit"`.
-- else `flag` if `title` matches `\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b`, or (`hidden_ad` kept AND `title` matches `weight loss|fat loss|fat burn`).
+Concern (`concern_of(video, lens) -> dict | None`; `lens` proposal fields `concern_category`, `concern_evidence`, `concern_reason`):
+- `{category, evidence, reason}` when `concern_category != "none"` and `concern_evidence` passes the quote check; else when `head` matches one of `CONCERN_WORDS` (`private_contact_recruiting: t\.me|dm me`, `gambling_like: gambling|case opening|loot box`, `substance_glorification: vape|sarms|getting drunk`, `violence_glorification: street fights?|hood fights?|fight compilation`, `manosphere: andrew tate`, `reckless_driving: street takeover|sideshow`, `weapons_with_links: switchblade|karambit`), with the matched word as evidence; else `None`. `reason` is the LLM's `concern_reason` or `""`.
+
+Verdict teen (`age_limit` from video). A teen is never walled off; a concern becomes an explanation:
+- `block` only if `age_limit >= 18` (YouTube refuses to play it anyway). None in the pool.
+- else `flag` if `concern_of(...)` is not None, or `title` matches `\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b`, or (`hidden_ad` kept AND `title` matches `weight loss|fat loss|fat burn`).
 - else `show`.
 
 Verdict kid via `kid_verdict(row, allow, deny)`:
@@ -122,14 +125,14 @@ Verdict kid via `kid_verdict(row, allow, deny)`:
 
 `judge()` computes `kid_risk` = topics proposal `kid_risk.category` if its evidence passes the quote check else `"none"`, `commercial_hook` = the hook evidence string if `present` and quote passes else `None`, and sets `verdict_kid = kid_verdict(row, *parse_rules(DEMO_RULES))` with `DEMO_RULES` = the CLAUDE.md demo sentence.
 
-- [ ] **Step 1: Write `judge.py`** with the constants, `collapse(s)`, `quote_ok(evidence, text)`, `keep_tactic(tactic, video)`, `teen_verdict(video, tactics, lens)`, `kid_verdict`, `parse_rules`, `judge`.
+- [ ] **Step 1: Write `judge.py`** with the constants, `quote_ok(evidence, text)`, `head_of(video)`, `keep_tactic(tactic, video)`, `concern_of(video, lens)`, `teen_verdict(video, tactics, lens)`, `kid_verdict`, `parse_rules`, `judge`. (`collapse` is imported from `build_pool`.)
 
 - [ ] **Step 2: Add `__main__` self-check** with these asserts (fake videos are dicts with `title/description/captions/channel/age_limit`):
   - evidence `"Giveaway  Ends\nTonight"` against title `"Giveaway Ends Tonight at Midnight"` is kept as `fake_urgency` (whitespace collapse).
   - `hidden_ad` with description `"use code SAVE10 … commission"` is dropped; with description `"use code SAVE10"` and captions `"this is not an ad"` is kept (captions do not count as disclosure).
   - evidence not in text is dropped whatever the label.
   - label `"spam"` is dropped.
-  - title `"LOSE 10 POUNDS IN 3 DAYS"` → `verdict_teen == "flag"`; title `"Best Vape Tricks"` → `"block"`; `age_limit 18` → `"block"`.
+  - title `"LOSE 10 POUNDS IN 3 DAYS"` → `verdict_teen == "flag"`; title `"Best Vape Tricks"` → `"flag"` with `concern.category == "substance_glorification"`; LLM `concern_category` with an unverified quote and no concern word → `"show"`; `age_limit 18` → `"block"`.
   - `parse_rules(DEMO_RULES) == (["science","lego","animals"], ["unboxing","challenges","buy now"])`.
   - `kid_verdict` on SciShow Kids science row with no hook → `"show"`; same row with channel `"Matt Creationz"` → `"approve"`; topics `["horror"]` → `"hide"`.
 
@@ -149,7 +152,7 @@ Expected: `judge self-check ok`.
 **Interfaces:**
 - Consumes: `load_videos`, `video_text` (Task 1); `ask`, `load_prompt` (Task 2); `judge`, `LABELS` (Task 3).
 - Produces (`pipeline/cache.py`): `open_db(path="cache/lens.sqlite")` creating the table if missing; `put(db, video_id, row: dict)`; `get(db, video_id) -> dict | None`; `all_rows(db) -> list[dict]`.
-- Produces: one cached row per video with keys `video_id, title, channel, thumbnail, views, upload_date, age_limit, topics, match, commercial_hook, kid_risk, tactics, verdict_teen, verdict_kid, block_category, reality_check, quiz_options, signals, llm_error`. `signals = {"age_limit", "upload_days_ago" (from upload_date vs today), "voice_emotion": null}`. `quiz_options` = kept labels plus distractors from `LABELS` up to 4, order shuffled with `random.Random(video_id)`. `reality_check` = lens proposal's string or `""` on LLM failure. `llm_error` = error text or `null`.
+- Produces: one cached row per video with keys `video_id, title, channel, thumbnail, views, upload_date, age_limit, topics, match, commercial_hook, kid_risk, tactics, verdict_teen, verdict_kid, concern, reality_check, quiz_options, signals, llm_error`. `signals = {"age_limit", "upload_days_ago" (from upload_date vs today), "voice_emotion": null}`. `quiz_options` = kept labels plus distractors from `LABELS` up to 4, order shuffled with `random.Random(video_id)`. `reality_check` = lens proposal's string or `""` on LLM failure. `llm_error` = error text or `null`.
 - CLI: `python pipeline/run_lens.py [--only id1,id2] [--force]`. Skips videos already cached unless `--force`. Runs videos through `concurrent.futures.ThreadPoolExecutor(max_workers=6)`. Per video: topics call with `rules_text = DEMO_RULES`, lens call with `upload_date`, `view_count`; each call wrapped so a failure yields `{}` for that proposal and sets `llm_error`. Prints one line per video: `id verdict_teen verdict_kid [labels] (error?)` and a final count by verdict.
 
 - [ ] **Step 1: Write `pipeline/cache.py`** with the four functions above (sqlite3, `INSERT OR REPLACE`).
@@ -176,8 +179,8 @@ Expected: 56 lines, final counts; `llm_error` on at most a few. Re-run `python p
 **Interfaces:**
 - Consumes: `open_db, all_rows, get` (Task 4); `kid_verdict, parse_rules, DEMO_RULES` (Task 3).
 - Produces the three endpoints exactly as CLAUDE.md "API contract". Module-level `RULES = {"mia": parse_rules(DEMO_RULES)}`; `POST /parent/rules` replaces `RULES[child_id]`. `# ponytail: in-memory rules, lost on restart; demo re-posts them.`
-- `GET /feed`: `age_band` not in `{"kid","teen"}` → 400 `{"error": "age_band must be kid or teen"}`. `child_id` defaults `"mia"`; unknown child uses demo rules. Kid: rows where `kid_verdict(row, allow, deny) == "show"`, `lens_available: false`, `blocked_count` = rows not shown. Teen: rows with `verdict_teen in ("show","flag")`, `lens_available: true`, `blocked_count` = rows with `block`. Item keys exactly `video_id, title, channel, thumbnail, views, verdict, lens_available`. Teen items sorted demo picks first (`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`), then by views desc; kid by `match` desc.
-- `GET /video/{video_id}/lens`: unknown id → 404 `{"error": "unknown video_id"}`. Returns `video_id, verdict (verdict_teen), tactics, quiz_options, reality_check, signals`.
+- `GET /feed`: `age_band` not in `{"kid","teen"}` → 400 `{"error": "age_band must be kid or teen"}`. `child_id` defaults `"mia"`; unknown child uses demo rules. Kid: rows where `kid_verdict(row, allow, deny) == "show"`, `lens_available: false`, `blocked_count` = rows not shown. Teen: rows with `verdict_teen in ("show","flag")` (the whole pool), `lens_available: true`, `blocked_count` = rows with `block` (18+ only, normally 0). Item keys exactly `video_id, title, channel, thumbnail, views, verdict, lens_available`. Teen items sorted demo picks first (`_OxuxhHF1WI, YjIA7HJXFg0, jZumiXIiCWE`), then by views desc; kid by `match` desc.
+- `GET /video/{video_id}/lens`: unknown id → 404 `{"error": "unknown video_id"}`. Returns `video_id, verdict (verdict_teen), tactics, quiz_options, reality_check, concern, signals` in that order; `concern` is the cached object or `null`.
 - `POST /parent/rules`: body `{child_id, rules_text}`; returns `child_id, allow, deny, queue` where queue = every row as `{video_id, title, channel, thumbnail, topics, match, verdict, note}` with `verdict = kid_verdict(...)`, sorted by `match` desc. `note`: `null` for show; for approve `"Names a product with no disclosure: \"<commercial_hook>\""` when hook present, else `"Untrusted channel"`, else `"Has a lens tactic: <label>"`; for hide the `kid_risk` or `"teen <verdict_teen>"` or `"deny rule: <word>"` or `"no allowed topic"`.
 - CORS: `allow_origins=["*"]`, all methods and headers. Unhandled exceptions → 500 `{"error": str(e)}` via an exception handler.
 
@@ -192,7 +195,7 @@ curl -s -o /dev/null -w "%{http_code}\n" "localhost:8000/video/nope/lens"
 curl -s localhost:8000/video/_OxuxhHF1WI/lens | python -m json.tool
 curl -s -X POST localhost:8000/parent/rules -H 'content-type: application/json' -d '{"child_id":"mia","rules_text":"Science experiments, LEGO builds, animal documentaries. No unboxing, no challenges, nothing with buy now."}' | python -c "import sys,json;d=json.load(sys.stdin);print(d['allow'],d['deny']);import collections;print(collections.Counter(q['verdict'] for q in d['queue']));print([q for q in d['queue'] if q['verdict']=='approve'][0])"
 ```
-Expected: kid items all `show` with 7 fields; teen prints `13 12 [...]` or close; `400`; `404`; Tesla lens with `fake_urgency` and 4 `quiz_options`; allow/deny equal to the contract example and at least one approve with a note.
+Expected: kid items all `show` with 7 fields; teen prints `56 0 [...]` (whole pool, mix of show and flag); `400`; `404`; Tesla lens with `fake_urgency` and 4 `quiz_options`; allow/deny equal to the contract example and at least one approve with a note.
 
 - [ ] **Step 3: Timing** `for i in 1 2 3; do curl -s -o /dev/null -w "%{time_total}\n" localhost:8000/video/YjIA7HJXFg0/lens; done` → each under 0.3.
 
@@ -211,7 +214,7 @@ Stop here. Jiwon runs `/eval` (needs Task 6) and says "deploy".
 
 **Interfaces:**
 - Consumes: `tests/gold.json` rows `{video_id, age_band, verdict, labels}`; cache rows via `all_rows`; `kid_verdict`, `parse_rules`, `DEMO_RULES`.
-- Prints per cell (`teen show / teen flag / teen block / kid show / kid approve / kid hide / control`) gold count, correct, accuracy; `both` rows are the `control` cell and count correct when `verdict_teen == "show"` and `verdict_kid != "hide"` and no tactics kept. Teen rows are correct when `verdict_teen` matches and, for `show`/`flag` rows with labels, the kept label set equals the gold label set. Then for every miss prints `video_id, title, gold verdict + labels, predicted verdict + labels, evidence kept`. Exit code 0 always.
+- Prints per cell (`teen show / teen flag / teen block (empty since 10:55) / kid show / kid approve / kid hide / control`) gold count, correct, accuracy; `both` rows are the `control` cell and count correct when `verdict_teen == "show"` and `verdict_kid != "hide"` and no tactics kept. Teen rows are correct when `verdict_teen` matches and, for `show`/`flag` rows with labels, the kept label set equals the gold label set. Then for every miss prints `video_id, title, gold verdict + labels, predicted verdict + labels, evidence kept`. Exit code 0 always.
 
 - [ ] **Step 1: Write `eval.py`**, run `python eval.py`, paste the table.
 - [ ] **Step 2: Commit** `git add eval.py && git commit -m "eval: accuracy vs gold"`
