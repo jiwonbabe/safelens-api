@@ -10,7 +10,7 @@ Base URL: `https://safelens-api.onrender.com` (Jiwon will confirm the exact URL 
 | --- | --- | --- |
 | Parent setup | `POST /parent/rules` | `mock/parent_rules.json` |
 | Kid feed | `GET /feed?age_band=kid&child_id=mia` | `mock/feed_kid.json` |
-| Teen feed | `GET /feed?age_band=teen&child_id=mia` then `GET /video/{video_id}/lens` per card | `mock/feed_teen.json`, `mock/lens_*.json` |
+| Teen feed | `GET /feed?age_band=teen&child_id=mia` then `GET /video/{video_id}/lens` per card | `mock/feed_teen.json`, `mock/lens_*.json` (`lens_9ivV1sbd9cs.json` is a flagged one with `concern`) |
 
 ## 1. POST /parent/rules
 
@@ -30,8 +30,8 @@ Response: `allow` and `deny` are the parsed rules (show them as chips). `queue` 
 
 - `age_band` comes from k-ID: age < 13 → `kid`, 13–17 → `teen`. Until k-ID is wired, a dropdown with the three k-ID test personas sets it.
 - `kid` returns only `verdict: "show"` items. No lens, no search, no autoplay, no comments.
-- `teen` returns `show` and `flag` items. `flag` items get a small "flagged to parent" mark on the card. Every teen item has `lens_available: true`.
-- `blocked_count` is for a one-line footer ("12 videos were kept out of this feed") and for the parent dashboard.
+- `teen` returns `show` and `flag` items, which is the whole pool: nothing is hidden from a teen. `flag` items get a small "flagged to parent" mark on the card. Every teen item has `lens_available: true`.
+- `blocked_count` is for the parent dashboard. For teen it is 0 unless a video is YouTube 18+.
 
 ## 3. GET /video/{video_id}/lens  (teen only)
 
@@ -43,6 +43,7 @@ This drives the quiz:
    - false alarms = chosen − {t.label for t in tactics}
    - text: "You caught {correct} of {len(tactics)}" plus " (1 false alarm)" when false alarms > 0
 4. `evidence` is a verbatim quote from the video's title, description, or captions. Show it in quotes. Never paraphrase it.
+5. `concern` (new, Oct 21 10:55): `null`, or `{ "category", "evidence", "reason" }`. When present, show it above the quiz as a "What is wrong with this video" box: the `reason` text plus the `evidence` quote. It is not part of the quiz. Categories: gambling_like, violence_glorification, substance_glorification, weapons_with_links, private_contact_recruiting, manosphere, reckless_driving, adult.
 
 Label display names:
 

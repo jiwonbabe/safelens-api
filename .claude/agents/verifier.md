@@ -12,7 +12,7 @@ Checklist. Run every item that applies, report PASS/FAIL per line with the actua
 
 Contract
 - [ ] GET /feed?age_band=kid returns only verdict "show" items, every item has all fields in the contract, no extra fields.
-- [ ] GET /feed?age_band=teen returns show and flag items, blocked_count > 0.
+- [ ] GET /feed?age_band=teen returns show and flag items for the whole pool (56 unless a video is 18+); every flag item's lens has a non-null `concern` with category, evidence (verbatim substring), reason.
 - [ ] GET /video/{id}/lens for the 3 demo videos returns 4 quiz_options, every tactic has label in the six, evidence non-empty, reality_check non-empty.
 - [ ] POST /parent/rules with the demo rules_text returns at least one "approve" item with a note.
 

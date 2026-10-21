@@ -7,7 +7,7 @@ Run before 12:00, before 2:00, and at 3:45 freeze. Each line: PASS / FAIL + the 
 - [ ] The 3 demo videos' /lens responses each have >= 2 tactics and a reality_check
 - [ ] Every evidence string is a literal substring of the video text (case-insensitive)
 - [ ] No hidden_ad on a video whose description has a disclosure word
-- [ ] Persona switch changes the feed visibly (kid: no lens cards; teen: lens cards + blocked_count)
+- [ ] Persona switch changes the feed visibly (kid: show-only, no lens cards; teen: whole pool, lens cards, flag marks with a concern box)
 - [ ] Frontend works on mock JSON with the API down
 
 ## Should pass, cut if not by the cut line

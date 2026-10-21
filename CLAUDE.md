@@ -39,8 +39,8 @@ Emotional pressure from Modulate (voice emotion) is NOT a label. It is a helper 
 
 Teen (15):
 - `show`: no labels, or labels the Lens can explain (any of the six)
-- `flag`: strong body_image_pressure (number + span) or a health product with no disclosure; shown with the Lens plus a "flagged to parent" mark
-- `block`: categories with nothing to learn: gambling-like (loot boxes, skin betting), violence glorification (fight compilations), substance glorification (vaping, drinking, SARMs), weapons with buy links, private-contact recruiting (t.me, "DM me"), manosphere clips, reckless driving. Also anything with YouTube `age_limit >= 18`.
+- `flag`: shown in full with the Lens plus a "flagged to parent" mark. Two reasons: strong body_image_pressure (number + span) or a health product with no disclosure; or a concern category with nothing to learn from the hooks alone: gambling-like (loot boxes, skin betting), violence glorification (fight compilations), substance glorification (vaping, drinking, SARMs), weapons with buy links, private-contact recruiting (t.me, "DM me"), manosphere clips, reckless driving. A flagged video is never hidden from the teen: the Lens explains what is wrong with it and what to keep in mind while watching (`concern` in the lens response). Decided 10:55 Oct 21: blocking a teen only pushes them to another app; explaining keeps them here.
+- `block`: only YouTube `age_limit >= 18` (YouTube itself refuses to play these without sign-in). Nothing in the current pool.
 
 Kid (8):
 - `show`: matches parent rules AND channel on the trusted list AND no labels
@@ -80,10 +80,10 @@ Response:
     { "video_id": "_OxuxhHF1WI", "title": "Last Chance to Win This $30,000 Tesla Model X - Giveaway Ends Tonight at Midnight", "channel": "Auto Auction Rebuilds", "thumbnail": "https://i.ytimg.com/vi/_OxuxhHF1WI/hqdefault.jpg", "views": 1200000, "verdict": "show", "lens_available": true },
     { "video_id": "3kdnLb-fdrY", "title": "How I lost 20 pounds in 2 weeks on a low budget", "channel": "Nkemamaka Ike", "thumbnail": "https://i.ytimg.com/vi/3kdnLb-fdrY/hqdefault.jpg", "views": 54000, "verdict": "flag", "lens_available": true }
   ],
-  "blocked_count": 12
+  "blocked_count": 0
 }
 ```
-For `age_band=kid` only `verdict: "show"` items are returned. `blocked_count` is for the parent dashboard.
+For `age_band=kid` only `verdict: "show"` items are returned. For `age_band=teen` every `show` and `flag` item is returned (the whole pool unless `age_limit >= 18`). `blocked_count` is for the parent dashboard.
 
 ### GET /video/{video_id}/lens
 Response:
@@ -97,9 +97,12 @@ Response:
   ],
   "quiz_options": ["fake_urgency", "hidden_ad", "body_image_pressure", "fake_social_proof"],
   "reality_check": "Nobody gives away a $30,000 car for a click. The link collects your email and phone so they can sell to you later.",
+  "concern": null,
   "signals": { "age_limit": 0, "upload_days_ago": 21, "voice_emotion": "excited" }
 }
 ```
+`concern` is `null` for a plain `show`. For a `flag` with a concern category it is `{ "category": "violence_glorification", "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS", "reason": "Real people get hurt in these clips. The channel earns from every view, so it needs you to feel the fight is entertainment." }`. The frontend shows it above the tactics as "What is wrong with this video".
+
 `quiz_options` always has 4 labels: every correct one plus random distractors from the six. Scoring is done in the frontend: correct = chosen ∩ tactics.labels, false alarms = chosen − tactics.labels.
 
 ### Age signal
@@ -130,7 +133,7 @@ k-ID:
 - Same shape everywhere: a function that takes a `video` dict returns a dict. Helpers for anything used twice.
 - FastAPI + SQLite (one table `lens_cache(video_id TEXT PRIMARY KEY, json TEXT)`). No ORM.
 - `.env` keys: `LLM_PROVIDER`, `INWORLD_API_KEY`, `INWORLD_MODEL`, `OPENAI_API_KEY`, `MODULATE_API_KEY`.
-- Prompts live in `prompts/*.txt`, never inline in Python. They are already written: `topics.txt` (parent rules match + kid risk), `lens.txt` (teen tactics + block category + reality check), `bait_writer.txt` (adversarial loop). Fill the `{placeholders}` with str.format-style substitution; the LLM must return JSON only.
+- Prompts live in `prompts/*.txt`, never inline in Python. They are already written: `topics.txt` (parent rules match + kid risk), `lens.txt` (teen tactics + concern category + reality check), `bait_writer.txt` (adversarial loop). Fill the `{placeholders}` with str.format-style substitution; the LLM must return JSON only.
 - Demo picks: `_OxuxhHF1WI` (Tesla giveaway, fake_urgency), `YjIA7HJXFg0` (Skinny Teatox, body_image_pressure), `HgjRJAh9kME` (Flat Tummy Tea, hidden_ad candidate). Verify hidden_ad on the third after reading its description.
 
 ## Deploy (Render, free tier)

@@ -20,6 +20,7 @@
     "body_image_pressure"
   ],
   "reality_check": "Nobody gives away a $30,000 car for a click. The link collects your email and phone so they can sell to you later.",
+  "concern": null,
   "signals": {
     "age_limit": 0,
     "upload_days_ago": 128,

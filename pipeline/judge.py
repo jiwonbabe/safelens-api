@@ -16,8 +16,15 @@ URGENCY = r"\d+ ?(hours?|minutes?|days?) left|last chance|ends tonight|only toda
 BODY = r"\d+ ?(lb|lbs|pounds|kg|days?|weeks?|months?)\b|before (and|&) after|glass skin"
 BAIT = r"like in \d|comment or|share this or|subscribe or|or else"
 PROOF = r"millions use|everyone is|everyone's|best selling|100%|#1|\bno\.? ?1\b|\d"
-BLOCK_WORDS = (r"t\.me|dm me|gambling|case opening|loot box|vape|sarms|getting drunk|street fights?|hood fights?"
-               r"|fight compilation|andrew tate|street takeover|sideshow|switchblade|karambit")
+CONCERN_WORDS = {
+    "private_contact_recruiting": r"t\.me|dm me",
+    "gambling_like": r"gambling|case opening|loot box",
+    "substance_glorification": r"vape|sarms|getting drunk",
+    "violence_glorification": r"street fights?|hood fights?|fight compilation",
+    "manosphere": r"andrew tate",
+    "reckless_driving": r"street takeover|sideshow",
+    "weapons_with_links": r"switchblade|karambit",
+}
 FLAG_TITLE = r"\d+ ?(lb|lbs|pounds|kg)\b.{0,20}\b\d+ ?(day|days|week|weeks)\b"
 HEALTH_TITLE = r"weight loss|fat loss|fat burn"
 
@@ -54,16 +61,26 @@ def keep_tactic(tactic, video):
     return False
 
 
-def teen_verdict(video, tactics, lens):
+def concern_of(video, lens):
+    """{category, evidence, reason} when the LLM's category has a verified quote or a concern word is in title+description, else None."""
     text, head = video_text(video), head_of(video)
+    category = lens.get("concern_category") or "none"
+    if category != "none" and quote_ok(lens.get("concern_evidence"), text):
+        return {"category": category, "evidence": lens["concern_evidence"], "reason": lens.get("concern_reason") or ""}
+    for category, pattern in CONCERN_WORDS.items():
+        hit = re.search(pattern, head)
+        if hit:
+            return {"category": category, "evidence": hit.group(0), "reason": lens.get("concern_reason") or ""}
+    return None
+
+
+def teen_verdict(video, tactics, lens):
+    """show or flag. Nothing is hidden from a teen except YouTube 18+; a flag carries an explanation instead of a wall."""
     title = collapse(video.get("title") or "").lower()
-    category = lens.get("block_category") or "none"
-    if (video.get("age_limit") or 0) >= 18 or re.search(BLOCK_WORDS, head):
-        return "block"
-    if category != "none" and quote_ok(lens.get("block_evidence"), text):
+    if (video.get("age_limit") or 0) >= 18:
         return "block"
     has_hidden_ad = any(t["label"] == "hidden_ad" for t in tactics)
-    if re.search(FLAG_TITLE, title) or (has_hidden_ad and re.search(HEALTH_TITLE, title)):
+    if concern_of(video, lens) or re.search(FLAG_TITLE, title) or (has_hidden_ad and re.search(HEALTH_TITLE, title)):
         return "flag"
     return "show"
 
@@ -118,7 +135,7 @@ def judge(video, proposal):
         "topics": topics.get("topics") or [], "match": int(topics.get("match") or 0),
         "tactics": tactics, "verdict_teen": teen_verdict(video, tactics, lens),
         "kid_risk": kid_risk, "commercial_hook": commercial_hook,
-        "block_category": lens.get("block_category") or "none",
+        "concern": concern_of(video, lens),
     }
     row["verdict_kid"] = kid_verdict(row, *parse_rules(DEMO_RULES))
-    return {k: row[k] for k in ["tactics", "verdict_teen", "verdict_kid", "block_category", "kid_risk", "commercial_hook", "topics", "match"]}
+    return {k: row[k] for k in ["tactics", "verdict_teen", "verdict_kid", "concern", "kid_risk", "commercial_hook", "topics", "match"]}

@@ -1,4 +1,4 @@
-from pipeline.judge import (DEMO_RULES, LABELS, TRUSTED_CHANNELS, judge, keep_tactic, kid_verdict,
+from pipeline.judge import (DEMO_RULES, LABELS, TRUSTED_CHANNELS, concern_of, judge, keep_tactic, kid_verdict,
                             parse_rules, teen_verdict)
 
 
@@ -73,15 +73,28 @@ def test_teen_flag_on_hidden_ad_with_weight_loss_title():
     assert teen_verdict(v, [tactic("hidden_ad", "bit.ly")], {}) == "flag"
 
 
-def test_teen_block_on_block_words_llm_category_and_age_limit():
-    assert teen_verdict(video(title="Best Vape Tricks"), [], {}) == "block"
-    assert teen_verdict(video(title="calm"), [], {"block_category": "manosphere", "block_evidence": "calm"}) == "block"
-    assert teen_verdict(video(title="calm"), [], {"block_category": "manosphere", "block_evidence": "not in text"}) == "show"
+def test_teen_flag_not_block_on_concern_words_or_verified_llm_category():
+    assert teen_verdict(video(title="Best Vape Tricks"), [], {}) == "flag"
+    assert teen_verdict(video(title="calm"), [], {"concern_category": "manosphere", "concern_evidence": "calm"}) == "flag"
+    assert teen_verdict(video(title="calm"), [], {"concern_category": "manosphere", "concern_evidence": "not in text"}) == "show"
+
+
+def test_teen_block_only_for_youtube_age_limit():
     assert teen_verdict(video(title="calm", age_limit=18), [], {}) == "block"
 
 
 def test_teen_show_by_default():
-    assert teen_verdict(video(title="How to fold paper"), [], {"block_category": "none"}) == "show"
+    assert teen_verdict(video(title="How to fold paper"), [], {"concern_category": "none"}) == "show"
+
+
+def test_concern_of_returns_category_evidence_reason_or_none():
+    v = video(title="HOOD FIGHTS 2024 & STREET FIGHTS")
+    lens = {"concern_category": "violence_glorification", "concern_evidence": "STREET FIGHTS", "concern_reason": "Real people get hurt."}
+    assert concern_of(v, lens) == {"category": "violence_glorification", "evidence": "STREET FIGHTS", "reason": "Real people get hurt."}
+    # LLM silent but a concern word is in the title: still a concern, evidence is the matched word
+    assert concern_of(v, {})["category"] == "violence_glorification"
+    assert concern_of(v, {})["evidence"] in ("hood fights", "street fights")  # leftmost match wins
+    assert concern_of(video(title="How to fold paper"), {}) is None
 
 
 # --- parent rules + kid verdict ----------------------------------------------
@@ -122,7 +135,7 @@ def test_judge_keeps_verified_tactics_and_sets_both_verdicts():
     v = video(title="Last Chance to Win This Tesla - Ends Tonight", description="GET IN NOW: https://x.com", channel="Auto Auction")
     proposal = {
         "lens": {"tactics": [tactic("fake_urgency", "Ends Tonight"), tactic("fake_urgency", "two hours left")],
-                 "block_category": "none", "block_evidence": None, "reality_check": "Nobody gives away a car."},
+                 "concern_category": "none", "concern_evidence": None, "reality_check": "Nobody gives away a car."},
         "topics": {"topics": ["cars"], "match": 10, "deny_hit": None,
                    "commercial_hook": {"present": True, "evidence": "GET IN NOW"},
                    "kid_risk": {"category": "none", "evidence": None}},
@@ -132,12 +145,14 @@ def test_judge_keeps_verified_tactics_and_sets_both_verdicts():
     assert out["verdict_teen"] == "show"
     assert out["verdict_kid"] == "hide"  # no allowed topic
     assert out["commercial_hook"] == "GET IN NOW"
+    assert out["concern"] is None
     assert out["topics"] == ["cars"] and out["match"] == 10
 
 
 def test_judge_survives_empty_proposals():
     out = judge(video(title="Best Vape Tricks"), {"lens": {}, "topics": {}})
-    assert out["tactics"] == [] and out["verdict_teen"] == "block" and out["verdict_kid"] == "hide"
+    assert out["tactics"] == [] and out["verdict_teen"] == "flag" and out["verdict_kid"] == "hide"
+    assert out["concern"]["category"] == "substance_glorification"
     assert out["kid_risk"] == "none" and out["topics"] == [] and out["match"] == 0
 
 

@@ -117,7 +117,16 @@
       "views": 53169,
       "verdict": "flag",
       "lens_available": true
+    },
+    {
+      "video_id": "9ivV1sbd9cs",
+      "title": "HOOD FIGHTS 2024 & STREET FIGHTS - SCHOOL FIGHTS - ROAD RAGE FIGHTS 2024",
+      "channel": "MOTO FURY 2 - Street Fights & Road Rage",
+      "thumbnail": "https://i.ytimg.com/vi/9ivV1sbd9cs/hqdefault.jpg",
+      "views": 10727,
+      "verdict": "flag",
+      "lens_available": true
     }
   ],
-  "blocked_count": 12
+  "blocked_count": 0
 }
