@@ -21,7 +21,9 @@ Rules:
 - Every evidence string must be copied exactly from the input text. If you cannot quote it, use null.
 - "match" is about topic fit only. Do not lower it for commercial hooks or risks; those have their own fields.
 - A well-known kids science, nature, or LEGO channel with no hook and no risk should score 85 or higher when the topic fits.
-- Do not guess what the video shows. Only what the text says.
+- Do not guess what the video shows. Only what the text says. When captions are empty, the title and description are the whole text: a title alone is enough evidence.
+- costumed_character_adult_theme means Elsa, Spiderman, Peppa, or other kids' characters in pregnancy, injection, doctor, "bad baby", or kidnapping plots. Quote the title.
+- cruel_prank means a prank whose point is that a child or sibling cries or is scared.
 
 Parent rules:
 {rules_text}

@@ -17,13 +17,15 @@ Return ONLY this JSON, no prose:
   "reality_check": "<two or three sentences, under 60 words. Sentence 1: the one plain fact this video hides, as specific as the input allows. Sentence 2: what the video is built to make the viewer feel. Sentence 3: if it got to them, that is the video working, not something wrong with them. Never shame the viewer, never give health or diet advice, never mention self-harm or eating disorders. Do not repeat concern_reason.>"
 }
 
-Label definitions:
-- fake_urgency: time pressure that is not real ("only 2 hours left", "last chance", "ends tonight")
-- hidden_ad: the creator earns when you buy (discount code, affiliate link, "link in bio", telegram link) and does not clearly say so. If the text says "ad", "sponsored", "paid partnership", "affiliate", "commission", or "I earn", do NOT propose hidden_ad.
-- body_image_pressure: a number plus a time span about weight, skin, or muscle, or before/after framing, that makes the viewer's body a problem to fix fast
-- engagement_bait: likes, comments, shares, or subscribes asked for with pressure ("like in 3 seconds or", "comment or you'll")
+Label definitions. The quote you give as evidence MUST contain the words that define the label; the code checks this and drops the label otherwise:
+- fake_urgency: time pressure that is not real. Evidence must contain the pressure words ("only 2 hours left", "last chance", "ends tonight", "only today").
+- hidden_ad: the creator earns when you buy (discount code, affiliate link, "link in bio", telegram link) and does not clearly say so. Evidence must contain the code or the link itself (e.g. 'use the code "x" to get 12% off', "amzn.to/..."), never a subscribe link. If the text says "ad", "sponsored", "paid partnership", "affiliate", "commission", or "I earn", do NOT propose hidden_ad.
+- body_image_pressure: a number plus a time span about weight, skin, or muscle ("10 pounds in 3 days", "14 day detox", "6 months"), or before/after framing. Evidence must contain that number and span, or "before and after". It is usually in the title: quote the title.
+- engagement_bait: likes, comments, shares, or subscribes asked for with pressure. Evidence must contain the demand ("like in 3 seconds or", "subscribe or else").
 - misleading_thumbnail: the title promises something the captions show it does not deliver. Needs two quotes: put the title claim in "evidence" and the contradicting caption line in "reason".
-- fake_social_proof: invented popularity ("millions use this", "everyone is doing it", "best selling", "100% results") with no source
+- fake_social_proof: invented popularity or a big number used as proof with no source ("millions use this", "everyone is obsessed", "best selling", "100% results", "$30,000 Tesla", "110+ gadgets"). Evidence must contain the claim or the number.
+
+Propose every label whose defining words are literally in the text, up to 3. Do not skip a label because another one is stronger.
 
 How to write for a 15-year-old:
 - Talk like a sharp friend who has seen this trick before, not like a teacher. Second person. Short words.
@@ -40,7 +42,6 @@ Examples of the tone (do not copy the content):
 
 Rules:
 - Every evidence string must be copied exactly from the input. If you cannot quote it, do not propose that label.
-- Propose at most 3 tactics. Pick the clearest ones.
 - A news report, fact-check, or debunk that uses the same words as bait is NOT bait. Return an empty tactics list for those.
 - An honest review that discloses its affiliate links is NOT hidden_ad.
 - Do not judge whether the video's claims are true. Only how it tries to make the viewer feel or act.
