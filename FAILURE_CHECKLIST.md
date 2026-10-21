@@ -16,6 +16,10 @@ Run before 12:00, before 2:00, and at 3:45 freeze. Each line: PASS / FAIL + the 
 - [ ] Adversarial loop: 3 rounds logged in data/loop_log.json (cut 3:00 → slide)
 - [ ] eval.py accuracy >= 70% in every cell (if not, show the real number anyway; never edit gold.json)
 
+## Deploy
+- [ ] Render URL responds to /feed kid and teen (wake it 10 min before judging)
+- [ ] Cole's frontend points at the Render URL; ngrok fallback tested once
+
 ## Environment
 - [ ] Phone hotspot tested, laptop on charger, Claude Code logged in and under usage limit
 - [ ] Backup screenshots of all screens in deck/

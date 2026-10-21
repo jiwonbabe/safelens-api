@@ -7,4 +7,6 @@ Lane A only. Build in this order, running each step before the next, and stop af
 3. pipeline/judge.py: the rules from the Labels table in CLAUDE.md. judge(video, proposal) -> {tactics, verdict_teen, verdict_kid}. Quote check is case-insensitive substring over title + description + captions. Then pipeline/run_lens.py: for every video in data/videos.json, ask prompts/topics.txt and prompts/lens.txt, judge, write to cache/lens.sqlite.
 4. api/main.py: the three endpoints exactly as the contract in CLAUDE.md, reading only from cache/lens.sqlite. CORS open.
 
+After step 4 runs locally, do not deploy yet; I will run /eval first, then say "deploy" and you commit cache/lens.sqlite and push to main (Render auto-deploys from render.yaml).
+
 Do not create frontend/ (separate repo) or tests/. Do not touch tests/gold.json or eval.py.

@@ -2,7 +2,7 @@
 
 For Cole. Your repo is `safelens-web`; mine is `safelens-api`. Build every screen against the JSON files in `mock/` (attached) this morning. They are the exact shapes the real API returns. When the API is up (target: early afternoon), change the base URL and nothing else.
 
-Base URL: `http://localhost:8000` (Jiwon's laptop; same wifi or hotspot). CORS is open.
+Base URL: `https://safelens-api.onrender.com` (Jiwon will confirm the exact URL once deployed, early afternoon). Keep it in one config variable. CORS is open. Until then, use the mock files.
 
 ## Three screens, three calls
 

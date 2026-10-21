@@ -105,20 +105,49 @@ Response:
 ### Age signal
 k-ID gives age and jurisdiction. The frontend passes `age_band` derived from it (`< 13` → kid, `13–17` → teen). If k-ID is not wired, a dropdown with the three k-ID test personas sets it. The API never trusts a raw age from the client.
 
+## Partner APIs (verified from docs, Oct 21)
+
+Inworld (LLM, OpenAI-compatible):
+- `POST https://api.inworld.ai/v1/chat/completions`, header `Authorization: Basic $INWORLD_API_KEY` (send the key as-is, do not base64 it again).
+- Body follows OpenAI chat completions: `{"model": INWORLD_MODEL, "messages": [...]}`. Text is at `choices[0].message.content`.
+- Model ids look like `openai/gpt-5.4`; pick one from inworld.ai/models (Text tab) and set `INWORLD_MODEL` in `.env`.
+- With the `openai` package: `OpenAI(base_url="https://api.inworld.ai/v1", api_key="unused", default_headers={"Authorization": f"Basic {key}"})`.
+- Backup provider: plain OpenAI with `OPENAI_API_KEY` when `LLM_PROVIDER=openai`.
+
+Modulate (voice):
+- Transcription: `POST https://platform.modulate.ai/api/velma-2-stt-batch`, header `X-API-Key: $MODULATE_API_KEY`, multipart field `upload_file`. Response: `text`, `duration_ms`, `utterances[]` (each has `text`, `start_ms`, `speaker`, `language`).
+- Emotion: `POST https://platform.modulate.ai/api/velma-2-emotion-batch`, same auth and field. Response: `emotion` (Angry, Disgusted, Afraid, Happy, Neutral, Other, Sad, Surprised, Unknown) plus `time_series`.
+- Send a 5 to 30 second clip: cut the first 30 s with `ffmpeg -i in.mp3 -t 30 -c copy out.mp3`. Max 100 MB.
+- Map emotion to the lens `signals.voice_emotion`: Surprised or Happy with high energy → "excited", Afraid or Angry → "pressured", else "calm". Judge may use "excited"/"pressured" only to confirm fake_urgency or body_image_pressure, never to add a label.
+
+k-ID:
+- Sign-up link and two setup steps are posted the morning of the event in the participant Discord #general and on the event page. Three starter kits and three test personas. On-site support is web and Android. Read the starter kit at 9:30; wire the age signal into `/feed` after 12:00.
+
 ## Code style
 
 - Plain Python classes and functions. No dataclass, namedtuple, Enum, or Protocol.
 - Easy English names: `video`, `label`, `evidence`, `reason`, `verdict`. Not `tactic_enum`, `evid`.
 - Same shape everywhere: a function that takes a `video` dict returns a dict. Helpers for anything used twice.
 - FastAPI + SQLite (one table `lens_cache(video_id TEXT PRIMARY KEY, json TEXT)`). No ORM.
+- `.env` keys: `LLM_PROVIDER`, `INWORLD_API_KEY`, `INWORLD_MODEL`, `OPENAI_API_KEY`, `MODULATE_API_KEY`.
 - Prompts live in `prompts/*.txt`, never inline in Python. They are already written: `topics.txt` (parent rules match + kid risk), `lens.txt` (teen tactics + block category + reality check), `bait_writer.txt` (adversarial loop). Fill the `{placeholders}` with str.format-style substitution; the LLM must return JSON only.
 - Demo picks: `_OxuxhHF1WI` (Tesla giveaway, fake_urgency), `YjIA7HJXFg0` (Skinny Teatox, body_image_pressure), `HgjRJAh9kME` (Flat Tummy Tea, hidden_ad candidate). Verify hidden_ad on the third after reading its description.
+
+## Deploy (Render, free tier)
+
+- `render.yaml` and `requirements.txt` are in the repo. Connect the GitHub repo in the Render dashboard once; every push to main redeploys.
+- The API serves only from `cache/lens.sqlite`, so **commit the cache** (it is not in .gitignore). Render needs no LLM key to serve the demo.
+- Public URL: `https://safelens-api.onrender.com` (Render assigns the exact name; copy it from the dashboard and send it to Cole).
+- Free tier sleeps after 15 min idle and takes ~30 s to wake. Open `/feed?age_band=teen&child_id=mia` in a browser 10 minutes before judging.
+- Deploy after step 4 passes `/eval`, not before. Verify with `curl https://<url>/feed?age_band=kid&child_id=mia`.
+- If Render is down at demo time: `uvicorn api.main:app --host 0.0.0.0 --port 8000` plus `ngrok http 8000`, send Cole the ngrok URL.
 
 ## Commands
 
 ```bash
 source .venv/bin/activate
-uvicorn api.main:app --reload --port 8000
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000   # 0.0.0.0 so Cole's laptop can reach it on the hotspot
+ngrok http 8000                       # only if the frontend is served over https
 python pipeline/build_pool.py        # data/raw -> data/videos.json
 python pipeline/run_lens.py          # LLM proposals -> judge -> cache
 python eval.py                       # accuracy vs tests/gold.json
@@ -134,7 +163,7 @@ python pipeline/loop.py --rounds 3   # adversarial loop (afternoon only)
 | k-ID SDK not integrable by 2:00 PM | Persona dropdown in the frontend. Say on stage where the SDK plugs in. |
 | Judge drops every label on a demo video | Check the quote matching first (case, punctuation). Loosen to case-insensitive substring. Never hardcode a label. |
 | Frontend not on the real API by 3:00 PM | Frontend keeps its mock JSON (same shapes). The demo still runs. |
-| Venue wifi dies | Phone hotspot. Everything runs on localhost anyway. |
+| Venue wifi dies or blocks device-to-device traffic | Phone hotspot for both laptops. API on `--host 0.0.0.0`; Cole points at `http://<Jiwon IP>:8000`, or `ngrok http 8000` if the frontend is on https. Demo runs on one laptop regardless. |
 | Laptop dies | Backup screenshots of every screen are in `deck/`. |
 | Adversarial loop not working by 3:00 PM | Drop it. One slide describing the design. |
 

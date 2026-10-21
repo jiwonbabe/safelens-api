@@ -2,10 +2,15 @@ Read CLAUDE.md fully. Do not write any source code yet; the hackathon build wind
 
 Do these in order and show me the output of each:
 1. Create .venv with python3 -m venv .venv, activate it, pip install fastapi uvicorn httpx yt-dlp python-dotenv openai. Print pip list.
-2. Create .env from this template with empty values: LLM_PROVIDER=inworld, INWORLD_API_KEY=, OPENAI_API_KEY=, MODULATE_API_KEY=. Add .env, .venv, cache/, data/raw/, data/audio/ to .gitignore.
+2. Create .env from this template with empty values: LLM_PROVIDER=inworld, INWORLD_API_KEY=, INWORLD_MODEL=, OPENAI_API_KEY=, MODULATE_API_KEY=. I will paste the keys in myself. Add .env, .venv, data/raw/, data/audio/ to .gitignore. Do NOT ignore cache/; it is committed so Render can serve it.
 3. Read data/urls.txt (one YouTube URL per line). Run yt-dlp with --skip-download --write-info-json --write-auto-sub --sub-lang en --sub-format vtt -o "data/raw/%(id)s.%(ext)s". Then print a table: video id, title, has_captions yes/no, age_limit. Flag any URL that failed.
 4. For these three ids only, download audio: yt-dlp -x --audio-format mp3 --audio-quality 5 -o "data/audio/%(id)s.%(ext)s" for _OxuxhHF1WI, YjIA7HJXFg0, HgjRJAh9kME.
 5. Read tests/gold.xlsx (sheet "테스트 세트"). Convert rows where column "확정 판정" is filled into tests/gold.json as a list of {video_id, age_band, verdict, labels: [...]}. age_band is "teen" for 틴 rows, "kid" for 키즈 rows, "both" for 공통. Map 확정 판정 values: 봐도 됨→show, 주의→flag, 차단→block, 승인 필요→approve, 숨김→hide, 통과→show. Print how many gold rows you wrote per age_band. Do not edit the xlsx. If the xlsx is missing, skip this step and say so.
-6. git init, first commit "setup: env, data, gold set, claude config". Do not push.
+6. Check ffmpeg is installed (ffmpeg -version). If not, tell me the install command for my OS and stop that step.
+7. Once I say the keys are in .env, test each partner API once with curl, no Python files:
+   - Inworld: POST https://api.inworld.ai/v1/chat/completions with header "Authorization: Basic $INWORLD_API_KEY", body {"model": "$INWORLD_MODEL", "messages": [{"role":"user","content":"Reply with the single word OK"}]}. Print choices[0].message.content and the model name in the response.
+   - Modulate: cut the first 30 s of data/audio/_OxuxhHF1WI.mp3 with ffmpeg -i in -t 30 -c copy data/audio/_OxuxhHF1WI_30s.mp3, then POST it as upload_file to https://platform.modulate.ai/api/velma-2-stt-batch with header "X-API-Key: $MODULATE_API_KEY". Print the first 200 characters of text. Then POST the same file to /api/velma-2-emotion-batch and print emotion.
+   If either call fails, print the status code and body and move on.
+8. git init, first commit "setup: env, data, gold set, claude config". Do not push.
 
 Stop there and summarize what is ready and what failed.
