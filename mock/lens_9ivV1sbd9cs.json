@@ -4,26 +4,26 @@
   "verdict": "flag",
   "tactics": [
     {
-      "label": "fake_social_proof",
-      "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS",
-      "reason": "A pile of keywords in the title is there for search, not for you. It promises a lot and shows clips with no context."
+      "label": "hidden_ad",
+      "evidence": "MOTO FURY SPECIAL : https://bit.ly/3KuIqjs",
+      "reason": "The link in the description pays the creator when you buy, and the video never says so."
     }
   ],
   "quiz_options": [
     "fake_social_proof",
     "fake_urgency",
-    "hidden_ad",
-    "engagement_bait"
+    "body_image_pressure",
+    "hidden_ad"
   ],
-  "reality_check": "These are real people getting hurt, cut into a highlight reel. The channel earns from every view, so it needs you to feel the fight is entertainment. If it got to you, that is the edit working, not something wrong with you.",
+  "reality_check": "This video has been up for 797 days, and it hides the fact that it glorifies violence. It is built to make you feel excitement and shock. If it got to you, that is the video working, not something wrong with you.",
   "concern": {
     "category": "violence_glorification",
-    "evidence": "HOOD FIGHTS 2024 & STREET FIGHTS",
-    "reason": "These clips turn real injuries into entertainment and hide what happened after. While watching, notice how the edit skips the part where someone does not get up."
+    "evidence": "bikers are attacked by car drivers in this video you saw a car driver clearly trying to run over a biker",
+    "reason": "The video shows bikers facing aggressive drivers, and the channel earns from every view. Watch for the moments when fights break out: it’s intense and chaotic."
   },
   "signals": {
     "age_limit": 0,
-    "upload_days_ago": 400,
+    "upload_days_ago": 797,
     "voice_emotion": null
   }
 }

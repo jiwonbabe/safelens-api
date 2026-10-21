@@ -2,12 +2,12 @@
   "age_band": "kid",
   "items": [
     {
-      "video_id": "wfnsRi8Jgdw",
-      "url": "https://www.youtube.com/watch?v=wfnsRi8Jgdw",
-      "title": "The Great Elephant Toothpaste Experiment! | Summer Experiments | SciShow Kids",
+      "video_id": "0Qmgdz9E47s",
+      "url": "https://www.youtube.com/watch?v=0Qmgdz9E47s",
+      "title": "The Power of Sunlight! | Science Project for Kids",
       "channel": "SciShow Kids",
-      "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg",
-      "views": 239548,
+      "thumbnail": "https://i.ytimg.com/vi/0Qmgdz9E47s/hqdefault.jpg",
+      "views": 294540,
       "verdict": "show",
       "lens_available": false
     },
@@ -32,22 +32,22 @@
       "lens_available": false
     },
     {
-      "video_id": "0Qmgdz9E47s",
-      "url": "https://www.youtube.com/watch?v=0Qmgdz9E47s",
-      "title": "The Power of Sunlight! | Science Project for Kids",
-      "channel": "SciShow Kids",
-      "thumbnail": "https://i.ytimg.com/vi/0Qmgdz9E47s/hqdefault.jpg",
-      "views": 294540,
-      "verdict": "show",
-      "lens_available": false
-    },
-    {
       "video_id": "nmh5ot2F6gM",
       "url": "https://www.youtube.com/watch?v=nmh5ot2F6gM",
       "title": "Super Strange Animals 😲 | Super Animals Full Episode | Nat Geo Kids",
       "channel": "Nat Geo Kids",
       "thumbnail": "https://i.ytimg.com/vi/nmh5ot2F6gM/hqdefault.jpg",
       "views": 96450,
+      "verdict": "show",
+      "lens_available": false
+    },
+    {
+      "video_id": "wfnsRi8Jgdw",
+      "url": "https://www.youtube.com/watch?v=wfnsRi8Jgdw",
+      "title": "The Great Elephant Toothpaste Experiment! | Summer Experiments | SciShow Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg",
+      "views": 239548,
       "verdict": "show",
       "lens_available": false
     },
@@ -72,5 +72,5 @@
       "lens_available": false
     }
   ],
-  "blocked_count": 18
+  "blocked_count": 49
 }

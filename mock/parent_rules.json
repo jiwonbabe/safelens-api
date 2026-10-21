@@ -12,15 +12,17 @@
   ],
   "queue": [
     {
-      "video_id": "wfnsRi8Jgdw",
-      "url": "https://www.youtube.com/watch?v=wfnsRi8Jgdw",
-      "title": "The Great Elephant Toothpaste Experiment! | Summer Experiments | SciShow Kids",
+      "video_id": "0Qmgdz9E47s",
+      "url": "https://www.youtube.com/watch?v=0Qmgdz9E47s",
+      "title": "The Power of Sunlight! | Science Project for Kids",
       "channel": "SciShow Kids",
-      "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg",
+      "thumbnail": "https://i.ytimg.com/vi/0Qmgdz9E47s/hqdefault.jpg",
       "topics": [
-        "science"
+        "science",
+        "sunlight",
+        "experiments"
       ],
-      "match": 96,
+      "match": 90,
       "verdict": "show",
       "note": null
     },
@@ -31,9 +33,11 @@
       "channel": "SciShow Kids",
       "thumbnail": "https://i.ytimg.com/vi/GkBWcJBxSMs/hqdefault.jpg",
       "topics": [
-        "science"
+        "science",
+        "experiments",
+        "slime"
       ],
-      "match": 95,
+      "match": 90,
       "verdict": "show",
       "note": null
     },
@@ -44,22 +48,11 @@
       "channel": "SciShow Kids",
       "thumbnail": "https://i.ytimg.com/vi/a-SPYPAedCA/hqdefault.jpg",
       "topics": [
-        "science"
+        "science",
+        "experiments",
+        "bubbles"
       ],
-      "match": 94,
-      "verdict": "show",
-      "note": null
-    },
-    {
-      "video_id": "0Qmgdz9E47s",
-      "url": "https://www.youtube.com/watch?v=0Qmgdz9E47s",
-      "title": "The Power of Sunlight! | Science Project for Kids",
-      "channel": "SciShow Kids",
-      "thumbnail": "https://i.ytimg.com/vi/0Qmgdz9E47s/hqdefault.jpg",
-      "topics": [
-        "science"
-      ],
-      "match": 93,
+      "match": 90,
       "verdict": "show",
       "note": null
     },
@@ -70,9 +63,25 @@
       "channel": "Nat Geo Kids",
       "thumbnail": "https://i.ytimg.com/vi/nmh5ot2F6gM/hqdefault.jpg",
       "topics": [
-        "animals"
+        "animals",
+        "science"
       ],
-      "match": 92,
+      "match": 90,
+      "verdict": "show",
+      "note": null
+    },
+    {
+      "video_id": "wfnsRi8Jgdw",
+      "url": "https://www.youtube.com/watch?v=wfnsRi8Jgdw",
+      "title": "The Great Elephant Toothpaste Experiment! | Summer Experiments | SciShow Kids",
+      "channel": "SciShow Kids",
+      "thumbnail": "https://i.ytimg.com/vi/wfnsRi8Jgdw/hqdefault.jpg",
+      "topics": [
+        "science",
+        "experiments",
+        "education"
+      ],
+      "match": 90,
       "verdict": "show",
       "note": null
     },
@@ -83,9 +92,11 @@
       "channel": "LEGO",
       "thumbnail": "https://i.ytimg.com/vi/GULXtdoLgpQ/hqdefault.jpg",
       "topics": [
-        "lego"
+        "lego",
+        "design",
+        "medieval"
       ],
-      "match": 90,
+      "match": 85,
       "verdict": "show",
       "note": null
     },
@@ -96,9 +107,11 @@
       "channel": "LEGO",
       "thumbnail": "https://i.ytimg.com/vi/HcItfU1zwqE/hqdefault.jpg",
       "topics": [
-        "lego"
+        "lego",
+        "vehicles",
+        "design"
       ],
-      "match": 89,
+      "match": 70,
       "verdict": "show",
       "note": null
     },
@@ -109,24 +122,57 @@
       "channel": "BKHBRICKS",
       "thumbnail": "https://i.ytimg.com/vi/mBey7fGYeQ0/hqdefault.jpg",
       "topics": [
-        "lego"
-      ],
-      "match": 80,
-      "verdict": "approve",
-      "note": "Clickbait title (\"You Won't Believe\")"
-    },
-    {
-      "video_id": "DBwGvKFqBSo",
-      "url": "https://www.youtube.com/watch?v=DBwGvKFqBSo",
-      "title": "COMBO PANDA TOYS ARE HERE ! Ryan's World Toy Shopping at Walmart and Unboxing Surprise Toys",
-      "channel": "Combo Panda",
-      "thumbnail": "https://i.ytimg.com/vi/DBwGvKFqBSo/hqdefault.jpg",
-      "topics": [
+        "lego",
+        "pokemon",
         "toys"
       ],
-      "match": 35,
+      "match": 70,
       "verdict": "approve",
-      "note": "Unboxing plus toy shopping; channel sells its own toy line"
+      "note": "Names a product with no disclosure: \"unveiling an INSANE Lego Mech Garchomp\""
+    },
+    {
+      "video_id": "OWiSw26KN1s",
+      "url": "https://www.youtube.com/watch?v=OWiSw26KN1s",
+      "title": "The truth about the teatox craze (Marketplace)",
+      "channel": "CBC News",
+      "thumbnail": "https://i.ytimg.com/vi/OWiSw26KN1s/hqdefault.jpg",
+      "topics": [
+        "health",
+        "science"
+      ],
+      "match": 50,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"kits range from between twenty-five dollars to two hundred dollars Canadian\""
+    },
+    {
+      "video_id": "Q-M0H2H4eKg",
+      "url": "https://www.youtube.com/watch?v=Q-M0H2H4eKg",
+      "title": "Kiwi Co Unboxing Oil and Water Experiment | Science Experiment | Science for Toddlers",
+      "channel": "Mini Messengers",
+      "thumbnail": "https://i.ytimg.com/vi/Q-M0H2H4eKg/hqdefault.jpg",
+      "topics": [
+        "science",
+        "experiments",
+        "kids"
+      ],
+      "match": 40,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"Kiwi Co Unboxing Oil and Water Experiment\"\""
+    },
+    {
+      "video_id": "c2XqFcOrXs0",
+      "url": "https://www.youtube.com/watch?v=c2XqFcOrXs0",
+      "title": "Do CRINGE Youtube Thumbnail Faces Get More Views? (an Experiment)",
+      "channel": "VEED CREATORS",
+      "thumbnail": "https://i.ytimg.com/vi/c2XqFcOrXs0/hqdefault.jpg",
+      "topics": [
+        "science",
+        "experiment",
+        "youtube"
+      ],
+      "match": 30,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"Edit YouTube videos online  👉  http://veed.video/3u67QA3\""
     },
     {
       "video_id": "HHugwVWVN-U",
@@ -137,9 +183,50 @@
       "topics": [
         "toys"
       ],
-      "match": 30,
+      "match": 20,
       "verdict": "approve",
-      "note": "Commercial toy review channel, product link with no disclosure"
+      "note": "Names a product with no disclosure: \"\"Unboxing & Review!\"\""
+    },
+    {
+      "video_id": "Kku6cAkhro0",
+      "url": "https://www.youtube.com/watch?v=Kku6cAkhro0",
+      "title": "BRUTAL Rockets, Miniguns and Landmines MOD - MINECRAFT EDUCATION",
+      "channel": "Learn With Minecraft Education",
+      "thumbnail": "https://i.ytimg.com/vi/Kku6cAkhro0/hqdefault.jpg",
+      "topics": [
+        "gaming"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "weapons"
+    },
+    {
+      "video_id": "MIrjg_jPD88",
+      "url": "https://www.youtube.com/watch?v=MIrjg_jPD88",
+      "title": "Master KARAMBIT Flipping in Minutes! Great for Beginners",
+      "channel": "Kali Center",
+      "thumbnail": "https://i.ytimg.com/vi/MIrjg_jPD88/hqdefault.jpg",
+      "topics": [
+        "self defense",
+        "martial arts"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "Q7cXWq8eiJI",
+      "url": "https://www.youtube.com/watch?v=Q7cXWq8eiJI",
+      "title": "Nutritionists Say \"Detox Teas\" Offer Temporary Weight Loss, May Cause Negative Side Effects",
+      "channel": "CBS Philadelphia",
+      "thumbnail": "https://i.ytimg.com/vi/Q7cXWq8eiJI/hqdefault.jpg",
+      "topics": [
+        "health",
+        "nutrition"
+      ],
+      "match": 20,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"detox teas they promise to help you slim down\""
     },
     {
       "video_id": "bk5BqNRGZoQ",
@@ -148,11 +235,214 @@
       "channel": "SpyCakes",
       "thumbnail": "https://i.ytimg.com/vi/bk5BqNRGZoQ/hqdefault.jpg",
       "topics": [
-        "games"
+        "gaming",
+        "scary",
+        "toys"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "scary_story"
+    },
+    {
+      "video_id": "bvXMGbeIy_o",
+      "url": "https://www.youtube.com/watch?v=bvXMGbeIy_o",
+      "title": "Elsa Baby is Sick! Elsa & Spiderman take baby elsa to the doctor funny superhero in real life",
+      "channel": "moh12vedioes",
+      "thumbnail": "https://i.ytimg.com/vi/bvXMGbeIy_o/hqdefault.jpg",
+      "topics": [
+        "costumed_character_adult_theme"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "costumed_character_adult_theme"
+    },
+    {
+      "video_id": "e7PiXdffxD8",
+      "url": "https://www.youtube.com/watch?v=e7PiXdffxD8",
+      "title": "I Tried The Superhuman System 30 Day Fat Loss Challenge | Before & After Results",
+      "channel": "Superhero Jacked",
+      "thumbnail": "https://i.ytimg.com/vi/e7PiXdffxD8/hqdefault.jpg",
+      "topics": [
+        "fitness",
+        "challenge",
+        "workout"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "rvE0wfx3Clk",
+      "url": "https://www.youtube.com/watch?v=rvE0wfx3Clk",
+      "title": "Ryan’s World Biggest Blind Bag from Walmart | Part 2",
+      "channel": "Joshgoes2Disney",
+      "thumbnail": "https://i.ytimg.com/vi/rvE0wfx3Clk/hqdefault.jpg",
+      "topics": [
+        "toys",
+        "unboxing",
+        "ryansworld"
+      ],
+      "match": 20,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"I found this cute Ryans world bag at Walmart for $10\"\""
+    },
+    {
+      "video_id": "rvfyAD7Ufvg",
+      "url": "https://www.youtube.com/watch?v=rvfyAD7Ufvg",
+      "title": "Five Nights at Freddy's 1-4 All Jumpscares Animation",
+      "channel": "Arcade Chick",
+      "thumbnail": "https://i.ytimg.com/vi/rvfyAD7Ufvg/hqdefault.jpg",
+      "topics": [
+        "gaming",
+        "horror"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "jumpscare"
+    },
+    {
+      "video_id": "tm9Xfv6wpN4",
+      "url": "https://www.youtube.com/watch?v=tm9Xfv6wpN4",
+      "title": "I TRIED APPLE CIDER VINEGAR (FOR 1 WEEK) FOR WEIGHT LOSS *I'M SHOOK* BEFORE AND AFTER RESULTS",
+      "channel": "The Daily Student",
+      "thumbnail": "https://i.ytimg.com/vi/tm9Xfv6wpN4/hqdefault.jpg",
+      "topics": [
+        "health",
+        "weightloss",
+        "fitness"
+      ],
+      "match": 20,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "uApDZvzKQ8I",
+      "url": "https://www.youtube.com/watch?v=uApDZvzKQ8I",
+      "title": "Ask Orange #65 - Subscribe or ELSE!",
+      "channel": "Annoying Orange",
+      "thumbnail": "https://i.ytimg.com/vi/uApDZvzKQ8I/hqdefault.jpg",
+      "topics": [
+        "comedy",
+        "animation",
+        "kids"
+      ],
+      "match": 20,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"SUBSCRIBE TO Annoying Orange! ▸ http://bit.ly/AOSub\""
+    },
+    {
+      "video_id": "0OjQadFdvFc",
+      "url": "https://www.youtube.com/watch?v=0OjQadFdvFc",
+      "title": "Destroying Little Brothers Money Prank! (He Cries) ($100)",
+      "channel": "Diamond Mamba",
+      "thumbnail": "https://i.ytimg.com/vi/0OjQadFdvFc/hqdefault.jpg",
+      "topics": [
+        "pranks"
       ],
       "match": 10,
       "verdict": "hide",
-      "note": "Horror game on a kids-audience channel"
+      "note": "cruel_prank"
+    },
+    {
+      "video_id": "2JJGBCXkz_4",
+      "url": "https://www.youtube.com/watch?v=2JJGBCXkz_4",
+      "title": "iMakeMcVids 1 Hour Rage Compilation! - THE BEST RAGES OF MINECRAFT HCF",
+      "channel": "iMakeMcVids",
+      "thumbnail": "https://i.ytimg.com/vi/2JJGBCXkz_4/hqdefault.jpg",
+      "topics": [
+        "gaming"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "strong_language"
+    },
+    {
+      "video_id": "2QRDjiLBUVE",
+      "url": "https://www.youtube.com/watch?v=2QRDjiLBUVE",
+      "title": "🆘Pregnancy Battle: Spiderman Gives Shots and Gets Disney Princesses Pregnant Elsa Prank🆘",
+      "channel": "ABC Animals - Nursery Rhymes",
+      "thumbnail": "https://i.ytimg.com/vi/2QRDjiLBUVE/hqdefault.jpg",
+      "topics": [
+        "pranks",
+        "costumed_character_adult_theme"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "costumed_character_adult_theme"
+    },
+    {
+      "video_id": "DBwGvKFqBSo",
+      "url": "https://www.youtube.com/watch?v=DBwGvKFqBSo",
+      "title": "COMBO PANDA TOYS ARE HERE ! Ryan's World Toy Shopping at Walmart and Unboxing Surprise Toys",
+      "channel": "Combo Panda",
+      "thumbnail": "https://i.ytimg.com/vi/DBwGvKFqBSo/hqdefault.jpg",
+      "topics": [
+        "toys",
+        "unboxing",
+        "shopping"
+      ],
+      "match": 10,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"you can get your own runs real toys and clothing at Walmart and walmart.com\"\""
+    },
+    {
+      "video_id": "IXR7ZAXA5oU",
+      "url": "https://www.youtube.com/watch?v=IXR7ZAXA5oU",
+      "title": "My First Time Getting Drunk..",
+      "channel": "GeologyshiXtra",
+      "thumbnail": "https://i.ytimg.com/vi/IXR7ZAXA5oU/hqdefault.jpg",
+      "topics": [
+        "geology"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "J_cxIU4Q7dk",
+      "url": "https://www.youtube.com/watch?v=J_cxIU4Q7dk",
+      "title": "$300 Scanner GIVEAWAY Tonight! - Last Chance To Enter!!! LIVE AT 8!!",
+      "channel": "The Clay Way",
+      "thumbnail": "https://i.ytimg.com/vi/J_cxIU4Q7dk/hqdefault.jpg",
+      "topics": [
+        "giveaway",
+        "scanner",
+        "automotive"
+      ],
+      "match": 10,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"Link to the Amazon store, where you can buy the scanner\""
+    },
+    {
+      "video_id": "TOIpYlOcEGM",
+      "url": "https://www.youtube.com/watch?v=TOIpYlOcEGM",
+      "title": "Day in the Life of a RICH Teenage YouTuber (don't be jel hun)",
+      "channel": "lookingforlewys",
+      "thumbnail": "https://i.ytimg.com/vi/TOIpYlOcEGM/hqdefault.jpg",
+      "topics": [
+        "vlogging",
+        "lifestyle",
+        "celebrity"
+      ],
+      "match": 10,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"This video is sponsored by Confetti UK on Facebook Watch\"\""
+    },
+    {
+      "video_id": "Vl6BwGkhH9I",
+      "url": "https://www.youtube.com/watch?v=Vl6BwGkhH9I",
+      "title": "STREET TAKEOVER IS ACTIVE ALL NIGHT! CTS-V AND CAMARO GO CRAZY IN THE PIT! SIDESHOW TAKEOVER!!",
+      "channel": "DStreet",
+      "thumbnail": "https://i.ytimg.com/vi/Vl6BwGkhH9I/hqdefault.jpg",
+      "topics": [
+        "cars",
+        "drifting",
+        "street",
+        "sideshow"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "teen flag"
     },
     {
       "video_id": "eKlJfCBnMyU",
@@ -163,22 +453,368 @@
       "topics": [
         "pranks"
       ],
-      "match": 5,
+      "match": 10,
       "verdict": "hide",
-      "note": "Prank that scares a 3-year-old"
+      "note": "cruel_prank"
     },
     {
-      "video_id": "2QRDjiLBUVE",
-      "url": "https://www.youtube.com/watch?v=2QRDjiLBUVE",
-      "title": "🆘Pregnancy Battle: Spiderman Gives Shots and Gets Disney Princesses Pregnant Elsa Prank🆘",
-      "channel": "ABC Animals - Nursery Rhymes",
-      "thumbnail": "https://i.ytimg.com/vi/2QRDjiLBUVE/hqdefault.jpg",
+      "video_id": "y7TJQTqGNqA",
+      "url": "https://www.youtube.com/watch?v=y7TJQTqGNqA",
+      "title": "THE 35 SCARIEST MOMENTS IN Dead By Daylight HISTORY! (DEAD BY DAYLIGHT HORROR)",
+      "channel": "Dead By Daylight Overdose",
+      "thumbnail": "https://i.ytimg.com/vi/y7TJQTqGNqA/hqdefault.jpg",
       "topics": [
-        "other"
+        "horror",
+        "gaming"
+      ],
+      "match": 10,
+      "verdict": "hide",
+      "note": "scary_story"
+    },
+    {
+      "video_id": "1J1fInmPYoY",
+      "url": "https://www.youtube.com/watch?v=1J1fInmPYoY",
+      "title": "Don’t Ever Go To A Strange Woman's House (Horror Story Animated)",
+      "channel": "Wansee Entertainment",
+      "thumbnail": "https://i.ytimg.com/vi/1J1fInmPYoY/hqdefault.jpg",
+      "topics": [
+        "horror",
+        "animation",
+        "scary"
       ],
       "match": 0,
       "verdict": "hide",
-      "note": "Costumed-character content (Elsagate pattern)"
+      "note": "scary_story"
+    },
+    {
+      "video_id": "2hKNZLROmXo",
+      "url": "https://www.youtube.com/watch?v=2hKNZLROmXo",
+      "title": "30 Best AMAZON Buys + MUST HAVE Products!  Things I Buy on Amazon 2024 Prime Day Deals",
+      "channel": "Emily Norris",
+      "thumbnail": "https://i.ytimg.com/vi/2hKNZLROmXo/hqdefault.jpg",
+      "topics": [
+        "shopping",
+        "products",
+        "amazon"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"30 Best AMAZON Buys + MUST HAVE Products!\"\""
+    },
+    {
+      "video_id": "8U-xBqU3ut4",
+      "url": "https://www.youtube.com/watch?v=8U-xBqU3ut4",
+      "title": "110+ CRAZY Amazon Home Gadgets Everyone Is OBSESSED With! *Viral Products 2025*",
+      "channel": "TechJoint",
+      "thumbnail": "https://i.ytimg.com/vi/8U-xBqU3ut4/hqdefault.jpg",
+      "topics": [
+        "gadgets",
+        "technology",
+        "home",
+        "products"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "9ivV1sbd9cs",
+      "url": "https://www.youtube.com/watch?v=9ivV1sbd9cs",
+      "title": "HOOD FIGHTS 2024 & STREET FIGHTS - SCHOOL FIGHTS - ROAD RAGE FIGHTS 2024",
+      "channel": "MOTO FURY 2 - Street Fights & Road Rage",
+      "thumbnail": "https://i.ytimg.com/vi/9ivV1sbd9cs/hqdefault.jpg",
+      "topics": [
+        "violence",
+        "fights",
+        "road_rage"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "violence"
+    },
+    {
+      "video_id": "CP1bEZXk34I",
+      "url": "https://www.youtube.com/watch?v=CP1bEZXk34I",
+      "title": "I Tried SARMS at 16 and Here's What Happened",
+      "channel": "Anthony Mantello",
+      "thumbnail": "https://i.ytimg.com/vi/CP1bEZXk34I/hqdefault.jpg",
+      "topics": [
+        "health",
+        "fitness",
+        "personal_story"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "DUwEwj0Pze4",
+      "url": "https://www.youtube.com/watch?v=DUwEwj0Pze4",
+      "title": "LOSE 10 POUNDS IN 3 DAY?!!? 3 DAY MILITARY DIET, BUT DOES IT WORK THO? VLOGMAS 6",
+      "channel": "Tarisai Ejeta",
+      "thumbnail": "https://i.ytimg.com/vi/DUwEwj0Pze4/hqdefault.jpg",
+      "topics": [
+        "diet",
+        "vlog",
+        "health"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "I3xzzAN1-z4",
+      "url": "https://www.youtube.com/watch?v=I3xzzAN1-z4",
+      "title": "PEW PEW! AKC F-16 OTF Automatic Knife Review.  A fun cheapish switchblade.",
+      "channel": "Advanced Knife Bro",
+      "thumbnail": "https://i.ytimg.com/vi/I3xzzAN1-z4/hqdefault.jpg",
+      "topics": [
+        "knives",
+        "toys",
+        "reviews"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "weapons"
+    },
+    {
+      "video_id": "NT3I2bhm1Ek",
+      "url": "https://www.youtube.com/watch?v=NT3I2bhm1Ek",
+      "title": "I tried Korean skincare for 6 months, the results are shocking! 😱",
+      "channel": "Amy | BILLIE BLONDE",
+      "thumbnail": "https://i.ytimg.com/vi/NT3I2bhm1Ek/hqdefault.jpg",
+      "topics": [
+        "skincare"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"You can use my code LFTFBILLIEB on Look Fantastic\""
+    },
+    {
+      "video_id": "OC4ijKLqzqc",
+      "url": "https://www.youtube.com/watch?v=OC4ijKLqzqc",
+      "title": "Detox Tea Is a SCAM (Here’s the Truth)",
+      "channel": "Fiaz Ali",
+      "thumbnail": "https://i.ytimg.com/vi/OC4ijKLqzqc/hqdefault.jpg",
+      "topics": [
+        "health",
+        "nutrition",
+        "fitness"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Untrusted channel"
+    },
+    {
+      "video_id": "P09lNUxMfqU",
+      "url": "https://www.youtube.com/watch?v=P09lNUxMfqU",
+      "title": "14 More Horror Stories Animated (Compilation of 2016)",
+      "channel": "Llama Arts",
+      "thumbnail": "https://i.ytimg.com/vi/P09lNUxMfqU/hqdefault.jpg",
+      "topics": [
+        "horror",
+        "stories",
+        "animation"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "horror"
+    },
+    {
+      "video_id": "RkSXs2WToDY",
+      "url": "https://www.youtube.com/watch?v=RkSXs2WToDY",
+      "title": "The BIGGEST Operation Case Opening ($10,000)",
+      "channel": "DrewUnboxing",
+      "thumbnail": "https://i.ytimg.com/vi/RkSXs2WToDY/hqdefault.jpg",
+      "topics": [
+        "gaming"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "TVYv8TQjUiU",
+      "url": "https://www.youtube.com/watch?v=TVYv8TQjUiU",
+      "title": "HONEST REVIEW ON 28 DAYS DETOX FLAT TUMMY TEA WITH  BEFORE AND AFTER PICTURES",
+      "channel": "Charmbody254",
+      "thumbnail": "https://i.ytimg.com/vi/TVYv8TQjUiU/hqdefault.jpg",
+      "topics": [
+        "health",
+        "tea"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"get product fro JUMIA KENYA use link\""
+    },
+    {
+      "video_id": "Wg98L4daf9w",
+      "url": "https://www.youtube.com/watch?v=Wg98L4daf9w",
+      "title": "NEW! Cash App Scam Warnings (2025) 🚨 | How to Avoid Getting Hacked & Protect Your Money",
+      "channel": "How To Dept",
+      "thumbnail": "https://i.ytimg.com/vi/Wg98L4daf9w/hqdefault.jpg",
+      "topics": [
+        "scams",
+        "finance",
+        "safety"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Untrusted channel"
+    },
+    {
+      "video_id": "hqUihS8zoL8",
+      "url": "https://www.youtube.com/watch?v=hqUihS8zoL8",
+      "title": "MILITARY DIET TO Lose 10 POUNDS IN 3 DAYS (does the 3 DAY MILITARY DIET WORK?) + RESULTS -5kgs 3days",
+      "channel": "Mayra Francis",
+      "thumbnail": "https://i.ytimg.com/vi/hqUihS8zoL8/hqdefault.jpg",
+      "topics": [
+        "diet",
+        "health",
+        "weight_loss"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "rNolX595aWE",
+      "url": "https://www.youtube.com/watch?v=rNolX595aWE",
+      "title": "My Experience & Results Using Flat Tummy Tea (Including Before & After Photos)",
+      "channel": "MuchMoreThanBeauty",
+      "thumbnail": "https://i.ytimg.com/vi/rNolX595aWE/hqdefault.jpg",
+      "topics": [
+        "health",
+        "tea",
+        "wellness"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"Purchase your Flat Tummy Tea by clicking here: http://bit.ly/1NRJJop (Use code: estefani10off to save 10%)\"\""
+    },
+    {
+      "video_id": "sePMRp_CF68",
+      "url": "https://www.youtube.com/watch?v=sePMRp_CF68",
+      "title": "8 MINUTES OF STREET FIGHTS & HOOD FIGHTS 2025, FIGHTS COMPILATIONS 2025",
+      "channel": "MOTO FURY 2 - Street Fights & Road Rage",
+      "thumbnail": "https://i.ytimg.com/vi/sePMRp_CF68/hqdefault.jpg",
+      "topics": [
+        "violence",
+        "fights",
+        "road_rage"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "violence"
+    },
+    {
+      "video_id": "sxUFgzwgWhc",
+      "url": "https://www.youtube.com/watch?v=sxUFgzwgWhc",
+      "title": "🔥BEST CS2 GAMBLING SITES OF 2025 !! ?! | Get Free CSGO Skins | CS2 Promo Code 2025 | Free Giveaway",
+      "channel": "veyzix",
+      "thumbnail": "https://i.ytimg.com/vi/sxUFgzwgWhc/hqdefault.jpg",
+      "topics": [
+        "gaming"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "tL49cpCfW00",
+      "url": "https://www.youtube.com/watch?v=tL49cpCfW00",
+      "title": "Best FREE Telegram Trading Signal Group | HIGH Profits 2026",
+      "channel": "CryptoNinjas",
+      "thumbnail": "https://i.ytimg.com/vi/tL49cpCfW00/hqdefault.jpg",
+      "topics": [
+        "trading",
+        "finance",
+        "money"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "vntmLCH6M1w",
+      "url": "https://www.youtube.com/watch?v=vntmLCH6M1w",
+      "title": "Andrew Tate SCHOOLS Modern Women",
+      "channel": "whatever Clips",
+      "thumbnail": "https://i.ytimg.com/vi/vntmLCH6M1w/hqdefault.jpg",
+      "topics": [],
+      "match": 0,
+      "verdict": "hide",
+      "note": "strong_language"
+    },
+    {
+      "video_id": "w3Q64NAWVeI",
+      "url": "https://www.youtube.com/watch?v=w3Q64NAWVeI",
+      "title": "Best Vape Tricks(Jelly Fish) Compilation!",
+      "channel": "Nextvapor Vape",
+      "thumbnail": "https://i.ytimg.com/vi/w3Q64NAWVeI/hqdefault.jpg",
+      "topics": [
+        "vape",
+        "tricks",
+        "compilation"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "teen flag"
+    },
+    {
+      "video_id": "ynLw9MGPicw",
+      "url": "https://www.youtube.com/watch?v=ynLw9MGPicw",
+      "title": "All Jumpscares / SCARY Moments in Outlast & DLC [  4K60ᶠᵖˢ UHD ]",
+      "channel": "DemonBlade Husky",
+      "thumbnail": "https://i.ytimg.com/vi/ynLw9MGPicw/hqdefault.jpg",
+      "topics": [
+        "horror",
+        "jumpscare"
+      ],
+      "match": 0,
+      "verdict": "hide",
+      "note": "jumpscare"
+    },
+    {
+      "video_id": "YjIA7HJXFg0",
+      "url": "https://www.youtube.com/watch?v=YjIA7HJXFg0",
+      "title": "My 14-Day Detox Results w/ Skinny Teatox│TheBrilliantBeauty",
+      "channel": "TheBrilliantBeauty",
+      "thumbnail": "https://i.ytimg.com/vi/YjIA7HJXFg0/hqdefault.jpg",
+      "topics": [],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Has a lens tactic: hidden_ad"
+    },
+    {
+      "video_id": "_OxuxhHF1WI",
+      "url": "https://www.youtube.com/watch?v=_OxuxhHF1WI",
+      "title": "Last Chance to Win This $30,000 Tesla Model X — Giveaway Ends Tonight at Midnight",
+      "channel": "Auto Auction Rebuilds",
+      "thumbnail": "https://i.ytimg.com/vi/_OxuxhHF1WI/hqdefault.jpg",
+      "topics": [
+        "cars",
+        "giveaway",
+        "electric"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"Last Chance to Win This $30,000 Tesla Model X — Giveaway Ends Tonight at Midnight\"\""
+    },
+    {
+      "video_id": "jZumiXIiCWE",
+      "url": "https://www.youtube.com/watch?v=jZumiXIiCWE",
+      "title": "How I Got My Summer Body | Flat Tummy Tea - My REAL results | Makeupd0ll",
+      "channel": "makeupD0LL",
+      "thumbnail": "https://i.ytimg.com/vi/jZumiXIiCWE/hqdefault.jpg",
+      "topics": [
+        "health",
+        "giveaway",
+        "tea"
+      ],
+      "match": 0,
+      "verdict": "approve",
+      "note": "Names a product with no disclosure: \"\"► B U Y  Flat Tummy Tea here http://bit.ly/1VoZhWc and don't forget to use code \"makeupd0ll10off\" to save $$$!\"\""
     }
   ]
 }

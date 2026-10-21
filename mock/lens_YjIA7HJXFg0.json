@@ -5,26 +5,26 @@
   "tactics": [
     {
       "label": "hidden_ad",
-      "evidence": "use the code \"thebrilliantbeauty\" to get 12% off",
-      "reason": "A discount code means the creator earns when you buy. The video never says it is an ad."
+      "evidence": "use the code \"thebrilliantbeauty\" to get 12% off your order!",
+      "reason": "The code 'thebrilliantbeauty' pays the creator every time you buy, and the video never says so."
     },
     {
       "label": "body_image_pressure",
-      "evidence": "14 day detox",
-      "reason": "A number and a deadline make your body sound like a problem with a quick fix."
+      "evidence": "My 14-Day Detox Results",
+      "reason": "The title promises results in 14 days, pushing the idea that quick fixes can change your body."
     }
   ],
   "quiz_options": [
+    "misleading_thumbnail",
     "hidden_ad",
     "body_image_pressure",
-    "fake_urgency",
     "engagement_bait"
   ],
-  "reality_check": "\"Detox\" tea is mostly a laxative. Doctors say your liver and kidneys already do the job; the weight that drops is water.",
+  "reality_check": "This video has been online for 4181 days, yet it still pushes a quick fix. It is built to make you feel like you need to act fast for results. If it got to you, that is the video working, not something wrong with you.",
   "concern": null,
   "signals": {
     "age_limit": 0,
     "upload_days_ago": 4181,
-    "voice_emotion": "calm"
+    "voice_emotion": "excited"
   }
 }

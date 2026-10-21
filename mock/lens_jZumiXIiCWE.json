@@ -1,0 +1,25 @@
+{
+  "video_id": "jZumiXIiCWE",
+  "url": "https://www.youtube.com/watch?v=jZumiXIiCWE",
+  "verdict": "show",
+  "tactics": [
+    {
+      "label": "hidden_ad",
+      "evidence": "► B U Y  Flat Tummy Tea here http://bit.ly/1VoZhWc and don't forget to use code \"makeupd0ll10off\" to save $$$!",
+      "reason": "The code \"makeupd0ll10off\" pays the creator every time you buy, and the video never says so."
+    }
+  ],
+  "quiz_options": [
+    "engagement_bait",
+    "fake_urgency",
+    "fake_social_proof",
+    "hidden_ad"
+  ],
+  "reality_check": "The video hides that the discount code benefits the creator, not you. It's built to make you feel like you need to act fast for results. If it got to you, that is the video working, not something wrong with you.",
+  "concern": null,
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 3830,
+    "voice_emotion": "excited"
+  }
+}

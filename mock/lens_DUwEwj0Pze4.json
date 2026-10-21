@@ -1,0 +1,25 @@
+{
+  "video_id": "DUwEwj0Pze4",
+  "url": "https://www.youtube.com/watch?v=DUwEwj0Pze4",
+  "verdict": "flag",
+  "tactics": [
+    {
+      "label": "body_image_pressure",
+      "evidence": "LOSE 10 POUNDS IN 3 DAY?!!?",
+      "reason": "The title promises losing 10 pounds in just 3 days, pushing viewers to chase quick results."
+    }
+  ],
+  "quiz_options": [
+    "body_image_pressure",
+    "fake_urgency",
+    "engagement_bait",
+    "hidden_ad"
+  ],
+  "reality_check": "This video claims you can lose 10 pounds in 3 days, but the creator only lost 6 pounds. It is built to make you feel like quick weight loss is easy. If it got to you, that is the video working, not something wrong with you.",
+  "concern": null,
+  "signals": {
+    "age_limit": 0,
+    "upload_days_ago": 2139,
+    "voice_emotion": null
+  }
+}
