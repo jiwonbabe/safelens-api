@@ -1,0 +1,369 @@
+[
+ {
+  "video_id": "_OxuxhHF1WI",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "fake_urgency",
+   "fake_social_proof"
+  ]
+ },
+ {
+  "video_id": "J_cxIU4Q7dk",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "fake_urgency"
+  ]
+ },
+ {
+  "video_id": "YjIA7HJXFg0",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "hidden_ad",
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "jZumiXIiCWE",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "hidden_ad"
+  ]
+ },
+ {
+  "video_id": "TVYv8TQjUiU",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "tm9Xfv6wpN4",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "body_image_pressure",
+   "hidden_ad"
+  ]
+ },
+ {
+  "video_id": "NT3I2bhm1Ek",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "uApDZvzKQ8I",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "engagement_bait"
+  ]
+ },
+ {
+  "video_id": "8U-xBqU3ut4",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "fake_social_proof"
+  ]
+ },
+ {
+  "video_id": "rNolX595aWE",
+  "age_band": "teen",
+  "verdict": "show",
+  "labels": [
+   "hidden_ad",
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "DUwEwj0Pze4",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": [
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "e7PiXdffxD8",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": [
+   "body_image_pressure",
+   "hidden_ad"
+  ]
+ },
+ {
+  "video_id": "hqUihS8zoL8",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": [
+   "body_image_pressure"
+  ]
+ },
+ {
+  "video_id": "RkSXs2WToDY",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "sxUFgzwgWhc",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "sePMRp_CF68",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "9ivV1sbd9cs",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "w3Q64NAWVeI",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "IXR7ZAXA5oU",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "CP1bEZXk34I",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "I3xzzAN1-z4",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "MIrjg_jPD88",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "tL49cpCfW00",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "vntmLCH6M1w",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "Vl6BwGkhH9I",
+  "age_band": "teen",
+  "verdict": "flag",
+  "labels": []
+ },
+ {
+  "video_id": "wfnsRi8Jgdw",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "0Qmgdz9E47s",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "GkBWcJBxSMs",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "a-SPYPAedCA",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "nmh5ot2F6gM",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "GULXtdoLgpQ",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "HcItfU1zwqE",
+  "age_band": "kid",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "DBwGvKFqBSo",
+  "age_band": "kid",
+  "verdict": "approve",
+  "labels": []
+ },
+ {
+  "video_id": "rvE0wfx3Clk",
+  "age_band": "kid",
+  "verdict": "approve",
+  "labels": []
+ },
+ {
+  "video_id": "HHugwVWVN-U",
+  "age_band": "kid",
+  "verdict": "approve",
+  "labels": []
+ },
+ {
+  "video_id": "mBey7fGYeQ0",
+  "age_band": "kid",
+  "verdict": "approve",
+  "labels": []
+ },
+ {
+  "video_id": "Q-M0H2H4eKg",
+  "age_band": "kid",
+  "verdict": "approve",
+  "labels": []
+ },
+ {
+  "video_id": "ynLw9MGPicw",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "y7TJQTqGNqA",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "rvfyAD7Ufvg",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "bk5BqNRGZoQ",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "P09lNUxMfqU",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "1J1fInmPYoY",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "2QRDjiLBUVE",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "bvXMGbeIy_o",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "2JJGBCXkz_4",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "eKlJfCBnMyU",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "0OjQadFdvFc",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "Kku6cAkhro0",
+  "age_band": "kid",
+  "verdict": "hide",
+  "labels": []
+ },
+ {
+  "video_id": "OWiSw26KN1s",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "Q7cXWq8eiJI",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "OC4ijKLqzqc",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "c2XqFcOrXs0",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "2hKNZLROmXo",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "Wg98L4daf9w",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ },
+ {
+  "video_id": "TOIpYlOcEGM",
+  "age_band": "both",
+  "verdict": "show",
+  "labels": []
+ }
+]
