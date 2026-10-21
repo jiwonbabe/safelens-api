@@ -13,13 +13,13 @@ def test_kid_feed_returns_only_show_items_with_contract_fields():
     assert d["age_band"] == "kid" and d["age_source"] == "client" and len(d["items"]) >= 5
     assert all(list(i) == FEED_KEYS for i in d["items"])
     assert all(i["verdict"] == "show" and i["lens_available"] is False for i in d["items"])
-    assert d["blocked_count"] == 56 - len(d["items"])
+    assert d["blocked_count"] == 65 - len(d["items"])
 
 
 def test_teen_feed_is_the_whole_pool_demo_picks_first():
     d = client.get("/feed?age_band=teen&child_id=mia").json()
     assert list(d) == ["age_band", "age_source", "items", "blocked_count"] and d["age_source"] == "client"
-    assert len(d["items"]) == 56 and d["blocked_count"] == 0
+    assert len(d["items"]) == 65 and d["blocked_count"] == 0
     assert {i["verdict"] for i in d["items"]} == {"show", "flag"}
     assert all(i["lens_available"] is True and list(i) == FEED_KEYS for i in d["items"])
     assert [i["video_id"] for i in d["items"][:3]] == DEMO_PICKS
@@ -37,7 +37,7 @@ def test_feed_by_dob_uses_the_local_fallback_without_a_kid_key(monkeypatch):
     assert kid["age_band"] == "kid" and kid["age_source"] == "fallback"
     assert kid["items"] == client.get("/feed?age_band=kid&child_id=mia").json()["items"]
     teen = client.get("/feed?dob=2011-01-01&jurisdiction=US-CA").json()
-    assert teen["age_band"] == "teen" and teen["age_source"] == "fallback" and len(teen["items"]) == 56
+    assert teen["age_band"] == "teen" and teen["age_source"] == "fallback" and len(teen["items"]) == 65
     assert all(list(i) == FEED_KEYS for i in teen["items"])
 
 
@@ -80,7 +80,7 @@ def test_parent_rules_returns_chips_and_sorted_queue_with_notes():
     assert d["child_id"] == "mia"
     assert d["allow"] == ["science", "lego", "animals"] and d["deny"] == ["unboxing", "challenges", "buy now"]
     q = d["queue"]
-    assert len(q) == 56 and all(list(i) == ["video_id", "url", "title", "channel", "thumbnail", "topics", "match", "verdict", "note"] for i in q)
+    assert len(q) == 65 and all(list(i) == ["video_id", "url", "title", "channel", "thumbnail", "topics", "match", "verdict", "note"] for i in q)
     assert [i["match"] for i in q] == sorted((i["match"] for i in q), reverse=True)
     assert all(i["note"] is None for i in q if i["verdict"] == "show")
     assert all(i["note"] for i in q if i["verdict"] != "show")
@@ -96,7 +96,7 @@ def test_parent_rules_change_the_kid_feed_for_that_child():
 
 
 def test_root_is_a_health_check():
-    assert client.get("/").json() == {"ok": True, "service": "safelens-api", "videos": 56}
+    assert client.get("/").json() == {"ok": True, "service": "safelens-api", "videos": 65}
 
 
 def test_queue_note_names_the_deny_rule_even_through_a_synonym():

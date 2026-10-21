@@ -17,6 +17,6 @@ def test_video_text_is_lowercase_and_whitespace_collapsed():
 def test_videos_json_has_every_video_with_the_contract_keys():
     assert os.path.exists(OUT), "run python pipeline/build_pool.py first"
     videos = json.load(open(OUT))
-    assert len(videos) == 56
+    assert len(videos) == 65
     assert all(sorted(v) == sorted(KEYS) for v in videos)
     assert sum(1 for v in videos if v["captions"]) == 53
